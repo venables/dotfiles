@@ -14,10 +14,10 @@ call plug#end()
 set noswapfile " Prevent creating a swapfile (.swp)
 syntax on " Enable syntax highlighting
 
+nnoremap <Leader>b :buffers<CR>:buffer<Space>
+nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
-nnoremap <Leader>sv :source ~/.vimrc<CR>
-nnoremap <Leader>ev :e ~/.vimrc<CR>
 
 
 " Plugin Configuration
@@ -37,3 +37,4 @@ cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
 cnoreabbrev AG Ack
 nnoremap <D-F> :Ack<Space>
+nnoremap <Leader>f :Ack<Space>
