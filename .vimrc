@@ -20,3 +20,4 @@ syntax on " Enable syntax highlighting
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\.git$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
