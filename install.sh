@@ -8,6 +8,7 @@ ln -sf $DIR/.agignore ~/.agignore
 ln -sf $DIR/.gitconfig ~/.gitconfig
 ln -sf $DIR/.hushlogin ~/.hushlogin
 ln -sf $DIR/.vimrc ~/.vimrc
+ln -sf $DIR/.vimrc ~/.config/nvim/init.vim
 ln -sf $DIR/.zshrc ~/.zshrc
 
 # symlink bin files

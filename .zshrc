@@ -17,7 +17,8 @@ alias gshow='git show'
 alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start -f Procfile.local || foreman start'
-alias m='mvim'
+alias m='nvim'
+alias n='nvim'
 alias v='vim'
 
 # Colors
