@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+branch_name=master
+
+if [ -n "$branch_name" ]; then
+  # This has to be run from master
+  git checkout $branch_name
+
+  read -p "Pull the latest $branch_name (y/n)? "
+  if [ "$REPLY" == "y" ]
+  then
+     git pull origin $branch_name
+  fi
+
+  # Update our list of remotes
+  git fetch
+
+  # Remove any pointers to missing remotes
+  git remote prune origin
+
+  # Remove local fully merged branches
+  git branch --merged $branch_name | grep -v "$branch_name$" | xargs git branch -d
+
+  if [ "$1" == "--remote" ]
+  then
+    # Show remote fully merged branches
+    echo "The following remote branches are fully merged and will be removed:"
+    git branch -r --merged $branch_name | sed 's/ *origin\///' | grep -v 'master$'
+
+    read -p "Continue (y/n)? "
+    if [ "$REPLY" == "y" ]
+    then
+       # Remove remote fully merged branches
+       git branch -r --merged $branch_name | sed 's/ *origin\///' | grep -v 'master$' | xargs -I% git push origin :%
+       echo "Done!"
+    fi
+  fi
+fi
