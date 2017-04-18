@@ -15,6 +15,8 @@ alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
 alias git='hub'
+alias foreman='nf'
+alias f='[ -e Procfile.local ] && foreman start -f Procfile.local || foreman start'
 
 # Colors
 # ======
