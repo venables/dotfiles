@@ -4,6 +4,7 @@
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 # symlink all dotfiles to ~
+ln -sf $DIR/.agignore ~/.agignore
 ln -sf $DIR/.gitconfig ~/.gitconfig
 ln -sf $DIR/.hushlogin ~/.hushlogin
 ln -sf $DIR/.vimrc ~/.vimrc
