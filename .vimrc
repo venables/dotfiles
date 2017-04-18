@@ -6,6 +6,7 @@ call plug#begin(has('nvim') ? '~/.local/share/nvim/plugged' : '~/.vim/plugged')
 " Place plugins here
 Plug 'scrooloose/nerdtree'
 Plug 'mileszs/ack.vim'
+Plug 'scrooloose/nerdcommenter'
 
 call plug#end()
 
@@ -13,6 +14,7 @@ call plug#end()
 " =================
 set noswapfile " Prevent creating a swapfile (.swp)
 syntax on " Enable syntax highlighting
+filetype plugin on " Enable filetype plugins
 
 nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap <Leader>sv :source ~/.vimrc<CR>
@@ -29,8 +31,10 @@ let NERDTreeIgnore = ['\.git$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+
 " Ack.vim
-" ======
 let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
