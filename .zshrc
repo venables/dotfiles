@@ -32,3 +32,8 @@ parse_git_branch() {
   echo "@${branch#refs/heads/}"
 }
 PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[yellow]}%}$(parse_git_branch)%{${fg[default]}%} '
+
+# Tab Completion
+# ==============
+autoload -U compinit
+compinit
