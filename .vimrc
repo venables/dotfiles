@@ -4,10 +4,19 @@
 call plug#begin(has('nvim') ? '~/.local/share/nvim/plugged' : '~/.vim/plugged')
 
 " Place plugins here
+Plug 'scrooloose/nerdtree'
 
 call plug#end()
 
-" Configuration
-" =============
+" Vim Configuration
+" =================
 set noswapfile " Prevent creating a swapfile (.swp)
 syntax on " Enable syntax highlighting
+
+" Plugin Configuration
+" ====================
+
+" NERDTree
+let NERDTreeShowHidden = 1
+let NERDTreeIgnore = ['\.git$']
+nnoremap <Leader>n :NERDTreeToggle<CR>
