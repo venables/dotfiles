@@ -17,6 +17,8 @@ alias gshow='git show'
 alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start -f Procfile.local || foreman start'
+alias m='mvim'
+alias v='vim'
 
 # Colors
 # ======
@@ -39,3 +41,7 @@ PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[yellow]}%}$(parse_git_branch)%{${fg[default
 # ==============
 autoload -U compinit
 compinit
+
+# Editor
+# ======
+export EDITOR='mvim -f'
