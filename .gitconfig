@@ -1,0 +1,33 @@
+[core]
+	autocrlf = input
+	editor = vim
+	quotepath = false
+[user]
+	name = Matt Venables
+	email = mattvenables@gmail.com
+[color]
+	ui = true
+[alias]
+	a = add
+	b = branch
+	c = commit
+	ca = commit --all
+	co = checkout
+	d = diff
+	fap = fetch --all --prune
+	fop = fetch origin --prune
+	l = log --graph --decorate --pretty=oneline --abbrev-commit
+	la = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	ll = !git --no-pager l
+	lla = !git --no-pager la
+	p = push
+	pr = pull --rebase
+	pom = push origin master
+	s = status
+	su = submodule update
+	si = submodule update --init
+	ru = remote update
+	ro = rebase origin/master
+	r = rebase
+[merge]
+	conflictstyle = diff3
