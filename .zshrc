@@ -14,6 +14,7 @@ alias gla='git la'
 alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
+alias git='hub'
 
 # Colors
 # ======
