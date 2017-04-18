@@ -5,6 +5,7 @@ call plug#begin(has('nvim') ? '~/.local/share/nvim/plugged' : '~/.vim/plugged')
 
 " Place plugins here
 Plug 'scrooloose/nerdtree'
+Plug 'mileszs/ack.vim'
 
 call plug#end()
 
@@ -27,3 +28,12 @@ let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\.git$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Ack.vim
+" ======
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
+nnoremap <D-F> :Ack<Space>
