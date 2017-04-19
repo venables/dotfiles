@@ -14,6 +14,9 @@ Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-fugitive'
 Plug 'chriskempson/base16-vim'
+Plug 'pangloss/vim-javascript'
+Plug 'othree/yajs.vim'
+Plug 'othree/es.next.syntax.vim'
 
 call plug#end()
 
