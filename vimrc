@@ -92,6 +92,7 @@ autocmd! BufWritePost * Neomake
 let test#strategy = "neovim"
 let test#runners = {'JavaScript': ['Mocha']}
 let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
+let test#javascript#mocha#executable = 'NODE_ENV=test ./node_modules/.bin/_mocha'
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
