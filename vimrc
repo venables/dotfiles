@@ -11,6 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'neomake/neomake'
+Plug 'janko-m/vim-test'
 
 call plug#end()
 
@@ -86,3 +87,13 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Plugin: Neomake
 autocmd! BufWritePost * Neomake
+
+" Plugin: vim-test
+let test#strategy = "neovim"
+let test#runners = {'JavaScript': ['Mocha']}
+let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
