@@ -10,6 +10,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'neomake/neomake'
 
 call plug#end()
 
@@ -60,16 +61,16 @@ nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
 " Plugin Configuration
 " ====================
 
-" NERDTree
+" Plugin: NERDTree
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\.git$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" NERDCommenter
+" Plugin: NERDCommenter
 let g:NERDSpaceDelims = 1
 
-" Ack.vim
+" Plugin: Ack.vim
 let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
@@ -78,7 +79,10 @@ cnoreabbrev AG Ack
 nnoremap <Leader>f :Ack<Space>
 nnoremap <C-f> :Ack<Space>
 
-" CtrlP
+" Plugin: CtrlP
 nnoremap <C-o> :CtrlP<CR>
 set grepprg=ag\ --nogroup\ --nocolor
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+" Plugin: Neomake
+autocmd! BufWritePost * Neomake
