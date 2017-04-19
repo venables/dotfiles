@@ -16,14 +16,46 @@ call plug#end()
 " Vim Configuration
 " =================
 set noswapfile " Prevent creating a swapfile (.swp)
-syntax on " Enable syntax highlighting
-filetype plugin on " Enable filetype plugins
+set visualbell " Use the visual bell, not audible bell
+set nowrap " Disable wordwrap
+set number " Show line numbers
+set cursorline " Highlight the current line
+set ignorecase " Ignore case by default when searching
+set smartcase " Search case-sensitive if a capital is used
+
+" set showcmd " Show incomplete commands (lines highlighted, etc) (on by
+" default) (on by default)
+
+" Only highlight current line in active buffer
+augroup BgHighlight
+  autocmd!
+  autocmd WinEnter * set cul
+  autocmd WinLeave * set nocul
+augroup END
+
+" Don't write backup files
+set nobackup " do not attempt to backup
+set nowritebackup " dont write backup files
+
+set colorcolumn=120 " column width helper
+
+" Set tabs to 2 spaces
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+" Show tabs as ▸, trailing whitespace as ·
+set listchars=tab:▸\ ,trail:·
+set list
+
+" Always jump to the first line when opening a git commit message
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
 nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
-
 
 " Plugin Configuration
 " ====================
