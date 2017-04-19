@@ -1,6 +1,6 @@
 [core]
 	autocrlf = input
-	editor = vim
+	editor = nvim
 	quotepath = false
 [user]
 	name = Matt Venables

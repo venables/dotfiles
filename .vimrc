@@ -1,7 +1,7 @@
 " Plugins
 " (Install via :PlugInstall)
 " ==========================
-call plug#begin(has('nvim') ? '~/.local/share/nvim/plugged' : '~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Place plugins here
 Plug 'scrooloose/nerdtree'

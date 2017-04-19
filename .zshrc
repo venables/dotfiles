@@ -20,6 +20,7 @@ alias f='[ -e Procfile.local ] && foreman start -f Procfile.local || foreman sta
 alias m='nvim'
 alias n='nvim'
 alias v='vim'
+alias vim='nvim'
 
 # Colors
 # ======
@@ -45,4 +46,5 @@ compinit
 
 # Editor
 # ======
-export EDITOR='mvim -f'
+export VISUAL=nvim
+export EDITOR="$VISUAL"
