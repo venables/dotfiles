@@ -69,6 +69,8 @@ nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
 
+nnoremap <Leader>q :terminal<CR>
+
 " Plugin Configuration
 " ====================
 
