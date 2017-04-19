@@ -7,6 +7,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+Plug 'kien/ctrlp.vim'
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
 
@@ -40,5 +43,10 @@ cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
 cnoreabbrev AG Ack
-nnoremap <D-F> :Ack<Space>
 nnoremap <Leader>f :Ack<Space>
+nnoremap <C-f> :Ack<Space>
+
+" CtrlP
+nnoremap <C-o> :CtrlP<CR>
+set grepprg=ag\ --nogroup\ --nocolor
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
