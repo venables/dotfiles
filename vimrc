@@ -13,6 +13,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-fugitive'
+Plug 'chriskempson/base16-vim'
 
 call plug#end()
 
@@ -41,6 +42,11 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 set colorcolumn=120 " column width helper
+
+" Colors
+let base16colorspace=256
+source ~/.vimrc_background
+colorscheme base16-tomorrow-night
 
 " Set tabs to 2 spaces
 set tabstop=2
