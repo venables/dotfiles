@@ -12,6 +12,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -84,6 +85,7 @@ nnoremap <C-f> :Ack<Space>
 nnoremap <C-o> :CtrlP<CR>
 set grepprg=ag\ --nogroup\ --nocolor
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 
 " Plugin: Neomake
 autocmd! BufWritePost * Neomake
@@ -98,3 +100,6 @@ nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
+
+" Plugin: vim-fugitive
+nnoremap <Leader>gb :Gblame<CR>
