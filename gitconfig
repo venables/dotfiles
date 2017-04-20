@@ -1,6 +1,7 @@
 [core]
 	autocrlf = input
 	editor = nvim
+	excludesfile = ~/.gitignore
 	quotepath = false
 [user]
 	name = Matt Venables
