@@ -68,8 +68,11 @@ nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
-
 nnoremap <Leader>q :terminal<CR>
+
+" File Types
+" ==========
+au BufNewFile,BufRead *.ejs set filetype=html
 
 " Plugin Configuration
 " ====================
