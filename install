@@ -3,11 +3,13 @@
 # Get the root directory of this repo
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
+mkdir -p ~/.config/nvim
+
 if [ ! -d ~/.config/base16-shell ]
 then
-  mkdir -p ~/.config
   git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 fi
+
 
 # Symlink all dotfiles to ~/
 ln -sf $DIR/agignore ~/.agignore
