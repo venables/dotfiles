@@ -82,6 +82,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Plugin: NERDCommenter
 let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
 
 " Plugin: Ack.vim
 let g:ackprg = 'ag --vimgrep --smart-case'
@@ -114,3 +115,6 @@ nmap <silent> <leader>g :TestVisit<CR>
 
 " Plugin: vim-fugitive
 nnoremap <Leader>gb :Gblame<CR>
+
+" Plugin: vim-javascript
+let g:javascript_plugin_jsdoc = 1
