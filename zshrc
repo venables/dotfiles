@@ -56,3 +56,4 @@ export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 # Path Updates
 # ============
 export PATH=$PATH:~/.config/yarn/global/node_modules/.bin # yarn
+eval "$(rbenv init -)"
