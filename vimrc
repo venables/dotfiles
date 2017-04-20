@@ -76,7 +76,7 @@ nnoremap <Leader>q :terminal<CR>
 
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['\.git$']
+let NERDTreeIgnore = ['\.git$', '\.DS_Store$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
