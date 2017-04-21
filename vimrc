@@ -17,6 +17,8 @@ Plug 'chriskempson/base16-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'ervandew/supertab'
 
 call plug#end()
 
@@ -124,3 +126,6 @@ nnoremap <Leader>gb :Gblame<CR>
 
 " Plugin: vim-javascript
 let g:javascript_plugin_jsdoc = 1
+
+" Plugin: deoplete
+let g:deoplete#enable_at_startup = 1
