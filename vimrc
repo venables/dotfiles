@@ -107,6 +107,12 @@ let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 
 " Plugin: Neomake
 autocmd! BufWritePost * Neomake
+let g:neomake_javascript_enabled_makers = ['eslint']
+if findfile('.eslintrc', '.;') !=# ''
+  let g:neomake_javascript_enabled_makers = ['eslint']
+else
+  let g:neomake_javascript_enabled_makers = ['standard']
+endif
 
 " Plugin: vim-test
 let test#strategy = "neovim"
