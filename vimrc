@@ -52,8 +52,6 @@ source ~/.vimrc_background
 colorscheme base16-tomorrow-night
 set colorcolumn=120 " column width helper
 
-" Use iTerm mouse, not neovim
-set mouse=
 set clipboard=unnamedplus " yank to system clipboard
 
 " Set tabs to 2 spaces
