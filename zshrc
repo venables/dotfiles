@@ -53,10 +53,10 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-# Path Updates
-# ============
-export PATH=$PATH:~/.config/yarn/global/node_modules/.bin # yarn
-
 # Ruby
 # ====
 eval "$(rbenv init -)"
+
+# Path Updates
+# ============
+export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
