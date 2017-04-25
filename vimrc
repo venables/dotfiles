@@ -20,6 +20,7 @@ Plug 'othree/es.next.syntax.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
 Plug 'moll/vim-node'
+Plug 'vimlab/split-term.vim'
 
 call plug#end()
 
@@ -72,7 +73,7 @@ nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
-nnoremap <Leader>q :terminal<CR>
+nnoremap <Leader>q :VTerm<CR>
 
 " File Types
 " ==========
@@ -134,3 +135,6 @@ let g:javascript_plugin_jsdoc = 1
 
 " Plugin: deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Plugin: split-term
+set splitright " Open the vertical terminal to the right
