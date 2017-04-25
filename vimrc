@@ -19,6 +19,9 @@ Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
+Plug 'ternjs/tern_for_vim', { 'for': ['javascript'] }
+Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript'], 'do': 'yarn global add tern' }
+Plug 'othree/jspc.vim', { 'for': ['javascript'] }
 Plug 'moll/vim-node'
 Plug 'vimlab/split-term.vim'
 
@@ -135,6 +138,17 @@ let g:javascript_plugin_jsdoc = 1
 
 " Plugin: deoplete
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = [
+  \ 'tern#Complete',
+  \ 'jspc#omni'
+\]
+set completeopt=longest,menuone,preview
+let g:tern#command = ['tern']
+let g:tern#arguments = ['--persistent']
+
+" Plugin: tern
+let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Plugin: split-term
 set splitright " Open the vertical terminal to the right
