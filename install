@@ -20,6 +20,7 @@ ln -sf $DIR/agignore ~/.agignore
 ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/gitignore ~/.gitignore
 ln -sf $DIR/hushlogin ~/.hushlogin
+ln -sf $DIR/tern-config ~/.tern-config
 ln -sf $DIR/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.config/nvim/init.vim ~/.vimrc
 ln -sf $DIR/zshrc ~/.zshrc
