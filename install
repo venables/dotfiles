@@ -12,7 +12,7 @@ then
 fi
 
 # Install neovim, python3
-brew install neovim python3 yarn
+brew install neovim python3 yarn tidy-html5
 pip3 install neovim
 
 # Symlink all dotfiles to ~/

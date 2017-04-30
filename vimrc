@@ -3,7 +3,7 @@
 " ==========================
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Place plugins here
+" Plugins
 Plug 'scrooloose/nerdtree'
 Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
@@ -24,6 +24,7 @@ Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript'], 'do': 'yarn global add
 Plug 'othree/jspc.vim', { 'for': ['javascript'] }
 Plug 'moll/vim-node'
 Plug 'vimlab/split-term.vim'
+Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
 
 call plug#end()
 
