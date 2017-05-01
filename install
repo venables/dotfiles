@@ -13,7 +13,7 @@ fi
 
 # Install neovim, python3
 brew tap neovim/neovim
-brew install hub zsh neovim python3 yarn tidy-html5 rbenv ruby-install
+brew install hub zsh neovim python3 yarn tidy-html5 rbenv ruby-install ag
 pip3 install neovim
 
 # Symlink all dotfiles to ~/
