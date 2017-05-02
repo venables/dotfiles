@@ -17,7 +17,7 @@ function install_if_missing {
   fi
 }
 
-packages=( git hub zsh python3 yarn tidy-html5 rbenv ruby-install ag)
+packages=( git hub zsh python3 yarn tidy-html5 rbenv ruby-install ag postgresql redis )
 for i in "${packages[@]}"
 do
   install_if_missing $i
