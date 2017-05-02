@@ -1,20 +1,37 @@
 #!/usr/bin/env bash
 
+# Install script for Matt's dotfiles.
+# This script is safe to be run multiple times
+
 # Get the root directory of this repo
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 mkdir -p ~/.config/nvim
 
-# Fix shell colors
-if [ ! -d ~/.config/base16-shell ]
-then
-  git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-fi
+function install_if_missing {
+  if brew ls --versions $1 > /dev/null; then
+    # The package is installed
+    echo "$1 already installed, skipping."
+  else
+    brew install $1
+  fi
+}
 
-# Install neovim, python3
-brew tap neovim/neovim
-brew install hub zsh neovim python3 yarn tidy-html5 rbenv ruby-install ag
-pip3 install neovim
+packages=( hub zsh python3 yarn tidy-html5 rbenv ruby-install ag)
+for i in "${packages[@]}"
+do
+  install_if_missing $i
+done
+
+
+# Install neovim
+if brew ls --versions neovim > /dev/null; then
+  echo "neovim already installed, skipping"
+else
+  brew tap neovim/neovim
+  brew install neovim
+  pip3 install neovim
+fi
 
 # Symlink all dotfiles to ~/
 ln -sf $DIR/agignore ~/.agignore
@@ -38,4 +55,10 @@ then
 fi
 
 # Set up colors
-base16_seti
+if [ ! -d ~/.config/base16-shell ]
+then
+  git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+  ~/.config/base16-shell/scripts/base16-seti.sh
+fi
+
+echo "Done."
