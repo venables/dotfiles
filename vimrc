@@ -19,12 +19,11 @@ Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript'] }
-Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript'], 'do': 'yarn global add tern' }
-Plug 'othree/jspc.vim', { 'for': ['javascript'] }
 Plug 'moll/vim-node'
 Plug 'vimlab/split-term.vim'
 Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
+Plug 'bogado/file-line'
+Plug 'posva/vim-vue'
 
 call plug#end()
 
@@ -53,12 +52,17 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
-let base16colorspace=256
-source ~/.vimrc_background
+if !has("gui_running")
+  let base16colorspace=256
+endif
+set background=dark
 colorscheme base16-tomorrow-night
 set colorcolumn=120 " column width helper
 
-set clipboard=unnamedplus " yank to system clipboard
+" Clipboard
+if !has("gui_running")
+  set clipboard=unnamedplus " yank to system clipboard
+endif
 
 " Set tabs to 2 spaces
 set tabstop=2
@@ -78,6 +82,16 @@ nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
 nnoremap <Leader>q :VTerm<CR>
+
+" GUI-Specific options (MacVim)
+if has("gui_running")
+  " Fullscreen (<Leader>f and Command+Enter)
+  nnoremap <Leader>f :set invfu<CR>
+  nnoremap <D-CR> :set invfu<CR>
+
+  " Use minimal window settings (no scrollbar)
+  set guioptions=aAce
+endif
 
 " File Types
 " ==========
@@ -114,11 +128,6 @@ let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 " Plugin: Neomake
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['eslint']
-if findfile('.eslintrc', '.;') !=# ''
-  let g:neomake_javascript_enabled_makers = ['eslint']
-else
-  let g:neomake_javascript_enabled_makers = ['standard']
-endif
 
 " Plugin: vim-test
 let test#strategy = "neovim"

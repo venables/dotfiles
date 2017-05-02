@@ -17,11 +17,10 @@ alias gshow='git show'
 alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
-alias e='nvim'
-alias m='nvim'
+alias e='mvim'
+alias m='mvim'
 alias n='nvim'
 alias v='vim'
-alias vim='nvim'
 
 # Colors
 # ======
@@ -49,7 +48,7 @@ compinit
 
 # Editor
 # ======
-export VISUAL=nvim
+export VISUAL=mvim
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
