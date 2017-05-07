@@ -153,3 +153,4 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Plugin: split-term
 set splitright " Open the vertical terminal to the right
+set shell=zsh " Ensure we use zsh
