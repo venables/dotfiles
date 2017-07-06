@@ -46,11 +46,16 @@ PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[yellow]}%}$(parse_git_branch)%{${fg[default
 autoload -U compinit
 compinit
 
+# Tab completion
+# ==============
+fpath=(~/.zsh/completion $fpath)
+
 # Editor
 # ======
 export VISUAL=mvim
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
 
 # Ruby
 # ====
@@ -59,3 +64,8 @@ eval "$(rbenv init -)"
 # Path Updates
 # ============
 export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
+
+# Node
+# ====
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"

@@ -23,7 +23,7 @@ Plug 'moll/vim-node'
 Plug 'vimlab/split-term.vim'
 Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
 Plug 'bogado/file-line'
-Plug 'posva/vim-vue'
+Plug 'posva/vim-vue', { 'for': ['vue'] }
 
 call plug#end()
 
@@ -102,7 +102,7 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['\.git$', '\.DS_Store$']
+let NERDTreeIgnore = ['\.git$', '\.DS_Store$', '\.tern-port$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
