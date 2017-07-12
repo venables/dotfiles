@@ -1,9 +1,15 @@
 " Plugins
 " (Install via :PlugInstall)
 " ==========================
-call plug#begin('~/.local/share/nvim/plugged')
+if has('nvim')
+  call plug#begin('~/.local/share/nvim/plugged')
+else
+  call plug#begin('~/.vim/plugged')
+endif
+
 
 " Plugins
+Plug 'tpope/vim-sensible'
 Plug 'scrooloose/nerdtree'
 Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
@@ -17,13 +23,18 @@ Plug 'chriskempson/base16-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/yajs.vim'
 Plug 'othree/es.next.syntax.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
 Plug 'moll/vim-node'
-Plug 'vimlab/split-term.vim'
 Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
 Plug 'bogado/file-line'
 Plug 'posva/vim-vue', { 'for': ['vue'] }
+
+if has('nvim')
+  Plug 'vimlab/split-term.vim'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'noahfrederick/vim-neovim-defaults'
+endif
 
 call plug#end()
 
