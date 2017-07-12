@@ -52,7 +52,7 @@ fpath=(~/.zsh/completion $fpath)
 
 # Editor
 # ======
-export VISUAL=mvim -f
+export VISUAL="mvim -f"
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
