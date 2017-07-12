@@ -52,7 +52,7 @@ fpath=(~/.zsh/completion $fpath)
 
 # Editor
 # ======
-export VISUAL=mvim
+export VISUAL=mvim -f
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
@@ -60,6 +60,11 @@ export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 # Ruby
 # ====
 eval "$(rbenv init -)"
+
+# Node
+# ====
+export NVM_DIR="$HOME/.nvm"
+ . "/usr/local/opt/nvm/nvm.sh"
 
 # Path Updates
 # ============
