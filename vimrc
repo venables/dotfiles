@@ -141,9 +141,13 @@ autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['eslint']
 
 " Plugin: vim-test
-let test#strategy = "neovim"
+if has('nvim')
+  let test#strategy = "neovim"
+endif
+if filereadable('test/_setup/setupSpec.js')
+  let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
+endif
 let test#runners = {'JavaScript': ['Mocha']}
-let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
 let test#javascript#mocha#executable = 'NODE_ENV=test ./node_modules/.bin/_mocha'
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
