@@ -56,16 +56,6 @@ export VISUAL="mvim -f"
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-
-# Ruby
-# ====
-eval "$(rbenv init -)"
-
-# Node
-# ====
-export NVM_DIR="$HOME/.nvm"
- . "/usr/local/opt/nvm/nvm.sh"
-
 # Path Updates
 # ============
 export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
@@ -74,3 +64,7 @@ export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homeb
 # ====
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
+
+# Ruby
+# ====
+eval "$(rbenv init -)"
