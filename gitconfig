@@ -21,7 +21,7 @@
 	ll = !git --no-pager l
 	lla = !git --no-pager la
 	p = push
-	pr = pull --rebase
+	pr = pull-request
 	pom = push origin master
 	s = status
 	su = submodule update
