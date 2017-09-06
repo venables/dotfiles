@@ -29,6 +29,10 @@ Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
 Plug 'bogado/file-line'
 Plug 'posva/vim-vue', { 'for': ['vue'] }
 
+Plug 'elixir-lang/vim-elixir'
+Plug 'c-brenn/phoenix.vim'
+Plug 'tpope/vim-projectionist'
+
 if has('nvim')
   Plug 'vimlab/split-term.vim'
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
