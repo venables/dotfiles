@@ -143,6 +143,7 @@ let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 " Plugin: Neomake
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_elixir_enabled_makers = ['credo']
 
 " Plugin: vim-test
 if has('nvim')
@@ -151,6 +152,7 @@ endif
 if filereadable('test/_setup/setupSpec.js')
   let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
 endif
+let test#filename_modifier = ":p"
 let test#runners = {'JavaScript': ['Mocha']}
 let test#javascript#mocha#executable = 'NODE_ENV=test ./node_modules/.bin/_mocha'
 nmap <silent> <leader>t :TestNearest<CR>
