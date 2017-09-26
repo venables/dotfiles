@@ -3,3 +3,4 @@ test/coverage
 test/junit
 bower_components
 *.log
+*priv/static*

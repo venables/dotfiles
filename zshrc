@@ -17,10 +17,14 @@ alias gshow='git show'
 alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
-alias e='mvim'
-alias m='mvim'
-alias n='nvim'
+
+alias vim='nvim'
+alias e='vim'
+alias m='vim'
+alias n='vim'
 alias v='vim'
+
+alias sys="neofetch"
 
 # Colors
 # ======
@@ -63,9 +67,9 @@ export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homeb
 
 # Node
 # ====
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
+# export NVM_DIR="$HOME/.nvm"
+# . "/usr/local/opt/nvm/nvm.sh"
 
 # Ruby
 # ====
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"

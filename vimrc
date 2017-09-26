@@ -9,34 +9,27 @@ endif
 
 
 " Plugins
-Plug 'tpope/vim-sensible'
 Plug 'scrooloose/nerdtree'
 Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'neomake/neomake'
+Plug 'w0rp/ale'
+" Plug 'neomake/neomake'
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-fugitive'
 Plug 'chriskempson/base16-vim'
-Plug 'pangloss/vim-javascript'
-Plug 'othree/yajs.vim'
-Plug 'othree/es.next.syntax.vim'
 Plug 'ervandew/supertab'
-Plug 'moll/vim-node'
-Plug 'othree/html5.vim', { 'for': ['html', 'ejs'] }
 Plug 'bogado/file-line'
-Plug 'posva/vim-vue', { 'for': ['vue'] }
-
-Plug 'elixir-lang/vim-elixir'
-Plug 'c-brenn/phoenix.vim'
-Plug 'tpope/vim-projectionist'
+Plug 'sheerun/vim-polyglot'
+Plug 'slashmili/alchemist.vim'
 
 if has('nvim')
   Plug 'vimlab/split-term.vim'
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
+  Plug 'tpope/vim-sensible'
   Plug 'noahfrederick/vim-neovim-defaults'
 endif
 
@@ -48,6 +41,7 @@ set noswapfile " Prevent creating a swapfile (.swp)
 set visualbell " Use the visual bell, not audible bell
 set nowrap " Disable wordwrap
 set number " Show line numbers
+set relativenumber " Use relative line numbers
 set cursorline " Highlight the current line
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
@@ -70,8 +64,8 @@ set nowritebackup " dont write backup files
 if !has("gui_running")
   let base16colorspace=256
 endif
-set background=dark
-colorscheme base16-tomorrow-night
+" set background=dark
+colorscheme base16-eighties
 set colorcolumn=120 " column width helper
 
 " Clipboard
@@ -96,7 +90,19 @@ nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap <Leader>sv :source ~/.vimrc<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
+" Set `Leader q` to open a terminal
 nnoremap <Leader>q :VTerm<CR>
+
+" Allow capital letters for saving, quitting
+command WQ wq
+command Wq wq
+command W w
+command Q q
+
+" Map CTRL-o to exit terminal insert mode
+if has('nvim')
+  tmap <C-o> <C-\><C-n>
+end
 
 " GUI-Specific options (MacVim)
 if has("gui_running")
@@ -108,12 +114,20 @@ if has("gui_running")
   set guioptions=aAce
 endif
 
+" Mouse
+" =====
+set mouse=a
+
 " File Types
 " ==========
 au BufNewFile,BufRead *.ejs set filetype=html
 
 " Plugin Configuration
 " ====================
+
+" Plugin: vim-alchemist
+let g:alchemist_iex_term_split = 'split'
+nnoremap <Leader>i :IEx<CR>
 
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
@@ -140,10 +154,23 @@ set grepprg=ag\ --nogroup\ --nocolor
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 
-" Plugin: Neomake
-autocmd! BufWritePost * Neomake
-let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_elixir_enabled_makers = ['credo']
+" " Plugin: Neomake
+" autocmd! BufWritePost,BufEnter * Neomake
+
+" let g:neomake_javascript_enabled_makers = ['eslint']
+" " let g:neomake_elixir_enabled_makers = ['mix', 'credo'] #, 'elixir']
+" let g:neomake_elixir_enabled_makers = ['credo', 'elixir']
+" let g:neomake_elixir_elixir_maker = {
+      " \ 'exe': 'elixirc',
+      " \ 'args': [
+        " \ '--ignore-module-conflict', '--warnings-as-errors',
+        " \ '--app', 'mix', '--app', 'ex_unit',
+        " \ '-o', '$TMPDIR', '%:p'
+      " \ ],
+      " \ 'errorformat':
+          " \ '%E** %s %f:%l: %m,' .
+          " \ '%W%f:%l'
+      " \ }
 
 " Plugin: vim-test
 if has('nvim')
@@ -168,15 +195,15 @@ nnoremap <Leader>gb :Gblame<CR>
 let g:javascript_plugin_jsdoc = 1
 
 " Plugin: deoplete
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#omni#functions = {}
-let g:deoplete#omni#functions.javascript = [
-  \ 'tern#Complete',
-  \ 'jspc#omni'
-\]
-set completeopt=longest,menuone,preview
-let g:tern#command = ['tern']
-let g:tern#arguments = ['--persistent']
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#omni#functions = {}
+" let g:deoplete#omni#functions.javascript = [
+  " \ 'tern#Complete',
+  " \ 'jspc#omni'
+" \]
+" set completeopt=longest,menuone,preview
+" let g:tern#command = ['tern']
+" let g:tern#arguments = ['--persistent']
 
 " Plugin: tern
 let g:SuperTabClosePreviewOnPopupClose = 1
