@@ -41,7 +41,6 @@ set noswapfile " Prevent creating a swapfile (.swp)
 set visualbell " Use the visual bell, not audible bell
 set nowrap " Disable wordwrap
 set number " Show line numbers
-set relativenumber " Use relative line numbers
 set cursorline " Highlight the current line
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
