@@ -60,12 +60,13 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
-if !has("gui_running")
-  let base16colorspace=256
-endif
 " set background=dark
+let base16colorspace=256
 colorscheme base16-eighties
 set colorcolumn=120 " column width helper
+
+" Font
+set guifont=Monaco:h12
 
 " Clipboard
 if !has("gui_running")
@@ -149,9 +150,10 @@ nnoremap <C-f> :Ack<Space>
 
 " Plugin: CtrlP
 nnoremap <C-o> :CtrlP<CR>
-set grepprg=ag\ --nogroup\ --nocolor
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
+" set grepprg=ag\ --nogroup\ --nocolor
+" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+let g:ctrlp_use_caching = 0 " diable caching since `ag`/`ripgrep` is fast
 
 " " Plugin: Neomake
 " autocmd! BufWritePost,BufEnter * Neomake

@@ -20,7 +20,7 @@ alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || for
 
 alias vim='nvim'
 alias e='vim'
-alias m='vim'
+alias m='mvim'
 alias n='vim'
 alias v='vim'
 
@@ -73,3 +73,7 @@ export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homeb
 # Ruby
 # ====
 # eval "$(rbenv init -)"
+
+# Elixir
+# ======
+[[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"
