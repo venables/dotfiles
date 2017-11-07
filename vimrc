@@ -7,30 +7,74 @@ else
   call plug#begin('~/.vim/plugged')
 endif
 
-
-" Plugins
+" Editor
 Plug 'scrooloose/nerdtree'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'bogado/file-line' " Open editor at given line
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+" Searching, Fuzzy find
 Plug 'mileszs/ack.vim'
+Plug 'kien/ctrlp.vim'
+
+" Smarter editing
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
-Plug 'kien/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'w0rp/ale'
-" Plug 'neomake/neomake'
-Plug 'janko-m/vim-test'
-Plug 'tpope/vim-fugitive'
-Plug 'chriskempson/base16-vim'
+Plug 'tpope/vim-endwise'
+Plug 'Raimondi/delimitMate'
 Plug 'ervandew/supertab'
-Plug 'bogado/file-line'
-Plug 'sheerun/vim-polyglot'
+
+" Testing, Linting
+Plug 'w0rp/ale'
+Plug 'janko-m/vim-test'
+
+" Git
+Plug 'tpope/vim-fugitive'
+
+" Tags
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-easytags'
+Plug 'jakedouglas/exuberant-ctags'
+Plug 'mmorearty/elixir-ctags'
+Plug 'majutsushi/tagbar'
+
+" Colors
+Plug 'chriskempson/base16-vim'
+
+" Elixir
+Plug 'elixir-lang/vim-elixir'
+Plug 'avdgaag/vim-phoenix'
 Plug 'slashmili/alchemist.vim'
 
+" Javascript
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'posva/vim-vue'
+Plug 'Quramy/vim-js-pretty-template'
+
+" Typescript
+Plug 'Quramy/tsuquyomi'
+Plug 'leafgarland/typescript-vim'
+
+" Language Support
+let g:polyglot_disabled = ['elixir', 'markdown', 'javascript', 'jsx', 'vue']
+Plug 'sheerun/vim-polyglot'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
 if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'vimlab/split-term.vim'
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'tpope/vim-sensible'
   Plug 'noahfrederick/vim-neovim-defaults'
+
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 call plug#end()
@@ -44,6 +88,7 @@ set number " Show line numbers
 set cursorline " Highlight the current line
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
+set encoding=utf8
 
 " set showcmd " Show incomplete commands (lines highlighted, etc) (on by
 " default) (on by default)
@@ -60,13 +105,22 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
-" set background=dark
+set background=dark
 let base16colorspace=256
-colorscheme base16-eighties
+colorscheme base16-tomorrow-night
 set colorcolumn=120 " column width helper
 
-" Font
-set guifont=Monaco:h12
+" Font (via nerdfonts.com)
+set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
+
+" Plugin: Airline:
+" Rounded symbols
+let g:airline_left_sep = "\uE0B4"
+let g:airline_right_sep = "\uE0B6"
+let g:airline_theme='tomorrow'
+let g:airline_powerline_fonts = 1
+" set the CN (column number) symbol:
+let g:airline_section_z = airline#section#create(["\uE0A1" . '%{line(".")}' . "\uE0A3" . '%{col(".")}'])
 
 " Clipboard
 if !has("gui_running")
@@ -94,10 +148,19 @@ nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
 nnoremap <Leader>q :VTerm<CR>
 
 " Allow capital letters for saving, quitting
-command WQ wq
-command Wq wq
-command W w
-command Q q
+" https://sanctum.geek.nz/arabesque/vim-command-typos/
+if has("user_commands")
+  command! -bang -nargs=? -complete=file E e<bang> <args>
+  command! -bang -nargs=? -complete=file W w<bang> <args>
+  command! -bang -nargs=? -complete=file Wq wq<bang> <args>
+  command! -bang -nargs=? -complete=file WQ wq<bang> <args>
+  command! -bang Wa wa<bang>
+  command! -bang WA wa<bang>
+  command! -bang Q q<bang>
+  command! -bang QA qa<bang>
+  command! -bang Qa qa<bang>
+endif
+
 
 " Map CTRL-o to exit terminal insert mode
 if has('nvim')
@@ -127,6 +190,7 @@ au BufNewFile,BufRead *.ejs set filetype=html
 
 " Plugin: vim-alchemist
 let g:alchemist_iex_term_split = 'split'
+let g:alchemist_tag_disable = 1
 nnoremap <Leader>i :IEx<CR>
 
 " Plugin: NERDTree
@@ -135,12 +199,32 @@ let NERDTreeIgnore = ['\.git$', '\.DS_Store$', '\.tern-port$']
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" Plugin: Tagbar
+nnoremap <Leader>m :TagbarToggle<CR>
+let g:tagbar_type_elixir = {
+    \ 'ctagstype' : 'elixir',
+    \ 'kinds' : [
+        \ 'f:functions',
+        \ 'functions:functions',
+        \ 'c:callbacks',
+        \ 'd:delegates',
+        \ 'e:exceptions',
+        \ 'i:implementations',
+        \ 'a:macros',
+        \ 'o:operators',
+        \ 'm:modules',
+        \ 'p:protocols',
+        \ 'r:records',
+        \ 't:tests'
+    \ ]
+    \ }
+
 " Plugin: NERDCommenter
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
 " Plugin: Ack.vim
-let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'rg --vimgrep --no-heading --smart-case'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
@@ -154,24 +238,6 @@ nnoremap <C-o> :CtrlP<CR>
 " let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 let g:ctrlp_use_caching = 0 " diable caching since `ag`/`ripgrep` is fast
-
-" " Plugin: Neomake
-" autocmd! BufWritePost,BufEnter * Neomake
-
-" let g:neomake_javascript_enabled_makers = ['eslint']
-" " let g:neomake_elixir_enabled_makers = ['mix', 'credo'] #, 'elixir']
-" let g:neomake_elixir_enabled_makers = ['credo', 'elixir']
-" let g:neomake_elixir_elixir_maker = {
-      " \ 'exe': 'elixirc',
-      " \ 'args': [
-        " \ '--ignore-module-conflict', '--warnings-as-errors',
-        " \ '--app', 'mix', '--app', 'ex_unit',
-        " \ '-o', '$TMPDIR', '%:p'
-      " \ ],
-      " \ 'errorformat':
-          " \ '%E** %s %f:%l: %m,' .
-          " \ '%W%f:%l'
-      " \ }
 
 " Plugin: vim-test
 if has('nvim')
@@ -194,17 +260,18 @@ nnoremap <Leader>gb :Gblame<CR>
 
 " Plugin: vim-javascript
 let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
 
 " Plugin: deoplete
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#omni#functions = {}
-" let g:deoplete#omni#functions.javascript = [
-  " \ 'tern#Complete',
-  " \ 'jspc#omni'
-" \]
-" set completeopt=longest,menuone,preview
-" let g:tern#command = ['tern']
-" let g:tern#arguments = ['--persistent']
+let g:deoplete#enable_at_startup = 1
+function! Multiple_cursors_before()
+  let b:deoplete_disable_auto_complete = 1
+endfunction
+
+function! Multiple_cursors_after()
+  let b:deoplete_disable_auto_complete = 0
+endfunction
+
 
 " Plugin: tern
 let g:SuperTabClosePreviewOnPopupClose = 1
@@ -212,3 +279,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 " Plugin: split-term
 set splitright " Open the vertical terminal to the right
 set shell=zsh " Ensure we use zsh
+
+" Plugin: vim-easytags
+let g:easytags_async=1
+let g:easytags_auto_highlight=0

@@ -61,19 +61,16 @@ export VISUAL="mvim -f"
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-# Path Updates
-# ============
-export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
-
-# Node
-# ====
-# export NVM_DIR="$HOME/.nvm"
-# . "/usr/local/opt/nvm/nvm.sh"
-
 # Ruby
 # ====
 # eval "$(rbenv init -)"
 
-# Elixir
-# ======
-[[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"
+# Path Updates
+# ============
+export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
+
+# asdf
+# ====
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+

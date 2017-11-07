@@ -6,9 +6,7 @@
 # Get the root directory of this repo
 DIR="$( cd "$( dirname "$0" )" && pwd )"
 
-mkdir -p ~/.config/nvim
-
-function install_if_missing {
+function brew_install_if_missing {
   if brew ls --versions $1 > /dev/null; then
     # The package is installed
     echo "$1 already installed, skipping."
@@ -17,14 +15,55 @@ function install_if_missing {
   fi
 }
 
-packages=( git hub zsh zsh-completions yarn tidy-html5 rbenv ruby-install ag postgresql redis erlang elixir nvm ripgrep )
+function gem_install_if_missing {
+  if `gem list $1 -i`; then
+    echo "gem $1 already installed, skipping."
+  else
+    gem install $1
+  fi
+}
+
+echo ""
+echo "Installing homebrew packages..."
+echo ""
+
+packages=(
+  git
+  hub
+  zsh
+  zsh-completions
+  ctags
+  yarn
+  tidy-html5
+  postgresql
+  redis
+  ripgrep
+  coreutils
+  automake
+  autoconf
+  openssl
+  libyaml
+  readline
+  libxslt
+  libtool
+  unixodbc
+  python3
+)
 for i in "${packages[@]}"
 do
-  install_if_missing $i
+  brew_install_if_missing $i
 done
 
+# Install macvim
+if brew ls --versions macvim > /dev/null; then
+  # The package is installed
+  echo "macvim already installed, skipping."
+else
+  brew install macvim --with-python3
+fi
 
 # Install neovim
+mkdir -p ~/.config/nvim
 if brew ls --versions neovim > /dev/null; then
   echo "neovim already installed, skipping"
 else
@@ -33,6 +72,22 @@ else
   pip3 install neovim
 fi
 
+echo ""
+echo "Installing fonts..."
+echo ""
+# Install fonts
+cp $DIR/resources/fonts/SourceCodePro/*.ttf ~/Library/Fonts
+
+echo ""
+echo "Installing iTerm Settings..."
+echo ""
+# Install iTerm Settings
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/resources/iterm"
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
+echo ""
+echo "Installing dotfiles..."
+echo ""
 # Symlink all dotfiles to ~/
 ln -sf $DIR/agignore ~/.agignore
 ln -sf $DIR/gitconfig ~/.gitconfig
@@ -42,12 +97,54 @@ ln -sf $DIR/tern-config ~/.tern-config
 ln -sf $DIR/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.config/nvim/init.vim ~/.vimrc
 ln -sf $DIR/zshrc ~/.zshrc
+ln -sf $DIR/ctags ~/.ctags
 
+echo ""
+echo "Installing bin..."
+echo ""
 # Symlink bin files
 ln -sf $DIR/bin/db /usr/local/bin/db
 ln -sf $DIR/bin/git-cleanup /usr/local/bin/git-cleanup
 ln -sf $DIR/bin/git-sync /usr/local/bin/git-sync
 
+echo ""
+echo "Installing asdf..."
+echo ""
+if [ ! -d ~/.asdf ]
+then
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.4.0
+fi
+
+echo ""
+echo "Installing languages..."
+echo ""
+# Erlang
+~/.asdf/bin/asdf plugin-add erlang
+~/.asdf/bin/asdf install erlang 20.1
+~/.asdf/bin/asdf global erlang 20.1
+
+# Elixir
+~/.asdf/bin/asdf plugin-add elixir
+~/.asdf/bin/asdf install elixir 1.5.2
+~/.asdf/bin/asdf install elixir master
+~/.asdf/bin/asdf global elixir 1.5.2
+
+# Nodejs
+~/.asdf/bin/asdf plugin-add nodejs
+~/.asdf/bin/asdf install nodejs 8.9.0
+~/.asdf/bin/asdf global nodejs 8.9.0
+
+# Ruby
+~/.asdf/bin/asdf plugin-add ruby
+~/.asdf/bin/asdf install ruby 2.4.2
+~/.asdf/bin/asdf global ruby 2.4.2
+
+gem_install_if_missing bundler
+~/.asdf/bin/asdf reshim ruby
+
+echo ""
+echo "Installing vim-plug..."
+echo ""
 # Install plug-vim
 if [ ! -d ~/.local/share/nvim/plugged ]
 then
@@ -59,15 +156,33 @@ then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
+echo ""
+echo "Installing colors..."
+echo ""
 # Set up colors
 if [ ! -d ~/.config/base16-shell ]
 then
   git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 fi
 
+echo ""
+echo "Installing tab completion..."
+echo ""
 # zsh tab completion
-mkdir -p ~/.zsh/completion
-curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
+if [ ! -d ~/.zsh/completion ]
+then
+  mkdir -p ~/.zsh/completion
+  curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
+fi
 
+echo ""
+echo "Setting up /work directory ..."
+echo ""
+
+if [ ! -d ~/dev ]
+then
+  mkdir -p ~/dev
+  sudo ln -s ~/dev /work
+fi
 
 echo "Done."
