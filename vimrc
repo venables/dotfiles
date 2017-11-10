@@ -12,8 +12,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bogado/file-line' " Open editor at given line
-Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Searching, Fuzzy find
 Plug 'mileszs/ack.vim'
@@ -58,6 +58,10 @@ Plug 'Quramy/vim-js-pretty-template'
 " Typescript
 Plug 'Quramy/tsuquyomi'
 Plug 'leafgarland/typescript-vim'
+
+" Zenmode
+Plug 'junegunn/goyo.vim'
+" Plug 'amix/vim-zenroom2'
 
 " Language Support
 let g:polyglot_disabled = ['elixir', 'markdown', 'javascript', 'jsx', 'vue']
@@ -193,6 +197,9 @@ let g:alchemist_iex_term_split = 'split'
 let g:alchemist_tag_disable = 1
 nnoremap <Leader>i :IEx<CR>
 
+" Plugin: goyo
+nnoremap <Leader>z :Goyo<CR>
+
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\.git$', '\.DS_Store$', '\.tern-port$']
@@ -224,7 +231,7 @@ let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
 " Plugin: Ack.vim
-let g:ackprg = 'rg --vimgrep --no-heading --smart-case'
+let g:ackprg = 'ag --nogroup --nocolor'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
@@ -234,10 +241,9 @@ nnoremap <C-f> :Ack<Space>
 
 " Plugin: CtrlP
 nnoremap <C-o> :CtrlP<CR>
-" set grepprg=ag\ --nogroup\ --nocolor
-" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-let g:ctrlp_use_caching = 0 " diable caching since `ag`/`ripgrep` is fast
+set grepprg=ag\ --nogroup\ --nocolor
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 
 " Plugin: vim-test
 if has('nvim')

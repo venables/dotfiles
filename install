@@ -37,7 +37,7 @@ packages=(
   tidy-html5
   postgresql
   redis
-  ripgrep
+  ag
   coreutils
   automake
   autoconf
@@ -140,6 +140,7 @@ echo ""
 ~/.asdf/bin/asdf global ruby 2.4.2
 
 gem_install_if_missing bundler
+gem_install_if_missing invoker
 ~/.asdf/bin/asdf reshim ruby
 
 echo ""
