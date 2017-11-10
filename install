@@ -24,6 +24,14 @@ function gem_install_if_missing {
 }
 
 echo ""
+echo "Installing homebrew ..."
+echo ""
+
+if [ -z "$( command -v brew )" ]; then
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+echo ""
 echo "Installing homebrew packages..."
 echo ""
 
@@ -39,6 +47,7 @@ packages=(
   redis
   ag
   coreutils
+  gpg
   automake
   autoconf
   openssl
@@ -93,7 +102,6 @@ ln -sf $DIR/agignore ~/.agignore
 ln -sf $DIR/gitconfig ~/.gitconfig
 ln -sf $DIR/gitignore ~/.gitignore
 ln -sf $DIR/hushlogin ~/.hushlogin
-ln -sf $DIR/tern-config ~/.tern-config
 ln -sf $DIR/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.config/nvim/init.vim ~/.vimrc
 ln -sf $DIR/zshrc ~/.zshrc
@@ -118,6 +126,7 @@ fi
 echo ""
 echo "Installing languages..."
 echo ""
+bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 # Erlang
 ~/.asdf/bin/asdf plugin-add erlang
 ~/.asdf/bin/asdf install erlang 20.1
@@ -184,6 +193,15 @@ if [ ! -d ~/dev ]
 then
   mkdir -p ~/dev
   sudo ln -s ~/dev /work
+fi
+
+echo ""
+echo "Ensuring zsh is default shell ..."
+echo ""
+
+if [ -z "$(grep "$(which zsh)" "/etc/shells")" ]; then
+  which zsh | sudo tee -a /etc/shells
+  chsh -s $(which zsh)
 fi
 
 echo "Done."

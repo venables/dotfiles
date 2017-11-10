@@ -73,4 +73,3 @@ export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homeb
 # ====
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
-
