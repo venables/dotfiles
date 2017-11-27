@@ -114,6 +114,7 @@ echo ""
 ln -sf $DIR/bin/db /usr/local/bin/db
 ln -sf $DIR/bin/git-cleanup /usr/local/bin/git-cleanup
 ln -sf $DIR/bin/git-sync /usr/local/bin/git-sync
+ln -sf $DIR/bin/update /usr/local/bin/update
 
 echo ""
 echo "Installing asdf..."

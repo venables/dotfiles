@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo "Upgrading vim, nvim plugins"
+vim +PlugUpgrade +PlugUpdate +qall
+nvim +PlugUpgrade +PlugUpdate +qall
+
+echo "Updating homebrew"
+brew update
+echo "Checking for outdated packages"
+brew outdated
+echo "Upgrading homebrew packages"
+brew upgrade

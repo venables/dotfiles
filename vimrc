@@ -59,10 +59,6 @@ Plug 'Quramy/vim-js-pretty-template'
 Plug 'Quramy/tsuquyomi'
 Plug 'leafgarland/typescript-vim'
 
-" Zenmode
-Plug 'junegunn/goyo.vim'
-" Plug 'amix/vim-zenroom2'
-
 " Language Support
 let g:polyglot_disabled = ['elixir', 'markdown', 'javascript', 'jsx', 'vue']
 Plug 'sheerun/vim-polyglot'
