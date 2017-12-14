@@ -89,6 +89,8 @@ set cursorline " Highlight the current line
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
 set encoding=utf8
+set lazyredraw
+
 
 " set showcmd " Show incomplete commands (lines highlighted, etc) (on by
 " default) (on by default)

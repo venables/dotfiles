@@ -20,7 +20,7 @@ alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || for
 
 alias vim='nvim'
 alias e='vim'
-alias m='mvim'
+alias m='vim'
 alias n='vim'
 alias v='vim'
 
