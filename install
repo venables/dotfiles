@@ -125,33 +125,14 @@ then
 fi
 
 echo ""
-echo "Installing languages..."
+echo "Installing asdf..."
 echo ""
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-# Erlang
 ~/.asdf/bin/asdf plugin-add erlang
-~/.asdf/bin/asdf install erlang 20.1
-~/.asdf/bin/asdf global erlang 20.1
-
-# Elixir
 ~/.asdf/bin/asdf plugin-add elixir
-~/.asdf/bin/asdf install elixir 1.5.2
-~/.asdf/bin/asdf install elixir master
-~/.asdf/bin/asdf global elixir 1.5.2
-
-# Nodejs
 ~/.asdf/bin/asdf plugin-add nodejs
-~/.asdf/bin/asdf install nodejs 8.9.0
-~/.asdf/bin/asdf global nodejs 8.9.0
-
-# Ruby
 ~/.asdf/bin/asdf plugin-add ruby
-~/.asdf/bin/asdf install ruby 2.4.2
-~/.asdf/bin/asdf global ruby 2.4.2
 
-gem_install_if_missing bundler
-gem_install_if_missing invoker
-~/.asdf/bin/asdf reshim ruby
 
 echo ""
 echo "Installing vim-plug..."
