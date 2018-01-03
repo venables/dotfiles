@@ -12,8 +12,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bogado/file-line' " Open editor at given line
-" Plug 'ryanoasis/vim-devicons'
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Searching, Fuzzy find
 Plug 'mileszs/ack.vim'
@@ -55,15 +53,9 @@ Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'Quramy/vim-js-pretty-template'
 
-" Typescript
-Plug 'Quramy/tsuquyomi'
-Plug 'leafgarland/typescript-vim'
-
 " Language Support
-let g:polyglot_disabled = ['elixir', 'markdown', 'javascript', 'jsx', 'vue']
+let g:polyglot_disabled = ['elixir', 'javascript', 'jsx', 'vue']
 Plug 'sheerun/vim-polyglot'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
