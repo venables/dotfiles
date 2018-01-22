@@ -5,3 +5,5 @@ bower_components
 *.log
 *priv/static*
 cover
+_build
+docs

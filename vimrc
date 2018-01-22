@@ -11,7 +11,6 @@ endif
 Plug 'scrooloose/nerdtree'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'bogado/file-line' " Open editor at given line
 
 " Searching, Fuzzy find
 Plug 'mileszs/ack.vim'
@@ -25,9 +24,11 @@ Plug 'tpope/vim-endwise'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ervandew/supertab'
 
-" Testing, Linting
-Plug 'w0rp/ale'
+" Testing
 Plug 'janko-m/vim-test'
+
+" Linting
+Plug 'w0rp/ale'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -36,26 +37,30 @@ Plug 'tpope/vim-fugitive'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'jakedouglas/exuberant-ctags'
-Plug 'mmorearty/elixir-ctags'
 Plug 'majutsushi/tagbar'
 
 " Colors
 Plug 'chriskempson/base16-vim'
 
-" Elixir
-Plug 'elixir-lang/vim-elixir'
-Plug 'avdgaag/vim-phoenix'
-Plug 'slashmili/alchemist.vim'
+" Language: Elixir
+" Plug 'mmorearty/elixir-ctags'
+" Plug 'elixir-lang/vim-elixir'
+" Plug 'avdgaag/vim-phoenix'
+" Plug 'slashmili/alchemist.vim'
 
-" Javascript
+" Language: Javascript
 Plug 'pangloss/vim-javascript'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/es.next.syntax.vim'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'Quramy/vim-js-pretty-template'
 
-" Language Support
-let g:polyglot_disabled = ['elixir', 'javascript', 'jsx', 'vue']
+" Language: Generic
+let g:polyglot_disabled = ['javascript', 'jsx', 'vue'] " , 'elixir'
 Plug 'sheerun/vim-polyglot'
+
+" Basic editor settings
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -77,15 +82,12 @@ set noswapfile " Prevent creating a swapfile (.swp)
 set visualbell " Use the visual bell, not audible bell
 set nowrap " Disable wordwrap
 set number " Show line numbers
-set cursorline " Highlight the current line
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
 set encoding=utf8
+set nocursorline!
 set lazyredraw
-
-
-" set showcmd " Show incomplete commands (lines highlighted, etc) (on by
-" default) (on by default)
+set noshowcmd
 
 " Only highlight current line in active buffer
 augroup BgHighlight
@@ -100,12 +102,14 @@ set nowritebackup " dont write backup files
 
 " Colors
 set background=dark
-let base16colorspace=256
+set termguicolors
 colorscheme base16-tomorrow-night
 set colorcolumn=120 " column width helper
 
 " Font (via nerdfonts.com)
-set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
+if !has("gui_vimr")
+  set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
+endif
 
 " Plugin: Airline:
 " Rounded symbols
@@ -192,7 +196,15 @@ nnoremap <Leader>z :Goyo<CR>
 
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['\.git$', '\.DS_Store$', '\.tern-port$']
+let NERDTreeIgnore = [
+      \ '\.git$',
+      \ '\.DS_Store$',
+      \ '\.tern-port$',
+      \ '\.elixir_ls$',
+      \ '\.vscode$',
+      \ '_build$',
+      \ '_data$'
+      \ ]
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -239,12 +251,14 @@ let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 if has('nvim')
   let test#strategy = "neovim"
 endif
+
 if filereadable('test/_setup/setupSpec.js')
   let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
 endif
 let test#filename_modifier = ":p"
 let test#runners = {'JavaScript': ['Mocha']}
-let test#javascript#mocha#executable = 'NODE_ENV=test ./node_modules/.bin/_mocha'
+let test#javascript#mocha#executable = 'NODE_ENV=test TZ=UTC ./node_modules/.bin/mocha'
+
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
