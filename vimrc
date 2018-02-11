@@ -256,7 +256,7 @@ if filereadable('test/_setup/setupSpec.js')
   let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
 endif
 let test#filename_modifier = ":p"
-let test#runners = {'JavaScript': ['Mocha']}
+let test#runners = {'JavaScript': ['ava', 'Mocha']}
 let test#javascript#mocha#executable = 'NODE_ENV=test TZ=UTC ./node_modules/.bin/mocha'
 
 nmap <silent> <leader>t :TestNearest<CR>
