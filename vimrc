@@ -40,7 +40,7 @@ Plug 'jakedouglas/exuberant-ctags'
 Plug 'majutsushi/tagbar'
 
 " Colors
-Plug 'chriskempson/base16-vim'
+Plug 'rakr/vim-one'
 
 " Language: Elixir
 " Plug 'mmorearty/elixir-ctags'
@@ -101,10 +101,10 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
+colorscheme one
 set background=dark
 set termguicolors
-colorscheme base16-tomorrow-night
-set colorcolumn=120 " column width helper
+set colorcolumn=80 " column width helper
 
 " Font (via nerdfonts.com)
 if !has("gui_vimr")
@@ -115,7 +115,7 @@ endif
 " Rounded symbols
 let g:airline_left_sep = "\uE0B4"
 let g:airline_right_sep = "\uE0B6"
-let g:airline_theme='tomorrow'
+let g:airline_theme='one'
 let g:airline_powerline_fonts = 1
 " set the CN (column number) symbol:
 let g:airline_section_z = airline#section#create(["\uE0A1" . '%{line(".")}' . "\uE0A3" . '%{col(".")}'])
