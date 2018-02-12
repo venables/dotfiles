@@ -277,6 +277,7 @@ let g:javascript_plugin_flow = 1
 
 " Plugin: deoplete
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#file#enable_buffer_path = 1 " Relative file path autocomplete
 function! Multiple_cursors_before()
   let b:deoplete_disable_auto_complete = 1
 endfunction
