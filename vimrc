@@ -55,6 +55,7 @@ Plug 'othree/es.next.syntax.vim'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'Quramy/vim-js-pretty-template'
+Plug 'heavenshell/vim-jsdoc'
 
 " Language: Generic
 let g:polyglot_disabled = ['javascript', 'jsx', 'vue'] " , 'elixir'
@@ -295,3 +296,8 @@ set shell=zsh " Ensure we use zsh
 " Plugin: vim-easytags
 let g:easytags_async=1
 let g:easytags_auto_highlight=0
+
+" Plugin: vim-jsdoc
+let g:jsdoc_enable_es6=1
+let g:jsdoc_underscore_private=1
+nmap <silent> <C-l> <Plug>(jsdoc)
