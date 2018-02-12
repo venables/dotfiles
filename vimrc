@@ -101,9 +101,11 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
-colorscheme one
 set background=dark
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
+let g:one_allow_italics = 1
+colorscheme one
 set colorcolumn=80 " column width helper
 
 " Font (via nerdfonts.com)
