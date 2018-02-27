@@ -42,12 +42,6 @@ Plug 'majutsushi/tagbar'
 " Colors
 Plug 'rakr/vim-one'
 
-" Language: Elixir
-" Plug 'mmorearty/elixir-ctags'
-" Plug 'elixir-lang/vim-elixir'
-" Plug 'avdgaag/vim-phoenix'
-" Plug 'slashmili/alchemist.vim'
-
 " Language: Javascript
 Plug 'pangloss/vim-javascript'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -58,7 +52,7 @@ Plug 'Quramy/vim-js-pretty-template'
 Plug 'heavenshell/vim-jsdoc'
 
 " Language: Generic
-let g:polyglot_disabled = ['javascript', 'jsx', 'vue'] " , 'elixir'
+let g:polyglot_disabled = ['javascript', 'jsx', 'vue']
 Plug 'sheerun/vim-polyglot'
 
 " Basic editor settings
@@ -203,7 +197,6 @@ let NERDTreeIgnore = [
       \ '\.git$',
       \ '\.DS_Store$',
       \ '\.tern-port$',
-      \ '\.elixir_ls$',
       \ '\.vscode$',
       \ '_build$',
       \ '_data$'
@@ -213,30 +206,13 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " Plugin: Tagbar
 nnoremap <Leader>m :TagbarToggle<CR>
-let g:tagbar_type_elixir = {
-    \ 'ctagstype' : 'elixir',
-    \ 'kinds' : [
-        \ 'f:functions',
-        \ 'functions:functions',
-        \ 'c:callbacks',
-        \ 'd:delegates',
-        \ 'e:exceptions',
-        \ 'i:implementations',
-        \ 'a:macros',
-        \ 'o:operators',
-        \ 'm:modules',
-        \ 'p:protocols',
-        \ 'r:records',
-        \ 't:tests'
-    \ ]
-    \ }
 
 " Plugin: NERDCommenter
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
 " Plugin: Ack.vim
-let g:ackprg = 'ag --nogroup --nocolor'
+let g:ackprg = 'ag --vimgrep'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
