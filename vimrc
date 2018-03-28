@@ -111,7 +111,7 @@ set colorcolumn=80 " column width helper
 if !has("gui_vimr")
   " set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
   " set guifont=Meslo\ Code\ Pro\ Nerd\ Font\ Complete:h14
-  set guifont=Meslo\ LG\ S\ Regular\ Nerd\ Font\ Complete:h14
+  set guifont=Meslo\ LG\ S\ Regular\ Nerd\ Font\ Complete:h12
 endif
 
 " Plugin: Airline:
@@ -285,3 +285,7 @@ let g:easytags_auto_highlight=0
 let g:jsdoc_enable_es6=1
 let g:jsdoc_underscore_private=1
 nmap <silent> <C-l> <Plug>(jsdoc)
+
+" Plugin Ale
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_use_local_config = 1
