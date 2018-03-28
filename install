@@ -41,7 +41,6 @@ packages=(
   zsh
   zsh-completions
   ctags
-  yarn
   tidy-html5
   postgresql
   redis
@@ -57,7 +56,7 @@ packages=(
   libtool
   unixodbc
   python3
-  puma/puma/puma-dev
+  neofetch
 )
 for i in "${packages[@]}"
 do
@@ -70,6 +69,12 @@ if brew ls --versions macvim > /dev/null; then
   echo "macvim already installed, skipping."
 else
   brew install macvim --with-python3
+fi
+
+if brew ls --version yarn > /dev/null; then
+  echo "yarn already iustalled, skipping."
+else
+  brew instlal yarn --without-node
 fi
 
 # Install neovim
@@ -93,7 +98,8 @@ echo ""
 echo "Installing fonts..."
 echo ""
 # Install fonts
-cp $DIR/resources/fonts/SourceCodePro/*.ttf ~/Library/Fonts
+cp $DIR/resources/fonts/SourceCodePro/*.* ~/Library/Fonts
+cp $DIR/resources/fonts/Meslo/*.* ~/Library/Fonts
 
 echo ""
 echo "Installing iTerm Settings..."

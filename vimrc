@@ -20,8 +20,8 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-endwise'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'tpope/vim-endwise'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'ervandew/supertab'
 
 " Testing
@@ -96,16 +96,22 @@ set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
 
 " Colors
+if has("termguicolors")
+  set termguicolors
+endif
 set background=dark
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set termguicolors
+if has("nvim")
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+endif
 let g:one_allow_italics = 1
 colorscheme one
 set colorcolumn=80 " column width helper
 
 " Font (via nerdfonts.com)
 if !has("gui_vimr")
-  set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
+  " set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
+  " set guifont=Meslo\ Code\ Pro\ Nerd\ Font\ Complete:h14
+  set guifont=Meslo\ LG\ S\ Regular\ Nerd\ Font\ Complete:h14
 endif
 
 " Plugin: Airline:
@@ -227,6 +233,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
 
 " Plugin: vim-test
+let test#strategy = "vimterminal"
 if has('nvim')
   let test#strategy = "neovim"
 endif

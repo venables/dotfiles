@@ -18,7 +18,7 @@ alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
 
-alias vim='nvim'
+alias vim='mvim'
 alias e='vim'
 alias m='vim'
 alias n='vim'
