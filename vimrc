@@ -20,8 +20,6 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
-" Plug 'tpope/vim-endwise'
-" Plug 'jiangmiao/auto-pairs'
 Plug 'ervandew/supertab'
 
 " Testing
@@ -32,6 +30,7 @@ Plug 'w0rp/ale'
 
 " Git
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Tags
 Plug 'xolox/vim-misc'
