@@ -33,10 +33,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " Tags
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
-Plug 'jakedouglas/exuberant-ctags'
-Plug 'majutsushi/tagbar'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-easytags'
+" Plug 'jakedouglas/exuberant-ctags'
+" Plug 'majutsushi/tagbar'
 
 " Colors
 Plug 'chriskempson/base16-vim'
