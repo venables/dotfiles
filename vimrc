@@ -30,7 +30,6 @@ Plug 'w0rp/ale'
 
 " Git
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 
 " Tags
 " Plug 'xolox/vim-misc'

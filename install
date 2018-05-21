@@ -88,13 +88,6 @@ else
 fi
 
 echo ""
-echo "Installing puma-dev..."
-echo ""
-sudo puma-dev -setup
-puma-dev -install
-mkdir -p ~/.puma-dev
-
-echo ""
 echo "Installing fonts..."
 echo ""
 # Install fonts
@@ -170,6 +163,12 @@ then
   mkdir -p ~/.zsh/completion
   curl -L https://raw.githubusercontent.com/docker/compose/$(docker-compose version --short)/contrib/completion/zsh/_docker-compose > ~/.zsh/completion/_docker-compose
 fi
+
+echo ""
+echo "Setting up VSCode ..."
+echo ""
+mkdir -p ~/Library/Application\ Support/Code/User/
+ln -sf $DIR/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 
 echo ""
 echo "Setting up /work directory ..."

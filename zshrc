@@ -18,7 +18,7 @@ alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
 
-alias vim='mvim'
+alias vim='code'
 alias e='vim'
 alias m='vim'
 alias n='vim'
@@ -54,7 +54,7 @@ fpath=(~/.zsh/completion $fpath)
 
 # Editor
 # ======
-export VISUAL="mvim -f"
+export VISUAL="code" # "mvim -f"
 export EDITOR="$VISUAL"
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
