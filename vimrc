@@ -49,8 +49,11 @@ Plug 'posva/vim-vue'
 Plug 'Quramy/vim-js-pretty-template'
 Plug 'heavenshell/vim-jsdoc'
 
+" Language: Crystal
+Plug 'rhysd/vim-crystal'
+
 " Language: Generic
-let g:polyglot_disabled = ['javascript', 'jsx', 'vue']
+let g:polyglot_disabled = ['crystal', 'javascript', 'jsx', 'vue']
 Plug 'sheerun/vim-polyglot'
 
 " Basic editor settings

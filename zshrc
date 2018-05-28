@@ -18,11 +18,8 @@ alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
 
-alias vim='code'
-alias e='vim'
-alias m='vim'
-alias n='vim'
-alias v='vim'
+alias vim='mvim'
+alias m='vim .'
 
 alias sys="neofetch"
 
