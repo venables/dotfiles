@@ -1,6 +1,5 @@
 [core]
-	editor = code --wait
-	tool = code --wait --diff $LOCAL $REMOTE
+	editor = nvim
 	excludesfile = ~/.gitignore
 	quotepath = false
 [user]
