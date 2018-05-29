@@ -43,5 +43,6 @@
     "workbench.startupEditor": "newUntitledFile",
     "[javascript]": {
         "editor.formatOnSave": true
-    }
+    },
+    "gitlens.historyExplorer.enabled": true
 }

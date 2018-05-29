@@ -57,6 +57,8 @@ packages=(
   unixodbc
   python3
   neofetch
+  tmux
+  overmind
 )
 for i in "${packages[@]}"
 do

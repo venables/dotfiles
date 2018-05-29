@@ -16,7 +16,7 @@ alias gs='git status -sb'
 alias gshow='git show'
 alias git='hub'
 alias foreman='nf'
-alias f='[ -e Procfile.local ] && foreman start --procfile Procfile.local || foreman start'
+alias f='[ -e Procfile.dev ] && overmind start --procfile Procfile.dev || overmind start'
 
 alias vim='mvim'
 alias m='vim .'
