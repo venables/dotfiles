@@ -73,7 +73,7 @@ else
   brew install macvim --with-python3
 fi
 
-if brew ls --version yarn > /dev/null; then
+if brew ls --versions yarn > /dev/null; then
   echo "yarn already iustalled, skipping."
 else
   brew instlal yarn --without-node
@@ -137,8 +137,6 @@ echo ""
 echo "Installing asdf..."
 echo ""
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-~/.asdf/bin/asdf plugin-add erlang
-~/.asdf/bin/asdf plugin-add elixir
 ~/.asdf/bin/asdf plugin-add nodejs
 ~/.asdf/bin/asdf plugin-add ruby
 

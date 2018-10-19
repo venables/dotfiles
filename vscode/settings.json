@@ -42,7 +42,7 @@
     "workbench.editor.enablePreviewFromQuickOpen": false,
     "workbench.startupEditor": "newUntitledFile",
     "[javascript]": {
-        "editor.formatOnSave": true
+        "editor.formatOnSave": false
     },
     "gitlens.historyExplorer.enabled": true
 }

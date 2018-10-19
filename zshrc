@@ -14,7 +14,6 @@ alias gla='git la'
 alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
-alias git='hub'
 alias foreman='nf'
 alias f='[ -e Procfile.dev ] && overmind start --procfile Procfile.dev || overmind start'
 
