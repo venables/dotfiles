@@ -48,6 +48,18 @@ Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'Quramy/vim-js-pretty-template'
 Plug 'heavenshell/vim-jsdoc'
+Plug 'jason0x43/vim-js-indent'
+
+" Language: Typescript
+Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'leafgarland/typescript-vim'
+Plug 'mhartington/vim-typings'
+Plug 'Quramy/tsuquyomi'
+
+
+" Language: Ruby
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
 
 " Language: Crystal
 Plug 'rhysd/vim-crystal'
@@ -61,6 +73,7 @@ Plug 'sheerun/vim-polyglot'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'vimlab/split-term.vim'
+  Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 else
   Plug 'tpope/vim-sensible'
   Plug 'noahfrederick/vim-neovim-defaults'
@@ -286,7 +299,7 @@ let g:jsdoc_underscore_private=1
 nmap <silent> <C-l> <Plug>(jsdoc)
 
 " Plugin Ale
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['prettier', 'eslint']}
+let g:ale_linters = {'javascript': ['eslint'], 'ruby': ['rubocop']}
+let g:ale_fixers = {'javascript': ['prettier', 'eslint'], 'ruby': ['rubocop']}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1

@@ -189,4 +189,12 @@ if [ -z "$(grep "$(which zsh)" "/etc/shells")" ]; then
   chsh -s $(which zsh)
 fi
 
+echo ""
+echo "npm settings ..."
+echo ""
+npm set init.author.name "Matt Venables"
+npm set init.author.email "mattvenables@gmail.com"
+npm set init.license "MIT"
+npm set init.version "1.0.0"
+
 echo "Done."

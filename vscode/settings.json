@@ -5,8 +5,18 @@
         120
     ],
     "editor.tabSize": 2,
+    "emmet.includeLanguages": {
+        "postcss": "css"
+    },
+    "emmet.syntaxProfiles": {
+        "postcss": "css"
+    },
     "eslint.autoFixOnSave": true,
     "eslint.packageManager": "yarn",
+    "files.associations": {
+        "*.css": "css",
+        "*.ejs": "html"
+    },
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": false,
     "files.trimTrailingWhitespace": true,
@@ -20,7 +30,7 @@
     "npm.autoDetect": "off",
     "telemetry.enableTelemetry": false,
     "telemetry.enableCrashReporter": false,
-    "vim.otherModesKeyBindingsNonRecursive": [
+    "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": [
                 "leader",
@@ -44,5 +54,13 @@
     "[javascript]": {
         "editor.formatOnSave": false
     },
-    "gitlens.historyExplorer.enabled": true
+    "gitlens.historyExplorer.enabled": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "tslint.autoFixOnSave": true,
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "editor.formatOnSave": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "gitlens.views.fileHistory.enabled": true,
+    "gitlens.views.lineHistory.enabled": true
 }
