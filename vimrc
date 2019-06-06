@@ -9,8 +9,6 @@ endif
 
 " Editor
 Plug 'scrooloose/nerdtree'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " Searching, Fuzzy find
 Plug 'mileszs/ack.vim'
@@ -20,7 +18,6 @@ Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'ervandew/supertab'
 
 " Testing
 Plug 'janko-m/vim-test'
@@ -31,41 +28,11 @@ Plug 'w0rp/ale'
 " Git
 Plug 'tpope/vim-fugitive'
 
-" Tags
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-easytags'
-" Plug 'jakedouglas/exuberant-ctags'
-" Plug 'majutsushi/tagbar'
-
 " Colors
 Plug 'chriskempson/base16-vim'
 
-" Language: Javascript
-Plug 'pangloss/vim-javascript'
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'othree/es.next.syntax.vim'
-Plug 'mxw/vim-jsx'
-Plug 'posva/vim-vue'
-Plug 'Quramy/vim-js-pretty-template'
-Plug 'heavenshell/vim-jsdoc'
-Plug 'jason0x43/vim-js-indent'
-
-" Language: Typescript
-Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'leafgarland/typescript-vim'
-Plug 'mhartington/vim-typings'
-Plug 'Quramy/tsuquyomi'
-
-
-" Language: Ruby
-Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
-
-" Language: Crystal
-Plug 'rhysd/vim-crystal'
-
 " Language: Generic
-let g:polyglot_disabled = ['crystal', 'javascript', 'jsx', 'vue']
+let g:polyglot_disabled = []
 Plug 'sheerun/vim-polyglot'
 
 " Basic editor settings
@@ -119,21 +86,6 @@ set colorcolumn=80 " column width helper
 let base16colorspace=256  " Access colors present in 256 colorspace
 colorscheme base16-eighties
 let g:airline_theme='base16_eighties'
-
-" Font (via nerdfonts.com)
-if !has("gui_vimr")
-  " set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
-  " set guifont=Meslo\ Code\ Pro\ Nerd\ Font\ Complete:h14
-  set guifont=Meslo\ LG\ S\ Regular\ Nerd\ Font\ Complete:h12
-endif
-
-" Plugin: Airline:
-" Rounded symbols
-let g:airline_left_sep = "\uE0B4"
-let g:airline_right_sep = "\uE0B6"
-let g:airline_powerline_fonts = 1
-" set the CN (column number) symbol:
-let g:airline_section_z = airline#section#create(["\uE0A1" . '%{line(".")}' . "\uE0A3" . '%{col(".")}'])
 
 " Clipboard
 if !has("gui_running")
@@ -194,20 +146,8 @@ endif
 " =====
 set mouse=a
 
-" File Types
-" ==========
-au BufNewFile,BufRead *.ejs set filetype=html
-
 " Plugin Configuration
 " ====================
-
-" Plugin: vim-alchemist
-let g:alchemist_iex_term_split = 'split'
-let g:alchemist_tag_disable = 1
-nnoremap <Leader>i :IEx<CR>
-
-" Plugin: goyo
-nnoremap <Leader>z :Goyo<CR>
 
 " Plugin: NERDTree
 let NERDTreeShowHidden = 1
@@ -221,9 +161,6 @@ let NERDTreeIgnore = [
       \ ]
 nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" Plugin: Tagbar
-nnoremap <Leader>m :TagbarToggle<CR>
 
 " Plugin: NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -249,14 +186,6 @@ let test#strategy = "vimterminal"
 if has('nvim')
   let test#strategy = "neovim"
 endif
-
-if filereadable('test/_setup/setupSpec.js')
-  let test#javascript#mocha#options = 'test/_setup/_setupSpec.js'
-endif
-let test#filename_modifier = ":p"
-let test#runners = {'JavaScript': ['ava', 'Mocha']}
-let test#javascript#mocha#executable = 'NODE_ENV=test TZ=UTC ./node_modules/.bin/mocha'
-
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
@@ -266,9 +195,6 @@ nmap <silent> <leader>g :TestVisit<CR>
 " Plugin: vim-fugitive
 nnoremap <Leader>gb :Gblame<CR>
 
-" Plugin: vim-javascript
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_flow = 1
 
 " Plugin: deoplete
 let g:deoplete#enable_at_startup = 1
@@ -281,25 +207,8 @@ function! Multiple_cursors_after()
   let b:deoplete_disable_auto_complete = 0
 endfunction
 
-
-" Plugin: tern
-let g:SuperTabClosePreviewOnPopupClose = 1
-
-" Plugin: split-term
-set splitright " Open the vertical terminal to the right
-set shell=zsh " Ensure we use zsh
-
-" Plugin: vim-easytags
-let g:easytags_async=1
-let g:easytags_auto_highlight=0
-
-" Plugin: vim-jsdoc
-let g:jsdoc_enable_es6=1
-let g:jsdoc_underscore_private=1
-nmap <silent> <C-l> <Plug>(jsdoc)
-
 " Plugin Ale
-let g:ale_linters = {'javascript': ['eslint'], 'ruby': ['rubocop']}
-let g:ale_fixers = {'javascript': ['prettier', 'eslint'], 'ruby': ['rubocop']}
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_fixers = {'javascript': ['eslint']}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1

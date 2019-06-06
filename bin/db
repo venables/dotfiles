@@ -22,18 +22,19 @@ begin
   case ARGV[0].to_s.downcase
   when 'pg', 'postgres', 'postgresql'
     if should_stop
-      `pg_ctl -D /usr/local/var/postgres stop -s -m fast`
+      `brew services stop postgresql`
+      # `pg_ctl -D /usr/local/var/postgres stop -s -m fast`
     else
-      `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
+      `brew services start postgresql`
+      # `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
     end
-  when 'mongo', 'mongodb'
-    `mongod run --config /usr/local/etc/mongod.conf --logpath /usr/local/var/log/mongodb/mongo.log &`
-  when 'mysql'
-    `mysql.server start`
   when 'redis'
-    `redis-server /usr/local/etc/redis.conf --daemonize yes`
-  when 'cassandra', 'cass', 'c'
-    `cassandra`
+    if should_stop
+      `brew services stop redis`
+    else
+      `brew services start redis`
+    end
+    # `redis-server /usr/local/etc/redis.conf --daemonize yes`
   else
     raise "Unknown database `#{ARGV[0]}`."
   end
