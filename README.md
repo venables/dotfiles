@@ -11,6 +11,7 @@ git clone git@github.com:venables/dotfiles.git ~/.dotfiles
 ### 2. Install following packages:
 
 ```
+ag
 git
 postgresql
 redis
@@ -33,7 +34,7 @@ chsh -s /usr/local/bin/zsh
 ln -sf ~/.dotfiles/gitconfig ~/.gitconfig
 ln -sf ~/.dotfiles/gitignore ~/.gitignore
 ln -sf ~/.dotfiles/hushlogin ~/.hushlogin
-ln -sf ~/.dotfiles/vimrc ~/vimrc 
+ln -sf ~/.dotfiles/vimrc ~/.vimrc
 ln -sf ~/.dotfiles/zshrc ~/.zshrc
 
 ln -sf ~/.dotfiles/bin/db /usr/local/bin/db
