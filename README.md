@@ -12,6 +12,7 @@ git clone git@github.com:venables/dotfiles.git ~/.dotfiles
 
 ```
 ag
+asdf
 git
 postgresql
 redis
@@ -42,31 +43,22 @@ ln -sf ~/.dotfiles/bin/git-cleanup /usr/local/bin/git-cleanup
 ln -sf ~/.dotfiles/bin/git-sync /usr/local/bin/git-sync
 ```
 
-### 5. Install [asdf](https://github.com/asdf-vm/asdf)
+### 5. Install nodejs, ruby from asdf
 
 ```
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.2
-brew install \
-  coreutils automake autoconf openssl \
-  libyaml readline libxslt libtool unixodbc \
-  unzip curl
-```
-
-### 6. Install nodejs, ruby from asdf
-
-```
+asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
+brew install gnupg
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-~/.asdf/bin/asdf plugin-add nodejs
-~/.asdf/bin/asdf plugin-add ruby
 ```
 
-### 7. Set up vim
+### 6. Set up vim
 
 ```
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-### 8. Other:
+### 7. Other:
 
 #### iTerm Settings:
 
