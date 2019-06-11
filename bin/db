@@ -22,19 +22,16 @@ begin
   case ARGV[0].to_s.downcase
   when 'pg', 'postgres', 'postgresql'
     if should_stop
-      `brew services stop postgresql`
-      # `pg_ctl -D /usr/local/var/postgres stop -s -m fast`
+      `pg_ctl -D /usr/local/var/postgres stop -s -m fast`
     else
-      `brew services start postgresql`
-      # `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
+      `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
     end
   when 'redis'
     if should_stop
-      `brew services stop redis`
+      `redis-cli shutdown`
     else
-      `brew services start redis`
+      `redis-server /usr/local/etc/redis.conf --daemonize yes`
     end
-    # `redis-server /usr/local/etc/redis.conf --daemonize yes`
   else
     raise "Unknown database `#{ARGV[0]}`."
   end

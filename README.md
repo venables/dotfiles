@@ -72,7 +72,10 @@ defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 ```
 mkdir -p ~/Library/Application\ Support/Code/User/
 ln -sf ~/.dotfiles/resources/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
 ```
+
 
 #### Set up '/work' directory
 ```
