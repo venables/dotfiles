@@ -44,7 +44,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 # Editor
 # ======
 export VISUAL="code"
-export EDITOR="$VISUAL"
+export EDITOR=vim
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
 # Path Updates
