@@ -1,66 +1,77 @@
 {
-    "editor.minimap.enabled": false,
-    "editor.rulers": [
-        80,
-        120
-    ],
-    "editor.tabSize": 2,
-    "emmet.includeLanguages": {
-        "postcss": "css"
-    },
-    "emmet.syntaxProfiles": {
-        "postcss": "css"
-    },
-    "eslint.autoFixOnSave": true,
-    "eslint.packageManager": "yarn",
-    "files.associations": {
-        "*.css": "css",
-        "*.ejs": "html"
-    },
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": false,
-    "files.trimTrailingWhitespace": true,
-    "gitlens.advanced.messages": {
-        "suppressShowKeyBindingsNotice": true
-    },
-    "gitlens.codeLens.enabled": false,
-    "gitlens.keymap": "none",
-    "grunt.autoDetect": "off",
-    "gulp.autoDetect": "off",
-    "npm.autoDetect": "off",
-    "telemetry.enableTelemetry": false,
-    "telemetry.enableCrashReporter": false,
-    "vim.normalModeKeyBindingsNonRecursive": [
+  "editor.minimap.enabled": false,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.tabSize": 2,
+  "emmet.includeLanguages": {
+    "postcss": "css"
+  },
+  "emmet.syntaxProfiles": {
+    "postcss": "css"
+  },
+  "eslint.autoFixOnSave": true,
+  "eslint.packageManager": "yarn",
+  "files.associations": {
+    "*.css": "css",
+    "*.ejs": "html"
+  },
+  "files.trimFinalNewlines": false,
+  "files.trimTrailingWhitespace": true,
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "gitlens.codeLens.enabled": false,
+  "gitlens.keymap": "none",
+  "grunt.autoDetect": "off",
+  "gulp.autoDetect": "off",
+  "npm.autoDetect": "off",
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "leader",
+        "c",
+        "c"
+      ],
+      "after": [],
+      "commands": [
         {
-            "before": [
-                "leader",
-                "c",
-                "c"
-            ],
-            "after": [],
-            "commands": [
-                {
-                    "command": "editor.action.commentLine",
-                    "args": []
-                }
-            ]
+          "command": "editor.action.commentLine",
+          "args": []
         }
-    ],
-    "vim.useSystemClipboard": true,
-    "window.zoomLevel": 0,
-    "workbench.editor.enablePreview": true,
-    "workbench.editor.enablePreviewFromQuickOpen": false,
-    "workbench.startupEditor": "newUntitledFile",
-    "[javascript]": {
-        "editor.formatOnSave": false
-    },
-    "gitlens.historyExplorer.enabled": true,
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "tslint.autoFixOnSave": true,
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "editor.formatOnSave": true,
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "gitlens.views.fileHistory.enabled": true,
-    "gitlens.views.lineHistory.enabled": true
+      ]
+    }
+  ],
+  "vim.useSystemClipboard": true,
+  "window.zoomLevel": 0,
+  "workbench.editor.enablePreview": true,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.startupEditor": "newUntitledFile",
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "editor.formatOnSave": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "gitlens.views.fileHistory.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
+  "[ruby]": {
+    "editor.formatOnSave": false
+  },
+  "ruby.format": "rubocop",
+  "ruby.codeCompletion": "rcodetools",
+  "ruby.intellisense": "rubyLocate",
+  "ruby.lint": {
+    "reek": true,
+    "rubocop": true,
+    "ruby": true, //Runs ruby -wc
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
 }

@@ -63,6 +63,7 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 #### iTerm Settings:
 
 ```
+git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/resources/iterm"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 ```

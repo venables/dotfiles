@@ -14,7 +14,10 @@ alias gla='git la'
 alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
-alias m='vim .'
+alias m='mvim .'
+
+alias be="bundle exec"
+alias f="foreman start"
 
 # Colors
 # ======
@@ -47,6 +50,14 @@ export VISUAL="code"
 export EDITOR=vim
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
+# Base16-Shell
+# ============
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+
 # Path Updates
 # ============
 export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homebrew first, yarn last
@@ -58,3 +69,7 @@ export PATH=/usr/local/bin:$PATH:~/.config/yarn/global/node_modules/.bin # homeb
 
 export PATH="/usr/local/sbin:$PATH"
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+export PATH="/usr/local/opt/gettext/bin:$PATH"
