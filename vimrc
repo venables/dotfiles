@@ -34,6 +34,8 @@ Plug 'chriskempson/base16-vim'
 " Language: Generic
 let g:polyglot_disabled = []
 Plug 'sheerun/vim-polyglot'
+Plug 'alexlafroscia/postcss-syntax.vim'
+
 
 " Basic editor settings
 
@@ -81,15 +83,22 @@ if has("termguicolors")
   set termguicolors
 endif
 set background=dark
-set colorcolumn=80 " column width helper
+set colorcolumn=80,120 " column width helper
+set guifont=Monaco:h12
 
 let base16colorspace=256  " Access colors present in 256 colorspace
-colorscheme base16-eighties
-let g:airline_theme='base16_eighties'
+if filereadable(expand("~/.vimrc_background"))
+  source ~/.vimrc_background
+endif
+colorscheme base16-default-dark
 
 " Clipboard
-if !has("gui_running")
-  set clipboard=unnamedplus " yank to system clipboard
+if has("clipboard")
+  set clipboard=unnamed " copy to the system clipboard
+
+  if has("unnamedplus") " X11 support
+    set clipboard+=unnamedplus
+  endif
 endif
 
 " Set tabs to 2 spaces
@@ -209,6 +218,6 @@ endfunction
 
 " Plugin Ale
 let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint']}
+let g:ale_fixers = {'javascript': ['eslint'], 'ruby': ['rubocop']}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
