@@ -37,6 +37,7 @@ ln -sf ~/.dotfiles/gitignore ~/.gitignore
 ln -sf ~/.dotfiles/hushlogin ~/.hushlogin
 ln -sf ~/.dotfiles/vimrc ~/.vimrc
 ln -sf ~/.dotfiles/zshrc ~/.zshrc
+ln -sf ~/.dotfiles/zshenv ~/.zshenv
 
 ln -sf ~/.dotfiles/bin/db /usr/local/bin/db
 ln -sf ~/.dotfiles/bin/git-cleanup /usr/local/bin/git-cleanup
