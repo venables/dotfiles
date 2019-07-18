@@ -1,109 +1,79 @@
-" Plugins
-" (Install via :PlugInstall)
-" ==========================
-if has('nvim')
-  call plug#begin('~/.local/share/nvim/plugged')
-else
-  call plug#begin('~/.vim/plugged')
-endif
+" Enable vim-plug
+call plug#begin('~/.local/share/nvim/plugged')
 
-" Editor
-Plug 'scrooloose/nerdtree'
-
-" Searching, Fuzzy find
-Plug 'mileszs/ack.vim'
+Plug 'Shougo/denite.nvim'
+Plug 'chriskempson/base16-vim'
+Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-
-" Smarter editing
+Plug 'mhinz/vim-grepper'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'w0rp/ale'
+Plug 'justinmk/vim-sneak'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
-
-" Testing
 Plug 'janko-m/vim-test'
-
-" Linting
-" Plug 'w0rp/ale'
-
-" Git
-Plug 'tpope/vim-fugitive'
-
-" Colors
-Plug 'chriskempson/base16-vim'
-
-" Language: Generic
-" let g:polyglot_disabled = []
-" Plug 'sheerun/vim-polyglot'
-" Plug 'alexlafroscia/postcss-syntax.vim'
-
-
-" Basic editor settings
-
-if has('nvim')
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'vimlab/split-term.vim'
-  " Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-else
-  Plug 'tpope/vim-sensible'
-  Plug 'noahfrederick/vim-neovim-defaults'
-
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
 call plug#end()
 
-" Vim Configuration
+" Sensible Defaults
 " =================
+
+set encoding=utf8 " Set standard file encoding
+set nomodeline " No special per file vim override configs
+set nowrap " Stop word wrapping
+  autocmd FileType markdown setlocal wrap " Except... on Markdown. That's good stuff.
+set undolevels=100 " Adjust system undo levels
+set clipboard=unnamed " Use system clipboard
+set tabstop=2 " Set tab width and convert tabs to spaces
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set conceallevel=1 " Don't let Vim hide characters or make loud dings
+set noerrorbells
+set number " Number gutter
+set hlsearch " Use search highlighting
+set scrolloff=1 " Space above/beside cursor from screen edges
+set sidescrolloff=5
 set noswapfile " Prevent creating a swapfile (.swp)
-set visualbell " Use the visual bell, not audible bell
-set nowrap " Disable wordwrap
 set number " Show line numbers
 set ignorecase " Ignore case by default when searching
 set smartcase " Search case-sensitive if a capital is used
-set encoding=utf8
 set nocursorline!
 set lazyredraw
 set noshowcmd
-
-if has('nvim')
-    set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-      \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-      \,sm:block-blinkwait175-blinkoff150-blinkon175
-endif
-
 " Only highlight current line in active buffer
 augroup BgHighlight
   autocmd!
   autocmd WinEnter * set cul
   autocmd WinLeave * set nocul
 augroup END
-
-
-
-
-" Don't write backup files
 set nobackup " do not attempt to backup
 set nowritebackup " dont write backup files
-
-" Colors
-if has("termguicolors")
-  set termguicolors
-endif
 set background=dark
 set colorcolumn=80,120 " column width helper
-if !has('gui_vimr')
-  set guifont=Monaco:h13
-endif
+set mouse=a
+" Set the cursort to blink
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+  \,sm:block-blinkwait175-blinkoff150-blinkon17
 
-let base16colorspace=256  " Access colors present in 256 colorspace
-if filereadable(expand("~/.vimrc_background"))
-  source ~/.vimrc_background
-endif
-colorscheme base16-default-dark
+" Stop using arrow keys
+nnoremap <Left> :vertical resize -1<CR>
+nnoremap <Right> :vertical resize +1<CR>
+nnoremap <Up> :resize -1<CR>
+nnoremap <Down> :resize +1<CR>
+" Disable arrow keys completely in Insert Mode
+" imap <up> <nop>
+" imap <down> <nop>
+" imap <left> <nop>
+" imap <right> <nop>
 
 " Clipboard
 if has("clipboard")
@@ -128,7 +98,7 @@ set list
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
 nnoremap <Leader>b :buffers<CR>:buffer<Space>
-nnoremap <Leader>sv :source ~/.vimrc<CR>
+nnoremap <Leader>sv :source ~/.config/nvim/init.vim<CR>
 nnoremap <Leader>w :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nnoremap <Leader>W :%s/^ *//g<Bar>:nohl<CR>
 " Set `Leader q` to open a terminal
@@ -153,29 +123,70 @@ let g:python_host_prog = "/usr/local/bin/python"
 let g:python3_host_prog = "/usr/local/bin/python3"
 let g:ruby_path = system('echo $HOME/.asdf/shims')
 
-" Map CTRL-o to exit terminal insert mode
-if has('nvim')
-  tmap <C-o> <C-\><C-n>
-end
+" Double tap Ledaer to open previous file buffer
+nmap <Leader><Leader> <c-^>
 
-" GUI-Specific options (MacVim)
-if has("gui_running")
-  " Fullscreen (<Leader>f and Command+Enter)
-  nnoremap <Leader>f :set invfu<CR>
-  nnoremap <D-CR> :set invfu<CR>
 
-  " Use minimal window settings (no scrollbar)
-  set guioptions=aAce
+" Tab to swithc to next buffer, Shift+Tab to go back
+nnoremap <Tab> :bnext!<CR>
+nnoremap <S-Tab> :bprev!<CR><Paste>
+
+" Plugin: base16-vim
+" ==================
+set termguicolors
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
 endif
+color base16-eighties
+" color base16-default-dark
 
-" Mouse
-" =====
-set mouse=a
+" Plugin: indentLine
+" ==================
+let g:indentLine_enabled = 1
 
-" Plugin Configuration
-" ====================
+" Plugin: vim-airline
+" ===================
+let g:airline#extensions#tabline#enabled=1
+let g:airline_powerline_fonts=1
+set laststatus=2
+
+" Plugin: vim-grepper
+" ===================
+nnoremap <Leader>f :Grepper<Space>-query<Space>
+nnoremap <C-f> :Grepper<Space>-query<Space>
+
+" Plugin: fzf.vim
+" ================
+nnoremap <C-o> :Files<CR>
+nnoremap <C-p> :Files<CR>
+
+" Plugin: defx
+" ============
+map ` :Defx -explorer<CR>
+map ~ :Defx -explorer -find<CR>
+
+" Plugin: deoplete
+" ================
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" Plugin: vim-sneak
+" =================
+let g:sneak#s_next = 1
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+
+" Plugin: fugitive
+" ================
+nnoremap <Leader>gb :Gblame<CR>
 
 " Plugin: NERDTree
+" ================
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = [
       \ '\.git$',
@@ -189,79 +200,21 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Plugin: NERDCommenter
+" =====================
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 
-" Plugin: Ack.vim
-let g:ackprg = 'ag --vimgrep'
-cnoreabbrev ag Ack
-cnoreabbrev aG Ack
-cnoreabbrev Ag Ack
-cnoreabbrev AG Ack
-nnoremap <Leader>f :Ack<Space>
-nnoremap <C-f> :Ack<Space>
-
-" Plugin: fzf.viim
-nnoremap <C-o> :Files<CR>
-nnoremap <C-p> :Files<CR>
-" set grepprg=ag\ --nogroup\ --nocolor
-" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-" let g:ctrlp_use_caching = 0 " diable caching since `ag` is fast
-
 " Plugin: vim-test
-let test#strategy = "vimterminal"
-if has('nvim')
-  let test#strategy = "neovim"
-endif
+" ================
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 
-" Plugin: vim-fugitive
-nnoremap <Leader>gb :Gblame<CR>
-
-
-" Plugin: deoplete
-" let g:deoplete#enable_at_startup = 1
-" let g:deoplete#file#enable_buffer_path = 1 " Relative file path autocomplete
-" function! Multiple_cursors_before()
-  " let b:deoplete_disable_auto_complete = 1
-" endfunction
-
-" function! Multiple_cursors_after()
-  " let b:deoplete_disable_auto_complete = 0
-" endfunction
-
 " Plugin Ale
+" ==========
 let g:ale_linters = {'javascript': ['eslint']} ", 'ruby': ['brakeman', 'reek', 'rubocop']}
 let g:ale_fixers = {'javascript': ['eslint'], 'ruby': ['rubocop']}
 let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_cache_executable_check_failures = 1
-let g:ale_lint_on_enter = 0 
-let g:ale_lint_on_filetype_changed = 0
-" let g:ale_ruby_rubocop_options = '--force-exclusions'
-
-" Plugin: coc.nvim
-set hidden
-set cmdheight=2 " Better display for messages
-set updatetime=300 " You will have bad experience for diagnostic messages when it's default 4000.
-set shortmess+=c " don't give |ins-completion-menu| messages.
-set signcolumn=yes " always show signcolumns
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <TAB>
-      " \ pumvisible() ? "\<C-n>" :
-      " \ <SID>check_back_space() ? "\<TAB>" :
-      " \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-" function! s:check_back_space() abort
-  " let col = col('.') - 1
-  " return !col || getline('.')[col - 1]  =~# '\s'
-" endfunction
-" " Use <c-space> to trigger completion.
-" inoremap <silent><expr> <c-space> coc#refresh()
-
 

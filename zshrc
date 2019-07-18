@@ -1,5 +1,9 @@
-# Aliases
-# =======
+# Use nvim as the default vim
+alias vim="nvim"
+alias m='vim .'
+alias be="bundle exec"
+alias f="foreman start"
+
 alias g='git'
 alias ga='git add '
 alias gap='git add -p'
@@ -14,60 +18,42 @@ alias gla='git la'
 alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
-alias vim="nvim"
-alias v='nvim'
-alias m='nvim .'
 
-alias be="bundle exec"
-alias f="foreman start"
-
-# Colors
-# ======
-export CLICOLOR=1
-export LSCOLORS=Exfxcxdxbxegedabagacad
-export GREP_OPTIONS='--color=auto'
-autoload -U colors
+# Enable Colors
+autoload colors zsh/terminfo
 colors
-
 # Prompt
-# ======
 setopt PROMPT_SUBST
 parse_git_branch() {
-  branch="$(git symbolic-ref HEAD 2>/dev/null)" || return
-  echo "@${branch#refs/heads/}"
+ branch="$(git symbolic-ref HEAD 2>/dev/null)" || return
+ echo "@${branch#refs/heads/}"
 }
-PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[yellow]}%}$(parse_git_branch)%{${fg[default]}%} '
+PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[magenta]}%}$(parse_git_branch)%{${fg[default]}%} '
 
-# Tab Completion
-# ==============
-autoload -Uz compinit && compinit
+# Assume `cd` when typing a directory
+setopt auto_cd
 
-# Tab completion
-# ==============
-fpath=(/usr/local/share/zsh-completions $fpath)
+# Fix typos
+setopt correctall
+alias git status='nocorrect git status'
 
 # Editor
 # ======
-export VISUAL="code"
-export EDITOR=mvim
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+export VISUAL="vim"
+export EDITOR=vim
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 
-# Base16-Shell
-# ============
-# Base16 Shell
+# Setup antigen plugin manager
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "kiurchv/asdf.plugin.zsh"
+zplug load
+
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-# asdf
-# ====
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
