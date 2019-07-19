@@ -11,11 +11,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-git'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'w0rp/ale'
 Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
@@ -125,8 +125,6 @@ let g:ruby_path = system('echo $HOME/.asdf/shims')
 
 " Double tap Ledaer to open previous file buffer
 nmap <Leader><Leader> <c-^>
-
-
 " Tab to swithc to next buffer, Shift+Tab to go back
 nnoremap <Tab> :bnext!<CR>
 nnoremap <S-Tab> :bprev!<CR><Paste>
@@ -163,8 +161,41 @@ nnoremap <C-p> :Files<CR>
 
 " Plugin: defx
 " ============
-map ` :Defx -explorer<CR>
-map ~ :Defx -explorer -find<CR>
+nnoremap <silent> <leader>n :Defx -toggle -split=vertical -winwidth=30 -direction=topleft -columns=git:filename:type<CR>
+nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+call defx#custom#option('_', {
+      \ 'root_marker': '$ ',
+      \ })
+call defx#custom#column('filename', {
+      \ 'root_marker_highlight': 'Ignore',
+      \ })
+
+autocmd FileType defx call DefxSettings()
+
+function! DefxContextMenu() abort
+  let l:actions = ['new_file', 'new_directory', 'rename', 'copy', 'move', 'paste', 'remove']
+  let l:selection = confirm('Action?', "&New file\nNew &Folder\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
+  silent exe 'redraw'
+
+  return feedkeys(defx#do_action(l:actions[l:selection - 1]))
+endfunction
+
+function! DefxSettings() abort
+  nnoremap <silent><buffer>m :call DefxContextMenu()<CR>
+  nnoremap <silent><buffer><expr> o defx#do_action('drop')
+  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+  nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
+  nnoremap <silent><buffer><expr> R defx#do_action('redraw')
+  nnoremap <silent><buffer><expr> u defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
+  nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> q defx#do_action('quit')
+  nnoremap <silent><buffer><expr> gh defx#do_action('cd', [getcwd()])
+endfunction
 
 " Plugin: deoplete
 " ================
@@ -184,20 +215,6 @@ omap F <Plug>Sneak_F
 " Plugin: fugitive
 " ================
 nnoremap <Leader>gb :Gblame<CR>
-
-" Plugin: NERDTree
-" ================
-let NERDTreeShowHidden = 1
-let NERDTreeIgnore = [
-      \ '\.git$',
-      \ '\.DS_Store$',
-      \ '\.tern-port$',
-      \ '\.vscode$',
-      \ '_build$',
-      \ '_data$'
-      \ ]
-nnoremap <Leader>n :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Plugin: NERDCommenter
 " =====================
