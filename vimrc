@@ -1,25 +1,12 @@
 " Enable vim-plug
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
-Plug 'Shougo/denite.nvim'
-Plug 'chriskempson/base16-vim'
-Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'mhinz/vim-grepper'
-Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'kristijanhusak/defx-git'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'w0rp/ale'
-Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'janko-m/vim-test'
+
 call plug#end()
 
 " Sensible Defaults
@@ -118,103 +105,6 @@ if has("user_commands")
   command! -bang Qa qa<bang>
 endif
 
-" Python3
-let g:python_host_prog = "/usr/local/bin/python"
-let g:python3_host_prog = "/usr/local/bin/python3"
-let g:ruby_path = system('echo $HOME/.asdf/shims')
-
-" Double tap Ledaer to open previous file buffer
-nmap <Leader><Leader> <c-^>
-" Tab to swithc to next buffer, Shift+Tab to go back
-nnoremap <Tab> :bnext!<CR>
-nnoremap <S-Tab> :bprev!<CR><Paste>
-
-" Plugin: base16-vim
-" ==================
-set termguicolors
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-color base16-eighties
-" color base16-default-dark
-
-" Plugin: indentLine
-" ==================
-let g:indentLine_enabled = 1
-
-" Plugin: vim-airline
-" ===================
-let g:airline#extensions#tabline#enabled=1
-let g:airline_powerline_fonts=1
-set laststatus=2
-
-" Plugin: vim-grepper
-" ===================
-nnoremap <Leader>f :Grepper<Space>-query<Space>
-nnoremap <C-f> :Grepper<Space>-query<Space>
-
-" Plugin: fzf.vim
-" ================
-nnoremap <C-o> :Files<CR>
-nnoremap <C-p> :Files<CR>
-
-" Plugin: defx
-" ============
-nnoremap <silent> <leader>n :Defx -toggle -split=vertical -winwidth=30 -direction=topleft -columns=git:filename:type<CR>
-nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-call defx#custom#option('_', {
-      \ 'root_marker': '$ ',
-      \ })
-call defx#custom#column('filename', {
-      \ 'root_marker_highlight': 'Ignore',
-      \ })
-
-autocmd FileType defx call DefxSettings()
-
-function! DefxContextMenu() abort
-  let l:actions = ['new_file', 'new_directory', 'rename', 'copy', 'move', 'paste', 'remove']
-  let l:selection = confirm('Action?', "&New file\nNew &Folder\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
-  silent exe 'redraw'
-
-  return feedkeys(defx#do_action(l:actions[l:selection - 1]))
-endfunction
-
-function! DefxSettings() abort
-  nnoremap <silent><buffer>m :call DefxContextMenu()<CR>
-  nnoremap <silent><buffer><expr> o defx#do_action('drop')
-  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-  nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
-  nnoremap <silent><buffer><expr> R defx#do_action('redraw')
-  nnoremap <silent><buffer><expr> u defx#do_action('cd', ['..'])
-  nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
-  nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
-  nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
-  nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-  nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-  nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-  nnoremap <silent><buffer><expr> q defx#do_action('quit')
-  nnoremap <silent><buffer><expr> gh defx#do_action('cd', [getcwd()])
-endfunction
-
-" Plugin: deoplete
-" ================
-let g:deoplete#enable_at_startup = 1
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-" Plugin: vim-sneak
-" =================
-let g:sneak#s_next = 1
-nmap f <Plug>Sneak_f
-nmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-
-" Plugin: fugitive
-" ================
-nnoremap <Leader>gb :Gblame<CR>
 
 " Plugin: NERDCommenter
 " =====================
@@ -228,10 +118,3 @@ nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
-
-" Plugin Ale
-" ==========
-let g:ale_linters = {'javascript': ['eslint']} ", 'ruby': ['brakeman', 'reek', 'rubocop']}
-let g:ale_fixers = {'javascript': ['eslint'], 'ruby': ['rubocop']}
-let g:ale_fix_on_save = 1
-
