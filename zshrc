@@ -31,12 +31,12 @@ PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[magenta]}%}$(parse_git_branch)%{${fg[defaul
 # Assume `cd` when typing a directory
 setopt auto_cd
 
-# Fix typos
-setopt correctall
-alias git status='nocorrect git status'
-
 # Editor
 # ======
 export VISUAL="vim"
 export EDITOR=vim
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  . $(brew --prefix asdf)/asdf.sh
+fi
