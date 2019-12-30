@@ -36,6 +36,8 @@ setopt auto_cd
 export VISUAL="vim"
 export EDITOR=vim
 
+autoload -Uz compinit && compinit
+
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
   . $(brew --prefix asdf)/asdf.sh
