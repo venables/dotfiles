@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-curl https://raw.githubusercontent.com/fohte/rubocop-daemon/master/bin/rubocop-daemon-wrapper -o /tmp/rubocop-daemon-wrapper
-sudo mv /tmp/rubocop-daemon-wrapper /usr/local/bin/rubocop-daemon-wrapper
-sudo chmod +x /usr/local/bin/rubocop-daemon-wrapper
+echo "Reshmming ruby..."
+rm -rf ~/.asdf/shims/rubocop
+asdf reshim ruby
 
-ln -fs /usr/local/bin/rubocop-daemon-wrapper $(which rubocop)
+echo "Fetching wrapper..."
+curl https://raw.githubusercontent.com/fohte/rubocop-daemon/master/bin/rubocop-daemon-wrapper -o /tmp/rubocop-daemon-wrapper
+sudo mkdir -p /usr/local/bin/rubocop-daemon-wrapper
+sudo mv /tmp/rubocop-daemon-wrapper /usr/local/bin/rubocop-daemon-wrapper/rubocop
+sudo chmod +x /usr/local/bin/rubocop-daemon-wrapper/rubocop
+
+echo "Linking rubocop..."
+sudo ln -fs /usr/local/bin/rubocop-daemon-wrapper/rubocop  ~/.asdf/shims/rubocop

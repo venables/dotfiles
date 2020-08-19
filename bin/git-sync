@@ -4,8 +4,8 @@ PURPLE='\033[0;35m'
 NC='\033[0m'
 
 echo ""
-echo "${PURPLE}git checkout master${NC}"
-git checkout master
+echo "${PURPLE}git checkout main${NC}"
+git checkout main
 
 echo ""
 echo "${PURPLE}git fetch --all --prune${NC}"
@@ -14,7 +14,3 @@ git fetch --all --prune
 echo ""
 echo "${PURPLE}git pull${NC}"
 git pull
-
-echo ""
-echo "${PURPLE}git push origin master${NC}"
-git push origin master
