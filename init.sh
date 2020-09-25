@@ -18,6 +18,16 @@ brew install \
 # Install databases
 brew install postgresql redis
 
+# Ruby, NodeJS
+brew install \
+  asdf
+  coreutils \
+  gpg
+
+asdf plugin-add ruby
+asdf plugin-add nodejs
+bash -c '${ASDF_DATA_DIR:=$HOME/.asdf}/plugins/nodejs/bin/import-release-team-keyring'
+
 # Install vim-plug
 ./scripts/vim.sh
 
@@ -25,5 +35,5 @@ brew install postgresql redis
 ./scripts/zsh.sh
 
 # Symlink dotfiles
-./scripts/symlink.sh	
+./scripts/symlink.sh
 
