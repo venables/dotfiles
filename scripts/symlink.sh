@@ -1,4 +1,4 @@
-ln -s ~/.dotfiles/zshrc ~/.zshrc
+ln -sf ~/.dotfiles/zshrc ~/.zshrc
 
 ln -sf ~/.dotfiles/vimrc ~/.vimrc
 mkdir -p ~/.config/nvim
