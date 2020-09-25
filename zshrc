@@ -34,8 +34,8 @@ colors
 # Prompt
 setopt PROMPT_SUBST
 parse_git_branch() {
- branch="$(git symbolic-ref HEAD 2>/dev/null)" || return
- echo "@${branch#refs/heads/}"
+  branch="$(git symbolic-ref HEAD 2>/dev/null)" || return
+  echo "@${branch#refs/heads/}"
 }
 PROMPT=$'%{${fg[cyan]}%}%B%~%b%{${fg[magenta]}%}$(parse_git_branch)%{${fg[default]}%} '
 
@@ -61,3 +61,6 @@ export PATH="/usr/local/sbin:$PATH"
 # https://github.com/fohte/rubocop-daemon
 # export RUBOCOP_DAEMON_USE_BUNDLER=true
 export PATH="/usr/local/bin/rubocop-daemon-wrapper:$PATH"
+
+# Fix
+export LC_CTYPE="en_US.UTF-8"
