@@ -5,6 +5,7 @@ mkdir -p ~/.config/nvim
 ln -sf ~/.dotfiles/vimrc ~/.config/nvim/init.vim
 ln -sf ~/.dotfiles/vimrc ~/.vimrc
 ln -sf ~/.dotfiles/gvimrc ~/.gvimrc
+ln -sf ~/.dotfiles/gitattributes ~/.gitattributes
 ln -sf ~/.dotfiles/gitconfig ~/.gitconfig
 ln -sf ~/.dotfiles/gitignore ~/.gitignore
 ln -sf ~/.dotfiles/hushlogin ~/.hushlogin

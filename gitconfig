@@ -2,6 +2,7 @@
 	editor = vim
 	excludesfile = ~/.gitignore
 	quotepath = false
+	attributesfile = ~/.gitattributes
 [user]
 	name = Matt Venables
 	email = matt@venabl.es
@@ -13,6 +14,7 @@
 	c = commit
 	ca = commit --all
 	co = checkout
+	cob = checkout -b
 	d = diff
 	fap = fetch --all --prune
 	fop = fetch origin --prune
