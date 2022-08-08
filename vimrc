@@ -7,8 +7,6 @@ call plug#begin('~/.vim/plugged')
 " Editor
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-endwise'
-" Plug 'tpope/vim-sensible'
-" Plug 'noahfrederick/vim-neovim-defaults'
 Plug 'vimlab/split-term.vim'
 Plug 'gregsexton/MatchTag'
 
@@ -33,42 +31,15 @@ Plug 'dense-analysis/ale'
 Plug 'tpope/vim-fugitive'
 
 " Colors
-" Plug 'tomasiser/vim-code-dark'
 Plug 'dracula/vim'
 
-" " Autocomplete
-" if has('nvim')
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" else
-" Plug 'Shougo/deoplete.nvim'
-" Plug 'roxma/nvim-yarp'
-" Plug 'roxma/vim-hug-neovim-rpc'
-" endif
-
 " Language: Generic
-" let g:polyglot_disabled = ['javascript', 'vue']
 Plug 'sheerun/vim-polyglot'
 Plug 'Chiel92/vim-autoformat'
-" Plug 'autozimu/LanguageClient-neovim', {
-" \ 'branch': 'next',
-" \ 'do': 'bash install.sh',
-" \ }
 
 
 " Language: Ruby
 Plug 'tpope/vim-rails'
-" Plug 'vim-ruby/vim-ruby' ' via vim-polyglot'
-
-" Language: Javascript
-" Plug 'pangloss/vim-javascript'
-" Plug 'othree/yajs.vim', { 'for': 'javascript' }
-" Plug 'othree/es.next.syntax.vim'
-" Plug 'mxw/vim-jsx'
-" Plug 'posva/vim-vue'
-" Plug 'Quramy/vim-js-pretty-template'
-" Plug 'heavenshell/vim-jsdoc'
-" Plug 'jason0x43/vim-js-indent'
-
 
 call plug#end()
 
@@ -128,17 +99,7 @@ endif
 
 " Colorscheme
 set colorcolumn=80,120 " column width helper
-" set background=dark
 colorscheme dracula
-" colorscheme codedark
-" hi Search cterm=NONE ctermfg=black ctermbg=lightcyan
-
-" Font (via nerdfonts.com)
-if !has("gui_vimr")
-  " set guifont=Source\ Code\ Pro\ Nerd\ Font\ Complete:h14
-  " set guifont=Meslo\ Code\ Pro\ Nerd\ Font\ Complete:h14
-  set guifont=Meslo\ LG\ S\ Regular\ Nerd\ Font\ Complete:h13
-endif
 
 " Macvim settings
 autocmd! GUIEnter * set vb t_vb= " Disable bells
@@ -255,27 +216,6 @@ let g:jsdoc_enable_es6=1
 let g:jsdoc_underscore_private=1
 nmap <silent> <C-l> <Plug>(jsdoc)
 
-" Plugin: Deoplete
-" ================
-" let g:deoplete#enable_at_startup = 1
-" function! Multiple_cursors_before()
-" let b:deoplete_disable_auto_complete = 1
-" endfunction
-
-" function! Multiple_cursors_after()
-" let b:deoplete_disable_auto_complete = 0
-" endfunction
-
-" " Work with tab
-" inoremap <silent><expr> <TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ <SID>check_back_space() ? "\<TAB>" :
-" \ deoplete#mappings#manual_complete()
-" function! s:check_back_space() abort "{{{
-" let col = col('.') - 1
-" return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction"}}}
-
 " Plugin: LanguageServerClient
 " ============================
 let g:LanguageClient_serverCommands = {
@@ -290,5 +230,3 @@ au BufWrite * :Autoformat " Auto format on save
 " ======================
 set splitright " Open the vertical terminal to the right
 set shell=zsh " Ensure we use zsh
-
-

@@ -2,7 +2,6 @@
 	editor = vim
 	excludesfile = ~/.gitignore
 	quotepath = false
-	attributesfile = ~/.gitattributes
 [user]
 	name = Matt Venables
 	email = matt@venabl.es

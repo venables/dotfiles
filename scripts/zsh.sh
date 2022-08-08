@@ -1,3 +1,3 @@
 # Set zsh as our shell
-sudo echo "/usr/local/bin/zsh" >> /etc/shells
-chsh -s /usr/local/bin/zsh
+sudo echo "/opt/homebrew/bin/zsh" >> /etc/shells
+chsh -s /opt/homebrew/bin/zsh
