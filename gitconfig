@@ -5,6 +5,7 @@
 [user]
 	name = Matt Venables
 	email = matt@venabl.es
+	signingkey = BC38B6248331C0A8
 [color]
 	ui = true
 [alias]
@@ -33,3 +34,5 @@
 	conflictstyle = diff3
 [credential]
 	helper = osxkeychain
+[commit]
+	gpgsign = true
