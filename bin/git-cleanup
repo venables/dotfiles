@@ -1,21 +1,53 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-git checkout main
+function local_branch_name() {
+    local existed_in_local=$(git branch --list master)
 
-read -p "Pull the latest main branch (y/n)? "
+    if [[ -z ${existed_in_local} ]]; then
+        echo "main"
+    else
+        echo "master"
+    fi
+}
+
+BRANCH=$( local_branch_name )
+PURPLE='\033[0;35m'
+NC='\033[0m'
+
+echo ""
+echo "${PURPLE}git checkout $BRANCH${NC}"
+git checkout $BRANCH
+
+echo ""
+read -p "Pull the latest $BRANCH branch (y/n)? "
 if [ "$REPLY" == "y" ]
 then
-  git pull origin main
+  echo ""
+  echo "${PURPLE}git pull origin $BRANCH${NC}"
+  git pull origin $BRANCH
 fi
 
 # Update our list of remotes
+echo ""
+echo "${PURPLE}git fetch${NC}"
 git fetch
 
 # Remove any pointers to missing remotes
+echo ""
+echo "${PURPLE}git remote prune origin${NC}"
 git remote prune origin
 
 # Remove local fully merged branches
-git branch --merged main | grep -v "main$" | xargs git branch -d
+if [ "main" == $BRANCH ]
+then
+  echo ""
+  echo "${PURPLE}git branch --merged main | grep -v 'main$' | xargs -n 1 git branch -d${NC}"
+  git branch --merged main | grep -v 'main$' | xargs -n 1 git branch -d
+else
+  echo ""
+  echo "${PURPLE}git branch --merged master | grep -v 'master$' | xargs -n 1 git branch -d${NC}"
+  git branch --merged master | grep -v 'master$' | xargs -n 1 git branch -d
+fi
 
 # Load remotes
 REMOTES=$(git remote)
