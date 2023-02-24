@@ -38,7 +38,7 @@ alias gshow='git show'
 ## ======================
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-  . $(brew --prefix asdf)/asdf.sh
+  . $(brew --prefix asdf)/libexec/asdf.sh
 
   autoload -Uz compinit
   compinit
