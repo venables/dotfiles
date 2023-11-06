@@ -8,4 +8,3 @@
 
 # Symlink dotfiles
 ./scripts/symlink.sh
-
