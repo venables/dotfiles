@@ -10,6 +10,18 @@ I recommend cloning this repository to your `<HOME>/.dotfiles` directory, and th
 ./install
 ```
 
+### Re-adding symlinks
+
+```
+./scripts/symlink.sh
+```
+
+### Re-installing Homebrew packages
+
+```
+brew bundle
+```
+
 ## Directory structure
 
 ```
