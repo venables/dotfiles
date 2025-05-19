@@ -1,0 +1,39 @@
+## Aliases: Git
+## ============
+alias g='git'
+alias ga='git add '
+alias gap='git add -p'
+alias gb='git branch'
+alias gc='git commit'
+alias gcm='git commit -m '
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gdw='git diff --word-diff'
+alias gl='git l'
+alias gla='git la'
+alias gpush='git push'
+alias gs='git status -sb'
+alias gshow='git show'
+
+# cursor
+alias code="cursor"
+alias c="code"
+
+# Better ls
+alias ls="eza -1a --icons"
+alias ll="eza -l --icons"
+alias tree="eza --tree --icons"
+
+# Better cat with syntax highlighting
+alias cat="bat --style=plain --paging=never"
+alias less="bat --style=plain"
+
+# Basic tab completion setup
+autoload -Uz compinit
+compinit
+
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+# prompt
+eval "$(starship init zsh)"

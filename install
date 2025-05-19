@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+echo "🚀 Starting dotfiles installation..."
+echo
+
+echo "=== 🍺 Installing Homebrew ==="
+# Install homebrew
+./scripts/brew.sh
+# Install homebrew packages
+brew bundle
+echo
+
+echo "=== 🔄 Setting up ASDF version manager ==="
+# Set up ASDF
+./scripts/asdf.sh
+echo
+
+echo "=== 🐚 Setting up Zsh ==="
+# Set up Zsh
+./scripts/zsh.sh
+echo
+
+echo "=== 🔗 Creating symlinks for dotfiles ==="
+# Symlink the dotfiles
+./scripts/symlink.sh
+echo
+
+echo "✨ Installation complete!"
