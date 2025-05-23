@@ -14,9 +14,10 @@ brew "jq"
 brew "mpv"
 brew "neovim"
 brew "pinentry-mac"
-brew "starship"
 brew "vim"
 brew "yt-dlp"
+brew "z"
+brew "zimfw"
 brew "zsh"
 
 # Casks

@@ -14,9 +14,7 @@ ln -sf "$ROOT_DIR/dotfiles/git/gitignore"         "$HOME/.gitignore"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshrc"     "$HOME/.zshrc"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshenv"    "$HOME/.zshenv"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zprofile"  "$HOME/.zprofile"
-
-# starship
-ln -sf "$ROOT_DIR/dotfiles/config/starship.toml"  "$HOME/.config/starship.toml"
+ln -sf "$ROOT_DIR/dotfiles/zsh/zimrc"     "$HOME/.zimrc"
 
 # ghostty
 mkdir -p "$HOME/.config/ghostty"

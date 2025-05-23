@@ -1,6 +1,10 @@
-# .zshenv
+# ~/.zshenv
 
-# ensure PATH uniqueness
+# this file is always sourced, even for non-interactive shells put environment
+# variables here that should be available to all zsh instances avoid anything
+# that produces output or assumes an interactive shell
+
+# ensure path uniqueness
 typeset -U PATH path
 
 # editors
@@ -17,6 +21,12 @@ case ":$PATH:" in
   *) export PATH="${PNPM_HOME}:$PATH" ;;
 esac
 
-# asdf
+# asdf version manager
 export ASDF_DATA_DIR="${HOME}/.asdf"
 path+=("${ASDF_DATA_DIR}/shims")
+
+# postgres
+path+=("/opt/homebrew/opt/postgresql@17/bin")
+
+# zim framework home
+export ZIM_HOME="${HOME}/.zim"

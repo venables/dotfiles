@@ -1,2 +1,7 @@
-# .zprofile
+# ~/.zprofile
+
+# sourced on login shells (after .zshenv but before .zshrc) put commands here
+# that should run once at login good for setting up the initial environment
+
+# initialize homebrew environment
 eval "$(/opt/homebrew/bin/brew shellenv)"

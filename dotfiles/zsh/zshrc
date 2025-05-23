@@ -1,11 +1,44 @@
-## Aliases: Git
-## ============
+# ~/.zshrc
+# interactive shell configuration
+
+# zim initialization
+# -----------------
+
+# set zim home directory
+ZIM_HOME=${HOME}/.zim
+
+# install missing modules and update init.zsh if needed
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source /opt/homebrew/opt/zimfw/share/zimfw.zsh init -q
+fi
+
+# initialize modules
+source ${ZIM_HOME}/init.zsh
+
+# history settings
+# ---------------
+
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# directory navigation
+# -------------------
+
+setopt AUTO_CD              # cd by typing directory name
+setopt AUTO_PUSHD           # make cd push to directory stack
+setopt PUSHD_IGNORE_DUPS    # no duplicates in stack
+
+# aliases
+# -------
+
+# git shortcuts
 alias g='git'
-alias ga='git add '
+alias ga='git add'
 alias gap='git add -p'
 alias gb='git branch'
 alias gc='git commit'
-alias gcm='git commit -m '
+alias gcm='git commit -m'
 alias gd='git diff'
 alias gdc='git diff --cached'
 alias gdw='git diff --word-diff'
@@ -15,25 +48,52 @@ alias gpush='git push'
 alias gs='git status -sb'
 alias gshow='git show'
 
-# cursor
+# editor shortcuts
 alias code="cursor"
 alias c="code"
 
-# Better ls
-alias ls="eza -1a --icons"
-alias ll="eza -l --icons"
-alias tree="eza --tree --icons"
-
-# Better cat with syntax highlighting
+# better defaults
 alias cat="bat --style=plain --paging=never"
 alias less="bat --style=plain"
 
-# Basic tab completion setup
-autoload -Uz compinit
-compinit
+# fzf
+alias f='fzf'
 
-export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
+# navigation shortcuts
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
-# prompt
-eval "$(starship init zsh)"
+# key bindings
+# -----------
+
+# history substring search with arrow keys
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# accept autosuggestion with ctrl+space
+bindkey '^ ' autosuggest-accept
+
+# fzf key bindings (if you have fzf installed)
+# ctrl+t: file finder
+# ctrl+r: history search
+# alt+c: cd into directories
+
+# productivity features
+# --------------------
+
+# autosuggestions config
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'  # subtle gray
+
+# fzf configuration
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+# z directory jumping examples:
+# z proj     # jumps to ~/projects
+# z dot      # jumps to ~/.dotfiles
+# just type 'z' to see your recent directories
+
+# local overrides
+# --------------
+
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
