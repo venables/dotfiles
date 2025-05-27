@@ -16,6 +16,9 @@ ln -sf "$ROOT_DIR/dotfiles/zsh/zshenv"    "$HOME/.zshenv"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zprofile"  "$HOME/.zprofile"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zimrc"     "$HOME/.zimrc"
 
+# tool-versions
+ln -sf "$ROOT_DIR/dotfiles/tool-versions" "$HOME/.tool-versions"
+
 # ghostty
 mkdir -p "$HOME/.config/ghostty"
 ln -sf "$ROOT_DIR/dotfiles/config/ghostty/config" "$HOME/.config/ghostty/config"

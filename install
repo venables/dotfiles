@@ -8,16 +8,16 @@ echo "=== 🍺 Installing Homebrew ==="
 brew bundle
 echo
 
+echo "=== 🔗 Creating symlinks for dotfiles ==="
+./scripts/symlink.sh
+echo
+
 echo "=== 🔄 Setting up ASDF version manager ==="
 ./scripts/asdf.sh
 echo
 
 echo "=== 🐚 Setting up Zsh ==="
 ./scripts/zsh.sh
-echo
-
-echo "=== 🔗 Creating symlinks for dotfiles ==="
-./scripts/symlink.sh
 echo
 
 echo "=== 🔑 Configuring GPG ==="
