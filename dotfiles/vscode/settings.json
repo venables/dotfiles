@@ -27,7 +27,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
-  "cSpell.userWords": ["Venables"],
+  "cSpell.userWords": ["agentcommercekit", "Keypair", "valibot", "Venables"],
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
