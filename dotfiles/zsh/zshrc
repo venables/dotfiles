@@ -15,6 +15,9 @@ fi
 # initialize modules
 source ${ZIM_HOME}/init.zsh
 
+# disable extended globbing (allow '^')
+setopt NO_EXTENDED_GLOB
+
 # history settings
 # ---------------
 
