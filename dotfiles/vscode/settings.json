@@ -33,8 +33,10 @@
   "cSpell.userWords": [
     "agentcommercekit",
     "blendist",
+    "healthcheck",
     "Keypair",
     "picklist",
+    "tsdown",
     "unstub",
     "valibot",
     "Venables"
@@ -58,5 +60,6 @@
   "update.releaseTrack": "prerelease",
   "vim.useSystemClipboard": true,
   "window.commandCenter": 1,
-  "workbench.colorTheme": "Dracula Theme"
+  "workbench.colorTheme": "Dracula Theme",
+  "git.autofetch": true
 }
