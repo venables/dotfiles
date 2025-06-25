@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-# Install latest nodejs LTS
+# Install nodejs
 asdf plugin add nodejs
-asdf cmd nodejs update-nodebuild
-NODEJS_LTS=$(asdf cmd nodejs resolve lts --latest-available)
-asdf install nodejs "$NODEJS_LTS"
+asdf install nodejs latest
+asdf set nodejs latest --home
 
-touch "$HOME/.tool-versions"
-sed -i '' "s/^nodejs.*/nodejs $NODEJS_LTS/" "$HOME/.tool-versions"
+# Install bun
+asdf plugin add bun
+asdf install bun latest
+asdf set bun latest --home

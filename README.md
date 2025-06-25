@@ -22,25 +22,6 @@ I recommend cloning this repository to your `<HOME>/.dotfiles` directory, and th
 brew bundle
 ```
 
-## Directory structure
-
-```
-.
-├── install           # Main installation script
-├── Brewfile          # Homebrew package definitions
-├── dotfiles/         # Configuration files
-│   ├── config/       # Application configs
-│   ├── git/          # Git configuration
-│   ├── gnupg/        # GPG configuration
-│   ├── vscode/       # VS Code (Cursor) settings
-│   └── zsh/          # Zsh configuration
-└── scripts/          # Helper scripts
-    ├── asdf.sh       # ASDF version manager setup
-    ├── brew.sh       # Homebrew installation
-    ├── symlink.sh    # Creates symlinks for dotfiles
-    └── zsh.sh        # Zsh shell setup
-```
-
 ## Signing git commits
 
 ### Generate a new key
