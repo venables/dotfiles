@@ -1,5 +1,6 @@
 brew "asdf"
 brew "bat"
+brew "biome"
 brew "coreutils"
 brew "curl"
 brew "eza"
