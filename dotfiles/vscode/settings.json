@@ -33,13 +33,18 @@
   "cSpell.userWords": [
     "agentcommercekit",
     "blendist",
+    "devnet",
     "healthcheck",
-    "Keypair",
+    "keypair",
+    "lamports",
+    "modelcontextprotocol",
     "picklist",
+    "solana",
+    "streamable",
     "tsdown",
     "unstub",
     "valibot",
-    "Venables"
+    "venables"
   ],
   "cursor.composer.shouldChimeAfterChatFinishes": true,
   "editor.codeActionsOnSave": {
