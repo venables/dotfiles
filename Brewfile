@@ -25,7 +25,7 @@ brew "zsh"
 # Casks
 cask "1password"
 cask "1password-cli"
-cash "android-studio"
+cask "android-studio"
 cask "appcleaner"
 cask "ark"
 cask "chatgpt"
