@@ -35,6 +35,7 @@
     "agentcommercekit",
     "blendist",
     "devnet",
+    "fontsource",
     "healthcheck",
     "keypair",
     "lamports",
