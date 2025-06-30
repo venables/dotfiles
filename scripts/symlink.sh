@@ -12,8 +12,6 @@ ln -sf "$ROOT_DIR/dotfiles/git/gitignore"         "$HOME/.gitignore"
 
 # zsh
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshrc"     "$HOME/.zshrc"
-ln -sf "$ROOT_DIR/dotfiles/zsh/zshenv"    "$HOME/.zshenv"
-ln -sf "$ROOT_DIR/dotfiles/zsh/zprofile"  "$HOME/.zprofile"
 ln -sf "$ROOT_DIR/dotfiles/zsh/zimrc"     "$HOME/.zimrc"
 
 # tool-versions
