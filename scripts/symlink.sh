@@ -9,6 +9,8 @@ touch $HOME/.hushlogin
 ln -sf "$ROOT_DIR/dotfiles/git/gitconfig"         "$HOME/.gitconfig"
 ln -sf "$ROOT_DIR/dotfiles/git/gitconfig-catena"  "$HOME/.gitconfig-catena"
 ln -sf "$ROOT_DIR/dotfiles/git/gitignore"         "$HOME/.gitignore"
+touch "$HOME/.gitconfig-local"
+touch "$HOME/.gitconfig-catena-local"
 
 # zsh
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshrc"     "$HOME/.zshrc"

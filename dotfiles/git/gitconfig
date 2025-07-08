@@ -5,7 +5,6 @@
 [user]
 	name = Matt Venables
 	email = matt@venabl.es
-	signingkey = 4C7C9B81ACB1CD08
 [color]
 	ui = true
 [alias]
@@ -44,6 +43,8 @@
 	gpgsign = true
 [init]
 	defaultBranch = main
+[include]
+	path = ~/.gitconfig-local
 [includeIf "gitdir:~/dev/catena/"]
 	path = ~/.gitconfig-catena
 [gpg]
