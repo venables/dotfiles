@@ -1,12 +1,27 @@
 # Dotfiles & Configs
 
-These are my dotfiles and config files, tuned for my workflows on MacOS systems. The init script will get you up and running from zero-to-one on a brand new computer.
+My dotfiles.
 
 ## Getting started
 
-I recommend cloning this repository to your `<HOME>/.dotfiles` directory, and then run
+### New computer
+
+1. Open Terminal.app
+1. Generate a new SSH key
+1. Add it to Github's [SSH and GPG Keys](https://github.com/settings/keys) page
+
+### Installation
+
+1. Clone the repo
 
 ```sh
+git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
+```
+
+1. Run the install script
+
+```sh
+cd ~/.dotfiles
 ./install
 ```
 

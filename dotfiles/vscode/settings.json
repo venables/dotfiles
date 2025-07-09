@@ -68,5 +68,6 @@
   "vim.useSystemClipboard": true,
   "window.commandCenter": true,
   "workbench.colorTheme": "Dracula Theme",
-  "git.autofetch": true
+  "git.autofetch": true,
+  "cursor.windowSwitcher.sidebarHoverCollapsed": true
 }
