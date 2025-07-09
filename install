@@ -6,6 +6,7 @@ echo
 echo "=== 🍺 Installing Homebrew ==="
 ./scripts/brew.sh
 eval "$(/opt/homebrew/bin/brew shellenv)"
+sudo -v
 brew bundle
 echo
 
@@ -19,10 +20,6 @@ echo
 
 echo "=== 🐚 Setting up Zsh ==="
 ./scripts/zsh.sh
-echo
-
-echo "=== 🔑 Configuring GPG ==="
-./scripts/gpg.sh
 echo
 
 echo "✨ Installation complete!"
