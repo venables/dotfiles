@@ -5,6 +5,7 @@ echo
 
 echo "=== 🍺 Installing Homebrew ==="
 ./scripts/brew.sh
+eval "$(/opt/homebrew/bin/brew shellenv)"
 brew bundle
 echo
 

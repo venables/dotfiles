@@ -10,5 +10,3 @@ else
   /opt/homebrew/bin/brew update
 fi
 
-# Load Homebrew environment for the rest of the setup scripts
-eval "$(/opt/homebrew/bin/brew shellenv)"
