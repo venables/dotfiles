@@ -116,3 +116,6 @@ fi
 
 # local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# bun completions
+[ -s "/Users/matt/.bun/_bun" ] && source "/Users/matt/.bun/_bun"
