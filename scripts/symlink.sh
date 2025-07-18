@@ -15,6 +15,10 @@ touch "$HOME/.gitconfig-catena-local"
 # zsh
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshrc"     "$HOME/.zshrc"
 
+# starship
+mkdir -p "$HOME/.config"
+ln -sf "$ROOT_DIR/dotfiles/config/starship.toml" "$HOME/.config/starship.toml"
+
 # tool-versions
 ln -sf "$ROOT_DIR/dotfiles/tool-versions" "$HOME/.tool-versions"
 
