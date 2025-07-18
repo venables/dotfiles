@@ -27,10 +27,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "biome.requireConfiguration": true,
-  "oxc.requireConfig": true,
-
   "cSpell.userWords": [
     "agentcommercekit",
     "blendist",
