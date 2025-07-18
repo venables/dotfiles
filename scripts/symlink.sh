@@ -14,7 +14,6 @@ touch "$HOME/.gitconfig-catena-local"
 
 # zsh
 ln -sf "$ROOT_DIR/dotfiles/zsh/zshrc"     "$HOME/.zshrc"
-ln -sf "$ROOT_DIR/dotfiles/zsh/zimrc"     "$HOME/.zimrc"
 
 # tool-versions
 ln -sf "$ROOT_DIR/dotfiles/tool-versions" "$HOME/.tool-versions"

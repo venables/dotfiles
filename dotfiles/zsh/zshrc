@@ -1,11 +1,12 @@
 # ~/.zshrc
 
-# zim
-ZIM_HOME="${HOME}/.zim"
-if [[ ! -f ${ZIM_HOME}/init.zsh ]] || [[ ${ZIM_HOME}/init.zsh -ot ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
-  source /opt/homebrew/opt/zimfw/share/zimfw.zsh init -q
-fi
-source ${ZIM_HOME}/init.zsh
+# starship prompt
+eval "$(/opt/homebrew/bin/starship init zsh)"
+
+# zsh plugins
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 # environment
 typeset -U PATH path
