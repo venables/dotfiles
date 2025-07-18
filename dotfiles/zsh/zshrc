@@ -112,9 +112,6 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
   path+=("$ANDROID_HOME/emulator" "$ANDROID_HOME/platform-tools")
 fi
 
-# windsurf
-[[ -d "$HOME/.codeium/windsurf/bin" ]] && path+=("$HOME/.codeium/windsurf/bin")
-
 # local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
