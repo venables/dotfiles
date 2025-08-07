@@ -9,4 +9,3 @@ else
   echo "Homebrew found. Updating..."
   /opt/homebrew/bin/brew update
 fi
-

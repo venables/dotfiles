@@ -8,6 +8,8 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
+export OLLAMA_HOST=http://0.0.0.0:11434
+
 # environment
 typeset -U PATH path
 
@@ -112,8 +114,20 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
   path+=("$ANDROID_HOME/emulator" "$ANDROID_HOME/platform-tools")
 fi
 
-# local overrides
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+# Git tab complete most recent branch first
+__git_branch_complete_current_then_recent() {
+  local cur branches
+  cur=$(git symbolic-ref --short HEAD 2>/dev/null)
+  branches=("${(@f)$(git for-each-ref --sort=-committerdate \
+    --format='%(refname:short)' refs/heads)}")
+  branches=(${cur} ${branches:#$cur})
+  compadd -- $branches
+}
+zstyle ':completion:*:*:git:*:branches' command __git_branch_complete_current_then_recent
+
 
 # bun completions
 [ -s "/Users/matt/.bun/_bun" ] && source "/Users/matt/.bun/_bun"
+
+# local overrides
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
