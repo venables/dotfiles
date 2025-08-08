@@ -12,11 +12,9 @@
 
 theme = Dracula
 macos-titlebar-style = tabs
-macos-icon = xray
-# macos-icon = custom-style
-# macos-icon-frame = plastic
-# macos-icon-ghost-color = #BD93F9
-# macos-icon-screen-color = #6272A4
+macos-icon = custom-style
+macos-icon-ghost-color = #BD93F9
+macos-icon-screen-color = #6272A4
 macos-titlebar-proxy-icon = hidden
 unfocused-split-opacity = 1
 cursor-style = block
