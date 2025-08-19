@@ -10,8 +10,8 @@ source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-se
 
 # environment variables
 typeset -U PATH path
-export VISUAL="vim"
-export EDITOR="vim"
+export VISUAL="nvim"
+export EDITOR="nvim"
 export GPG_TTY=$(tty)
 export OLLAMA_HOST=http://0.0.0.0:11434
 
