@@ -22,6 +22,10 @@ echo "=== 🐚 Setting up Zsh ==="
 ./scripts/zsh.sh
 echo
 
+echo "=== 👾 Installing nvim ==="
+./scripts/nvim.sh
+echo
+
 echo "=== 🤖 Installing LLM tools ==="
 ./scripts/llm.sh
 echo
