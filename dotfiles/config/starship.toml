@@ -5,13 +5,15 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
-$cmd_duration\
 $line_break\
-$python\
 $character"""
+
+right_format = """$cmd_duration$time"""
 
 [directory]
 style = "blue"
+truncation_length = 0
+truncate_to_repo = false
 
 [character]
 success_symbol = "[❯](purple)"
@@ -41,6 +43,7 @@ style = "bright-black"
 format = "[$duration]($style) "
 style = "yellow"
 
-[python]
-format = "[$virtualenv]($style) "
+[time]
+disabled = false
+format = "[$time]($style)"
 style = "bright-black"
