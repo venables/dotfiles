@@ -35,6 +35,10 @@ fi
 mkdir -p "$HOME/Library/Application Support/Cursor/User"
 ln -sf "$ROOT_DIR/dotfiles/vscode/settings.json" "$HOME/Library/Application Support/Cursor/User/settings.json"
 
+# zed
+mkdir -p "$HOME/.config/zed"
+ln -sf "$ROOT_DIR/dotfiles/config/zed/settings.json" "$HOME/.config/zed/settings.json"
+
 # gnupg
 mkdir -p "$HOME/.gnupg"
 chmod 700 "$HOME/.gnupg"
