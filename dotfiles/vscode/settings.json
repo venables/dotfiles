@@ -68,7 +68,7 @@
   "update.releaseTrack": "prerelease",
   "vim.useSystemClipboard": true,
   "window.commandCenter": true,
-  "workbench.colorTheme": "Dracula Theme",
+  "workbench.colorTheme": "ZED One Theme Dark",
   "git.autofetch": true,
   "cursor.windowSwitcher.sidebarHoverCollapsed": true
 }

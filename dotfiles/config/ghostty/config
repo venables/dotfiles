@@ -10,13 +10,23 @@
 # Additionally, each config option is also explained in detail
 # on Ghostty's website, at https://ghostty.org/docs/config.
 
-theme = Dracula
-macos-titlebar-style = tabs
-macos-icon = custom-style
-macos-icon-ghost-color = #BD93F9
-macos-icon-screen-color = #6272A4
-macos-titlebar-proxy-icon = hidden
-unfocused-split-opacity = 1
+theme = Github-Dark-Dimmed
+
+# cursor
+cursor-color = #B62EB2
 cursor-style = block
 shell-integration-features = no-cursor
+
+# icon
+macos-icon = custom-style
+macos-icon-ghost-color = #FFFFFF
+macos-icon-screen-color = #000000
+
+# mac styles
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+
+# misc
 keybind = shift+enter=text:\n
+split-divider-color = #222
+unfocused-split-opacity = 1
