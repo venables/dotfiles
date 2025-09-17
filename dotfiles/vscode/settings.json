@@ -32,6 +32,28 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  "cursor.windowSwitcher.sidebarHoverCollapsed": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "gitblame.inlineMessageEnabled": true,
+  "gitblame.inlineMessageFormat": "${author.name} (${time.ago})",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "update.releaseTrack": "prerelease",
+  "vim.useSystemClipboard": true,
+  "window.commandCenter": true,
+  "workbench.colorTheme": "ZED One Theme Dark",
+
+  // Spelling
   "cSpell.userWords": [
     "agentcommercekit",
     "blendist",
@@ -48,27 +70,5 @@
     "unstub",
     "valibot",
     "venables"
-  ],
-  "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
-  },
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true,
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
-  "gitblame.inlineMessageEnabled": true,
-  "gitblame.inlineMessageFormat": "${author.name} (${time.ago})",
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "update.releaseTrack": "prerelease",
-  "vim.useSystemClipboard": true,
-  "window.commandCenter": true,
-  "workbench.colorTheme": "ZED One Theme Dark",
-  "git.autofetch": true,
-  "cursor.windowSwitcher.sidebarHoverCollapsed": true
+  ]
 }
