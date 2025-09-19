@@ -43,3 +43,7 @@ ln -sf "$ROOT_DIR/dotfiles/config/zed/settings.json" "$HOME/.config/zed/settings
 mkdir -p "$HOME/.gnupg"
 chmod 700 "$HOME/.gnupg"
 ln -sf "$ROOT_DIR/dotfiles/gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
+
+# gh-dash
+mkdir -p "$HOME/.config/gh-dash"
+ln -sf "$ROOT_DIR/dotfiles/config/gh-dash/config.yml" "$HOME/.config/gh-dash/config.yml"
