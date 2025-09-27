@@ -1,4 +1,5 @@
-theme = "Github Dark Dimmed"
+# theme = "Github Dark Dimmed"
+theme = "Dracula"
 cursor-color = #B62EB2
 cursor-style = block
 macos-icon = custom-style
