@@ -113,9 +113,5 @@ alias mkdir='mkdir -p'
 alias df='df -h'
 alias du='du -h'
 
-# external integrations
-[[ -f ~/.orbstack/shell/init.zsh ]] && source ~/.orbstack/shell/init.zsh
-[ -s "/Users/matt/.bun/_bun" ] && source "/Users/matt/.bun/_bun"
-
 # local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
