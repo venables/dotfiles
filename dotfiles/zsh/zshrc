@@ -1,12 +1,26 @@
 # ~/.zshrc
 
+# homebrew
+[[ -f "/opt/homebrew/bin/brew" ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # starship prompt
-eval "$(/opt/homebrew/bin/starship init zsh)"
+eval "$(starship init zsh)"
 
 # zsh plugins
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+# enable completion system
+autoload -Uz compinit
+compinit
+
+# completion styles
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+# git completion for aliases
+compdef g=git
 
 # environment variables
 typeset -U PATH path
@@ -25,8 +39,6 @@ export ASDF_DATA_DIR="${HOME}/.asdf"
 export PNPM_HOME="${HOME}/Library/pnpm"
 [[ -d "$PNPM_HOME" ]] && path+=("$PNPM_HOME")
 
-[[ -d "/opt/homebrew/opt/postgresql@17/bin" ]] && path+=("/opt/homebrew/opt/postgresql@17/bin")
-
 # java/android environment
 if [[ -d "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home" ]]; then
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
@@ -36,8 +48,8 @@ if [[ -d "$HOME/Library/Android/sdk" ]]; then
 fi
 [[ -d "$ANDROID_HOME/emulator" ]] && path+=("$ANDROID_HOME/emulator" "$ANDROID_HOME/platform-tools")
 
-# homebrew
-[[ -f "/opt/homebrew/bin/brew" ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+# zoxide (modern directory jumper)
+eval "$(zoxide init zsh)"
 
 # zsh options
 setopt NO_EXTENDED_GLOB
@@ -94,6 +106,7 @@ alias gs='git status -sb'
 alias gshow='git show'
 alias gclaude='git claude'
 
+alias vim='nvim'
 alias code="cursor"
 alias c="code"
 alias cat="bat --style=plain --paging=never"
@@ -106,9 +119,10 @@ alias adsf="asdf"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias ll='ls -la'
-alias la='ls -A'
-alias l='ls -CF'
+alias ls='eza'
+alias ll='eza -la'
+alias la='eza -A'
+alias l='eza -F'
 alias mkdir='mkdir -p'
 alias df='df -h'
 alias du='du -h'
