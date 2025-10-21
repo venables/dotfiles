@@ -51,7 +51,6 @@
   "update.releaseTrack": "prerelease",
   "vim.useSystemClipboard": true,
   "window.commandCenter": true,
-  "workbench.colorTheme": "Dracula Theme",
 
   // Spelling
   "cSpell.userWords": [
