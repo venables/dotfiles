@@ -26,6 +26,9 @@ ln -sf "$ROOT_DIR/dotfiles/tool-versions" "$HOME/.tool-versions"
 mkdir -p "$HOME/.config/ghostty"
 ln -sf "$ROOT_DIR/dotfiles/config/ghostty/config" "$HOME/.config/ghostty/config"
 
+# nvim
+ln -sf "$ROOT_DIR/dotfiles/config/nvim" "$HOME/.config/nvim"
+
 # vscode (if installed)
 if [ -d "$HOME/Library/Application Support/Code" ]; then
   ln -sf "$ROOT_DIR/dotfiles/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
