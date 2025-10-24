@@ -39,6 +39,11 @@ ln -sf "$ROOT_DIR/dotfiles/vscode/settings.json" "$HOME/Library/Application Supp
 mkdir -p "$HOME/.config/zed"
 ln -sf "$ROOT_DIR/dotfiles/config/zed/settings.json" "$HOME/.config/zed/settings.json"
 
+# claude
+mkdir -p "$HOME/.config/claude"
+ln -sf "$ROOT_DIR/dotfiles/claude/settings.json" "$HOME/.claude/settings.json"
+ln -sf "$ROOT_DIR/dotfiles/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+
 # gnupg
 mkdir -p "$HOME/.gnupg"
 chmod 700 "$HOME/.gnupg"
