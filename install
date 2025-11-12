@@ -22,8 +22,4 @@ echo "=== 🐚 Setting up Zsh ==="
 ./scripts/zsh.sh
 echo
 
-echo "=== 🤖 Installing LLM tools ==="
-./scripts/llm.sh
-echo
-
 echo "✨ Installation complete!"
