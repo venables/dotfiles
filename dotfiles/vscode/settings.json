@@ -52,7 +52,6 @@
   "vim.useSystemClipboard": true,
   "window.commandCenter": true,
 
-  // Spelling
   "cSpell.userWords": [
     "agentcommercekit",
     "blendist",
@@ -69,6 +68,5 @@
     "unstub",
     "valibot",
     "venables"
-  ],
-  "workbench.colorTheme": "ZED One Theme Dark"
+  ]
 }
