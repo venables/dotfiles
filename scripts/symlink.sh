@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Creating symlinks..."
+
 # get the root directory (one level up from script location)
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 # silence the login prompt

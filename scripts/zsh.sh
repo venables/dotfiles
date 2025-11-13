@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Setting up Zsh..."
+
 # Set the default shell to zsh, installed by brew
 if ! grep -q "/opt/homebrew/bin/zsh" "/etc/shells"; then
   echo "/opt/homebrew/bin/zsh" | sudo tee -a "/etc/shells"

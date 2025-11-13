@@ -1,13 +1,22 @@
-# Dotfiles & Configs
+```
+█▀▀▄ █▀▀█ ▀▀█▀▀ █▀▀▀ ▀█▀ █░░░ █▀▀▀ █▀▀▀
+█░░█ █░░█ ░░█░░ █▀▀░ ░█░ █░░░ █▀▀▀ ▀▀▀█
+▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 
-My dotfiles.
+# On a new computer, just run:
+
+> git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
+> cd ~/.dotfiles
+> make install
+
+```
 
 ## Getting started
 
 ### New computer
 
 1. Open Terminal.app
-1. Generate a new SSH key
+1. [Generate a new SSH key](#generate-a-new-key)
 1. Add it to Github's [SSH and GPG Keys](https://github.com/settings/keys) page
 
 ### Installation
@@ -18,23 +27,20 @@ My dotfiles.
 git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
 ```
 
-1. Run the install script
+2. Run the setup
 
 ```sh
 cd ~/.dotfiles
-./install
+make install
 ```
 
-### Re-adding symlinks
+### Individual tasks
 
-```
-./scripts/symlink.sh
-```
-
-### Re-installing Homebrew packages
-
-```
-brew bundle
+```sh
+make brew      # Install/update Homebrew and packages
+make symlink   # Create symlinks for dotfiles
+make asdf      # Setup ASDF version manager
+make zsh       # Setup Zsh
 ```
 
 ## Signing git commits
