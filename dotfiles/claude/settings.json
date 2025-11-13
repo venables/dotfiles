@@ -14,6 +14,11 @@
     ]
   },
   "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true
+    "superpowers@superpowers-marketplace": true,
+    "python-development@claude-code-workflows": true,
+    "javascript-typescript@claude-code-workflows": true,
+    "cloud-infrastructure@claude-code-workflows": true,
+    "security-scanning@claude-code-workflows": true,
+    "code-review-ai@claude-code-workflows": true
   }
 }
