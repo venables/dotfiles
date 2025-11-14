@@ -132,3 +132,6 @@ alias du='du -h'
 
 # local overrides
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# opencode
+export PATH=/Users/matt/.opencode/bin:$PATH

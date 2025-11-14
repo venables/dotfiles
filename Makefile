@@ -1,8 +1,6 @@
 .PHONY: install banner brew symlink asdf zsh
 
-
-
-install: banner brew symlink asdf zsh
+install: banner brew symlink asdf llms zsh
 	@echo "✨ Installation complete!"
 
 banner:
@@ -20,6 +18,9 @@ symlink:
 
 asdf:
 	@./scripts/asdf.sh
+
+llms:
+	@./scripts/llms.sh
 
 zsh:
 	@./scripts/zsh.sh
