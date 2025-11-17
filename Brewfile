@@ -11,14 +11,17 @@ brew "fzf"
 brew "gawk"
 brew "gh"
 brew "git"
+brew "gmp" # ruby
 brew "gnupg"
 brew "jq"
 brew "lazygit"
 brew "libpq"
+brwe "libyaml" # ruby
 brew "luarocks"
 brew "mpv"
 brew "ni"
 brew "neovim"
+brew "openssl@3" # ruby
 brew "pinentry-mac"
 brew "ripgrep"
 brew "starship"

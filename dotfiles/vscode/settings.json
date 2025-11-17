@@ -68,5 +68,6 @@
     "unstub",
     "valibot",
     "venables"
-  ]
+  ],
+  "python.languageServer": "None"
 }

@@ -3,18 +3,23 @@
 █░░█ █░░█ ░░█░░ █▀▀░ ░█░ █░░░ █▀▀▀ ▀▀▀█
 ▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 
-# On a new computer, just run:
+# Get started
 
-> git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
-> cd ~/.dotfiles
-> make install
+$>
+git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
 
+$>
+cd ~/.dotfiles
+
+$>
+make install
 ```
 
 ## Getting started
 
 ### New computer
 
+1. `xcode-select -install`
 1. Open Terminal.app
 1. [Generate a new SSH key](#generate-a-new-key)
 1. Add it to Github's [SSH and GPG Keys](https://github.com/settings/keys) page

@@ -33,8 +33,8 @@ export OLLAMA_HOST=http://0.0.0.0:11434
 export LOCAL_BIN="${HOME}/.local/bin"
 [[ -d "$LOCAL_BIN" ]] && path+=("$LOCAL_BIN")
 
-export ASDF_DATA_DIR="${HOME}/.asdf"
-[[ -d "$ASDF_DATA_DIR/shims" ]] && path+=("$ASDF_DATA_DIR/shims")
+# asdf version manager
+source /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 export PNPM_HOME="${HOME}/Library/pnpm"
 [[ -d "$PNPM_HOME" ]] && path+=("$PNPM_HOME")
@@ -135,3 +135,4 @@ alias du='du -h'
 
 # opencode
 export PATH=/Users/matt/.opencode/bin:$PATH
+eval "$(~/.local/bin/mise activate)"
