@@ -1,4 +1,3 @@
-brew "asdf"
 brew "ast-grep"
 brew "bat"
 brew "coreutils"

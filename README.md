@@ -12,7 +12,7 @@ $>
 cd ~/.dotfiles
 
 $>
-make install
+./install.sh
 ```
 
 ## Getting started
@@ -36,16 +36,16 @@ git clone git@githb.com:venables/dotfiles.git ~/.dotfiles
 
 ```sh
 cd ~/.dotfiles
-make install
+./install.sh
 ```
 
 ### Individual tasks
 
 ```sh
-make brew      # Install/update Homebrew and packages
-make symlink   # Create symlinks for dotfiles
-make asdf      # Setup ASDF version manager
-make zsh       # Setup Zsh
+./scripts/brew.sh      # Install/update Homebrew and packages
+./scripts/symlink.sh   # Create symlinks for dotfiles
+./scripts/mise.sh      # Install/update Mise
+./scripts/zsh.sh       # Setup Zsh
 ```
 
 ## Signing git commits

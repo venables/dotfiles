@@ -33,12 +33,6 @@ export OLLAMA_HOST=http://0.0.0.0:11434
 export LOCAL_BIN="${HOME}/.local/bin"
 [[ -d "$LOCAL_BIN" ]] && path+=("$LOCAL_BIN")
 
-# asdf version manager
-source /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-export PNPM_HOME="${HOME}/Library/pnpm"
-[[ -d "$PNPM_HOME" ]] && path+=("$PNPM_HOME")
-
 # libpq (PostgreSQL client tools)
 [[ -d "/opt/homebrew/opt/libpq/bin" ]] && path+=("/opt/homebrew/opt/libpq/bin")
 
@@ -92,7 +86,7 @@ bindkey '^E' end-of-line
 bindkey '^K' kill-line
 bindkey '^U' backward-kill-line
 
-# aliases
+# aliases: git
 alias g='git'
 alias ga='git add'
 alias gap='git add -p'
@@ -109,15 +103,22 @@ alias gs='git status -sb'
 alias gshow='git show'
 alias gclaude='git claude'
 
-alias vim='nvim'
+# aliases: vim
+alias vim="nvim"
+alias v="vim"
+
+# aliases: cursor / code
 alias code="cursor"
 alias c="code"
+
+# aliases: better tools
 alias cat="bat --style=plain --paging=never"
 alias less="bat --style=plain"
 alias f='fzf'
 
-# asdf i type too fast
-alias adsf="asdf"
+# aliases: ai
+alias cc="claude"
+alias oc="opencode"
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -130,9 +131,11 @@ alias mkdir='mkdir -p'
 alias df='df -h'
 alias du='du -h'
 
-# local overrides
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
 # opencode
 export PATH=/Users/matt/.opencode/bin:$PATH
+
+# mise
 eval "$(~/.local/bin/mise activate)"
+
+# local overrides
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

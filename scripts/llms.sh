@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Claude code (installing outside of homebrew for easier upgrades)
+# https://claude.ai
 curl -fsSL https://claude.ai/install.sh | bash
 
-# Opencode
+# https://opencode.ai
 curl -fsSL https://opencode.ai/install | bash
