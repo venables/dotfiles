@@ -6,6 +6,21 @@
 ▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 ```
 
+## Usage
+
+All dotfiles are managed via [Stow](https://www.gnu.org/software/stow/)
+
+```sh
+stow \
+    git \
+    gnupg \
+    homebrew \
+    hushlogin \
+    ssh \
+    starship \
+    zsh
+```
+
 ## Getting started
 
 1. Install XCode
@@ -37,7 +52,6 @@
     brew bundle --global
     ```
 
-
 ### Shell (zsh)
 
 1. Add homebrew `zsh` to `/etc/shells`
@@ -51,6 +65,21 @@
     ```sh
     chsh -s $(brew --prefix)/bin/zsh
     ```
+
+## SSH Keys
+
+```
+ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519_github -C "github"
+```
+
+```
+eval "$(ssh-agent -s)"
+```
+
+```
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github
+```
+
 
 ## MacOS Settings
 
