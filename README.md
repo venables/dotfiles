@@ -16,6 +16,8 @@ stow \
     gnupg \
     homebrew \
     hushlogin \
+    mise \
+    nvim \
     ssh \
     starship \
     zsh
@@ -101,6 +103,21 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 ```sh
 defaults write -g AppleShowAllFiles -bool true
 ```
+
+### Set up hot corners
+
+```sh
+# Top Left: Screen saver
+defaults write com.appledock wvous-tl-corner -int 5
+# Top right: Application Windows
+defaults write com.appledock wvous-tr-corner -int 3
+# Bottom Left: Mission Control
+defaults write com.appledock wvous-bl-corner -int 2
+# Bottom Right: Desktop
+defaults write com.appledock wvous-br-corner -int 4
+```
+
+After setting these, restart the dock with `killall Dock`.
 
 ### Disable Spotlight keyboard shortcuts:
 

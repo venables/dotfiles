@@ -8,6 +8,18 @@
 	signingkey = EC6E08B3EB204284
 [color]
 	ui = true
+[merge]
+	conflictstyle = zdiff3
+[credential]
+	helper = osxkeychain
+[commit]
+	gpgsign = true
+[init]
+	defaultBranch = main
+[gpg]
+	program = /opt/homebrew/bin/gpg
+[includeIf "gitdir:~/dev/catena/"]
+	path = ~/.gitconfig-catena
 [alias]
 	a = add
 	b = branch
@@ -34,16 +46,3 @@
 	poi = "!gh poi"
   pr = "!gh pr"
 	dash = "!gh dash"
-
-[merge]
-	conflictstyle = zdiff3
-[credential]
-	helper = osxkeychain
-[commit]
-	gpgsign = true
-[init]
-	defaultBranch = main
-[gpg]
-	program = /opt/homebrew/bin/gpg
-[includeIf "gitdir:~/dev/catena/"]
-	path = ~/.gitconfig-catena
