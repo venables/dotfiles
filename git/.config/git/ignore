@@ -1,1 +1,10 @@
 .DS_Store
+*.swp
+*.zcompdump
+.zcompdump*
+.zwc
+*.local
+node_modules/
+
+# Claude
+./claude/*.local.*

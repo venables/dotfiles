@@ -68,6 +68,15 @@ stow \
     chsh -s $(brew --prefix)/bin/zsh
     ```
 
+## GitHub CLI
+
+Add the following Github CLI extensions:
+
+```sh
+gh ext install dlvhdr/gh-dash
+gh ext install seachicken/gh-poi
+```
+
 ## SSH Keys
 
 ```
@@ -82,23 +91,22 @@ eval "$(ssh-agent -s)"
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github
 ```
 
-
 ## MacOS Settings
 
-### Faster key repeat[^key-repeat]:
+### Faster key repeat[^key-repeat]
 
 ```sh
 defaults write -g InitialKeyRepeat -int 10
 defaults write -g KeyRepeat -int 1
 ```
 
-### Disable press and hold for special characters:
+### Disable press and hold for special characters
 
 ```
 defaults write -g ApplePressAndHoldEnabled -bool false
 ```
 
-### Show hidden files in Finder:
+### Show hidden files in Finder
 
 ```sh
 defaults write -g AppleShowAllFiles -bool true
@@ -106,24 +114,44 @@ defaults write -g AppleShowAllFiles -bool true
 
 ### Set up hot corners
 
+| Corner | Action |
+| ------------- | -------------- |
+| Top Left | Screen Saver (Locked) |
+| Top Right | Application Windows |
+| Bottom Left | Mission Control |
+| Bottom Right | Desktop |
+
+Set the hot corners
+
 ```sh
-# Top Left: Screen saver
-defaults write com.appledock wvous-tl-corner -int 5
-# Top right: Application Windows
+defaults write com.apple.dock wvous-tl-corner -int 5
 defaults write com.appledock wvous-tr-corner -int 3
-# Bottom Left: Mission Control
 defaults write com.appledock wvous-bl-corner -int 2
-# Bottom Right: Desktop
 defaults write com.appledock wvous-br-corner -int 4
+killall Dock
 ```
 
-After setting these, restart the dock with `killall Dock`.
+Lock the computer after 5s
 
-### Disable Spotlight keyboard shortcuts:
+```sh
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 5
+killall SystemUIServer
+```
+
+Disable some auto changes
+
+```sh
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+```
+
+### Disable Spotlight keyboard shortcuts
 
 Uncheck "Show Spotlight Search" in System Settings > Keyboard > Keyboard Shortcuts > Spotlight
 
 ## Reference
 
-[^1password-cli]: <https://developer.1password.com/docs/cli/get-started/>
 [^key-repeat]: <https://mac-key-repeat.zaymon.dev>

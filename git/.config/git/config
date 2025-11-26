@@ -1,25 +1,44 @@
 [core]
 	editor = nvim
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/git/ignore
 	quotepath = false
+
+[color]
+	ui = true
+
+[commit]
+	gpgsign = true
+
+[credential]
+	helper = osxkeychain
+
+[diff]
+  algorithm = histogram
+
+[gpg]
+	program = /opt/homebrew/bin/gpg
+
+[init]
+	defaultBranch = main
+
+[merge]
+	conflictstyle = zdiff3
+
+[pull]
+  rebase = true
+
+[push]
+  autoSetupRemote = true
+  default = current
+
+[rerere]
+  enabled = true
+
 [user]
 	name = Matt Venables
 	email = matt@venabl.es
 	signingkey = EC6E08B3EB204284
-[color]
-	ui = true
-[merge]
-	conflictstyle = zdiff3
-[credential]
-	helper = osxkeychain
-[commit]
-	gpgsign = true
-[init]
-	defaultBranch = main
-[gpg]
-	program = /opt/homebrew/bin/gpg
-[includeIf "gitdir:~/dev/catena/"]
-	path = ~/.gitconfig-catena
+
 [alias]
 	a = add
 	b = branch
@@ -46,3 +65,6 @@
 	poi = "!gh poi"
   pr = "!gh pr"
 	dash = "!gh dash"
+
+[includeIf "gitdir:~/dev/catena/"]
+	path = ~/.config/git/config-catena
