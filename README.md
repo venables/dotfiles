@@ -41,7 +41,7 @@ stow \
 
 1. Install XCode
 1. `xcode-select --install`
-1. `sudo xcodebuild -license`
+1. `sudo xcodebuild -license accept`
 1. Install Homebrew
 
    ```sh
@@ -139,9 +139,9 @@ Set the hot corners
 
 ```sh
 defaults write com.apple.dock wvous-tl-corner -int 5
-defaults write com.appledock wvous-tr-corner -int 3
-defaults write com.appledock wvous-bl-corner -int 2
-defaults write com.appledock wvous-br-corner -int 4
+defaults write com.apple.dock wvous-tr-corner -int 3
+defaults write com.apple.dock wvous-bl-corner -int 2
+defaults write com.apple.dock wvous-br-corner -int 4
 killall Dock
 ```
 
