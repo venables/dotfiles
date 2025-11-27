@@ -1,5 +1,0 @@
-[user]
-name = Matt Venables
-email = matt@catenalabs.com
-[include]
-	path = ~/.gitconfig-catena-local
