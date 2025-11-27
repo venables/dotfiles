@@ -1,28 +1,36 @@
 [core]
-	editor = nvim
-	excludesfile = ~/.config/git/ignore
-	quotepath = false
+  editor = nvim
+  excludesfile = ~/.config/git/ignore
+  pager = delta
+  quotepath = false
 
 [color]
-	ui = true
+  ui = true
 
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
+
+[delta]
+  navigate = true
+  line-numbers = true
 
 [diff]
   algorithm = histogram
 
 [gpg]
-	program = /opt/homebrew/bin/gpg
+  program = /opt/homebrew/bin/gpg
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
+
+[interactive]
+    diffFilter = delta --color-only
 
 [merge]
-	conflictstyle = zdiff3
+  conflictstyle = zdiff3
 
 [pull]
   rebase = true
@@ -35,36 +43,36 @@
   enabled = true
 
 [user]
-	name = Matt Venables
-	email = matt@venabl.es
-	signingkey = EC6E08B3EB204284
+  name = Matt Venables
+  email = matt@venabl.es
+  signingkey = EC6E08B3EB204284
 
 [alias]
-	a = add
-	b = branch
-	c = commit
-	co = checkout
-	cob = checkout -b
-	d = diff
-	fap = fetch --all --prune
-	fop = fetch origin --prune
-	l = log --graph --decorate --pretty=oneline --abbrev-commit
-	la = log --graph --decorate --pretty=oneline --abbrev-commit --all
-	ll = !git --no-pager l
-	lla = !git --no-pager la
-	p = push
-	s = status
-	r = rebase
-	# get the latest `main` branch in sync
-	sync = "!f() { BRANCH=${1:-main}; git checkout $BRANCH && git fetch --all --prune && git pull; }; f"
-	# Clean branches, including squash-and-merged
-	# From https://github.com/not-an-aardvark/git-delete-squashed
-	cleanup = "!f() { local targetBranch=${1:-main} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
-	claude = "!f() { msg=$(claude -p \"Look at the staged git changes and create a summarizing git commit title. Only respond with the title and no affirmation.\"); git commit -m \"$msg\"; }; f"
-	# GH CLI
-	poi = "!gh poi"
+  a = add
+  b = branch
+  c = commit
+  co = checkout
+  cob = checkout -b
+  d = diff
+  fap = fetch --all --prune
+  fop = fetch origin --prune
+  l = log --graph --decorate --pretty=oneline --abbrev-commit
+  la = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ll = !git --no-pager l
+  lla = !git --no-pager la
+  p = push
+  s = status
+  r = rebase
+  # get the latest `main` branch in sync
+  sync = "!f() { BRANCH=${1:-main}; git checkout $BRANCH && git fetch --all --prune && git pull; }; f"
+  # Clean branches, including squash-and-merged
+  # From https://github.com/not-an-aardvark/git-delete-squashed
+  cleanup = "!f() { local targetBranch=${1:-main} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
+  claude = "!f() { msg=$(claude -p \"Look at the staged git changes and create a summarizing git commit title. Only respond with the title and no affirmation.\"); git commit -m \"$msg\"; }; f"
+  # GH CLI
+  poi = "!gh poi"
   pr = "!gh pr"
-	dash = "!gh dash"
+  dash = "!gh dash"
 
 [includeIf "gitdir:~/dev/catena/"]
-	path = ~/.config/git/config-catena
+  path = ~/.config/git/config-catena
