@@ -6,6 +6,20 @@
 ▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 ```
 
+## Key Tools & Commands
+
+| Command  | Tool        | Description                                           |
+| -------- | ----------- | ----------------------------------------------------- |
+| `y`      | **yazi**    | Terminal file manager (vim-like). Exits to directory. |
+| `cd`     | **zoxide**  | Smarter `cd` that remembers where you go.             |
+| `ls`     | **eza**     | Modern `ls` with icons and colors.                    |
+| `cat`    | **bat**     | `cat` with syntax highlighting.                       |
+| `Ctrl+r` | **atuin**   | Magical shell history search (syncs across machines). |
+| `tldr`   | **tldr**    | Simplified man pages (e.g. `tldr tar`).               |
+| `gg`     | **lazygit** | Git TUI.                                              |
+| `g`      | **git**     | Git wrapper with many aliases (see `aliases.zsh`).    |
+| `n`      | **nvim**    | Opens neovim in current directory if non specified    |
+
 ## Usage
 
 All dotfiles are managed via [Stow](https://www.gnu.org/software/stow/)
@@ -30,43 +44,43 @@ stow \
 1. `sudo xcodebuild -license`
 1. Install Homebrew
 
-    ```sh
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
+   ```sh
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
 ## Installing the dotfiles
 
 1. Clone the repo:
 
-    ```sh
-    git clone git@github.com:venables/dotfiles.git ~/.dotfiles
-    ```
+   ```sh
+   git clone git@github.com:venables/dotfiles.git ~/.dotfiles
+   ```
 
 1. Bundle
 
-    ```sh
-    brew bundle --file=~/.dotfiles/homebrew/.Brewfile
-    ```
+   ```sh
+   brew bundle --file=~/.dotfiles/homebrew/.Brewfile
+   ```
 
-    Once dotfiles have been `stow`ed, you can use
+   Once dotfiles have been `stow`ed, you can use
 
-    ```sh
-    brew bundle --global
-    ```
+   ```sh
+   brew bundle --global
+   ```
 
 ### Shell (zsh)
 
 1. Add homebrew `zsh` to `/etc/shells`
 
-    ```sh
-    sudo sh -c 'echo "$(brew --prefix)/bin/zsh" >> /etc/shells'
-    ```
+   ```sh
+   sudo sh -c 'echo "$(brew --prefix)/bin/zsh" >> /etc/shells'
+   ```
 
 1. Use it as the default shell
 
-    ```sh
-    chsh -s $(brew --prefix)/bin/zsh
-    ```
+   ```sh
+   chsh -s $(brew --prefix)/bin/zsh
+   ```
 
 ## GitHub CLI
 
@@ -114,12 +128,12 @@ defaults write -g AppleShowAllFiles -bool true
 
 ### Set up hot corners
 
-| Corner | Action |
-| ------------- | -------------- |
-| Top Left | Screen Saver (Locked) |
-| Top Right | Application Windows |
-| Bottom Left | Mission Control |
-| Bottom Right | Desktop |
+| Corner       | Action                |
+| ------------ | --------------------- |
+| Top Left     | Screen Saver (Locked) |
+| Top Right    | Application Windows   |
+| Bottom Left  | Mission Control       |
+| Bottom Right | Desktop               |
 
 Set the hot corners
 

@@ -1,26 +1,30 @@
-brew 'bat'
-brew 'btop'
-brew 'eza'
-brew 'fastfetch'
-brew 'fd'
-brew 'fzf'
-brew 'gh'
-brew 'git'
-brew 'git-delta'
-brew 'gnupg'
-brew 'lazygit'
-brew 'mise'
-brew 'neovim'
-brew 'opencode'
-brew "pinentry-mac"
-brew 'ripgrep'
-brew 'starship'
-brew 'stow'
-brew 'tree-sitter-cli'
-brew 'zoxide'
-brew 'zsh'
-brew 'zsh-autosuggestions'
-brew 'zsh-syntax-highlighting'
+brew 'atuin'                     # magical shell history
+brew 'bat'                       # cat clone with syntax highlighting
+brew 'btop'                      # resource monitor
+brew 'eza'                       # modern ls replacement
+brew 'fastfetch'                 # system info fetcher
+brew 'fd'                        # find replacement
+brew 'fzf'                       # fuzzy finder
+brew 'gh'                        # github cli
+brew 'git'                       # version control
+brew 'git-delta'                 # syntax-highlighting pager for git
+brew 'gnupg'                     # encryption tool
+brew 'lazygit'                   # git tui
+brew 'mise'                      # version manager (node, python, etc)
+brew 'neovim'                    # text editor
+brew 'opencode'                  # ai agent
+brew "pinentry-mac"              # gpg passphrase entry
+brew 'ripgrep'                   # grep replacement
+brew 'starship'                  # prompt
+brew 'stow'                      # dotfile manager
+brew 'tldr'                      # simplified man pages
+brew 'tree-sitter-cli'           # parser generator tool (for nvim)
+brew 'yazi'                      # terminal file manager
+brew 'zoxide'                    # smarter cd
+brew 'zsh'                       # shell
+brew 'zsh-autosuggestions'       # zsh autosuggestions
+brew 'zsh-completions'           # zsh completion definitions
+brew 'zsh-syntax-highlighting'   # zsh syntax highlighting
 
 cask '1password@beta'
 cask '1password-cli@beta'

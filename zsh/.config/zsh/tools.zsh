@@ -17,3 +17,18 @@ fi
 if command -v fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
+
+# Atuin (Magical Shell History)
+if command -v atuin &>/dev/null; then
+  eval "$(atuin init zsh)"
+fi
+
+# Yazi (Shell Wrapper)
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}

@@ -2,3 +2,8 @@
 node = 'lts'
 python = '3'
 rust = 'stable'
+
+# formatters
+"npm:prettier" = "latest"
+shfmt = "latest"
+stylua = "latest"

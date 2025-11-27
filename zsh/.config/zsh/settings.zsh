@@ -1,7 +1,12 @@
 # Completion System
+# Add zsh-completions to fpath
+if command -v brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
+
 zmodload zsh/complist
 autoload -Uz compinit
-compinit
+compinit -u
 
 # Completion Styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
