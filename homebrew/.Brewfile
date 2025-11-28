@@ -17,6 +17,7 @@ brew 'neovim'
 brew 'opencode'
 brew "pinentry-mac"
 brew 'ripgrep'
+brew 'spotify_player'
 brew 'starship'
 brew 'stow'
 brew 'tldr'
