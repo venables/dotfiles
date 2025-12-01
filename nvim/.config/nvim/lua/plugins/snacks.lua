@@ -3,6 +3,7 @@ return {
   opts = {
     explorer = {
       hidden = true,
+      respect_gitignore = false,
     },
     picker = {
       hidden = true,
