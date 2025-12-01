@@ -28,15 +28,16 @@ All dotfiles are managed via [Stow](https://www.gnu.org/software/stow/)
 
 ```sh
 stow \
-    git \
-    gnupg \
-    homebrew \
-    hushlogin \
-    mise \
-    nvim \
-    ssh \
-    starship \
-    zsh
+  ghostty \
+  git \
+  gnupg \
+  homebrew \
+  hushlogin \
+  mise \
+  nvim \
+  ssh \
+  starship \
+  zsh
 ```
 
 ## Getting started

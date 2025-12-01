@@ -1,0 +1,5 @@
+# Claude
+keybind = shift+enter=text:\x1b\r
+
+# Theme
+theme = Carbonfox
