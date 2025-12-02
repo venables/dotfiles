@@ -51,6 +51,7 @@
    ```sh
    cd ~/.dotfiles
    stow \
+    agents \
     ghostty \
     git \
     homebrew \
