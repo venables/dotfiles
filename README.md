@@ -69,6 +69,22 @@
    brew bundle --global
    ```
 
+1. Install CLI tools
+
+   [OpenCode](https://opencode.ai/)
+
+   ```sh
+   curl -fsSL https://opencode.ai/install | bash
+   ```
+
+   [Claude Code](https://claude.ai/)
+
+   ```sh
+   curl -fsSL https://claude.ai/install.sh | bash
+   ```
+
+   > NOTE: We install these directly (outside of homebrew) to better support their auto-update features
+
 ## Configuration
 
 ### Shell (zsh)
