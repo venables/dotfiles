@@ -17,6 +17,7 @@
   algorithm = histogram
 
 [pager]
+  branch = false
   diff = riff
   show = riff
   log = riff
