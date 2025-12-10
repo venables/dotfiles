@@ -1,7 +1,7 @@
 [core]
   editor = nvim
   excludesfile = ~/.config/git/ignore
-  pager = delta
+  pager = moor
   quotepath = false
 
 [color]
@@ -13,21 +13,22 @@
 [credential]
   helper = osxkeychain
 
-[delta]
-  navigate = true
-  line-numbers = true
-
 [diff]
   algorithm = histogram
 
+[pager]
+  diff = riff
+  show = riff
+  log = riff
+
 [gpg]
-  program = /opt/homebrew/bin/gpg
+  program = gpg
 
 [init]
   defaultBranch = main
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = riff --color=on
 
 [merge]
   conflictstyle = zdiff3

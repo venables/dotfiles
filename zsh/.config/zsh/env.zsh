@@ -5,6 +5,10 @@ export GPG_TTY=$(tty)
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# pager
+export PAGER="moor"
+export MANPAGER="moor"
+
 # History
 export HISTFILE="$ZDOTDIR/.zsh_history"
 export HISTSIZE=10000
