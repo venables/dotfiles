@@ -46,6 +46,12 @@
    brew bundle --file=~/.dotfiles/homebrew/.Brewfile
    ```
 
+1. Fix zsh compinit insecure directories warning:
+
+   ```sh
+   compaudit | xargs chmod go-w
+   ```
+
 1. Symlink dotfiles using [Stow](https://www.gnu.org/software/stow/):
 
    ```sh
