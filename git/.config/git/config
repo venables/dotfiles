@@ -1,7 +1,6 @@
 [core]
   editor = nvim
   excludesfile = ~/.config/git/ignore
-  pager = moor
   quotepath = false
 
 [color]
@@ -16,12 +15,6 @@
 [diff]
   algorithm = histogram
 
-[pager]
-  branch = false
-  diff = riff
-  show = riff
-  log = riff
-
 [gpg]
   program = gpg
 
@@ -30,6 +23,11 @@
 
 [interactive]
   diffFilter = riff --color=on
+
+[pager]
+  diff = riff
+  show = riff
+  log = riff
 
 [merge]
   conflictstyle = zdiff3

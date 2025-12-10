@@ -16,7 +16,7 @@ brew "lazydocker"
 brew "lazygit"
 brew "libpq"
 brew "mise"
-brew "moor"
+
 brew "neovim"
 brew "pinentry-mac"
 brew "procs"
