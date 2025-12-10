@@ -56,3 +56,10 @@ fi
 if command -v zoxide &>/dev/null; then
   alias cd="z"
 fi
+
+# glow (markdown viewer)
+if command -v glow &>/dev/null; then
+  alias md="glow -p"
+fi
+
+

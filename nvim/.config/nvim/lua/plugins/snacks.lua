@@ -1,13 +1,7 @@
 return {
   "folke/snacks.nvim",
   opts = {
-    explorer = {
-      hidden = true,
-      ignored = true,
-    },
     picker = {
-      hidden = true,
-      ignored = true,
       formatters = {
         file = {
           filename_first = true,
@@ -16,8 +10,28 @@ return {
       sources = {
         files = {
           hidden = true,
-          ignored = false,
-          include = { ".env*" },
+          ignored = true,
+          exclude = {
+            "node_modules",
+            ".git",
+            ".turbo",
+            ".next",
+            ".nuxt",
+            ".vercel",
+            ".cache",
+            "dist",
+            "build",
+            ".venv",
+            "venv",
+            "__pycache__",
+            ".pytest_cache",
+            "coverage",
+            ".terraform",
+          },
+        },
+        explorer = {
+          hidden = true,
+          ignored = true,
         },
       },
     },
