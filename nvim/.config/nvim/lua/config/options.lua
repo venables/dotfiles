@@ -6,3 +6,6 @@ local opt = vim.opt
 
 -- Tabs and indentation
 opt.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing (default: 0)
+
+-- Disable unused providers (suppresses healthcheck warnings)
+vim.g.loaded_perl_provider = 0

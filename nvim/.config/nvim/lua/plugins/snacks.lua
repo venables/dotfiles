@@ -3,10 +3,11 @@ return {
   opts = {
     explorer = {
       hidden = true,
-      respect_gitignore = false,
+      ignored = true,
     },
     picker = {
       hidden = true,
+      ignored = true,
       formatters = {
         file = {
           filename_first = true,
@@ -15,6 +16,8 @@ return {
       sources = {
         files = {
           hidden = true,
+          ignored = false,
+          include = { ".env*" },
         },
       },
     },
