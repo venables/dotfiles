@@ -1,12 +1,17 @@
 return {
-  -- add nightfox (for carbonfox)
-  { "EdenEast/nightfox.nvim" },
+  -- add tokyonight
+  {
+    "folke/tokyonight.nvim",
+    opts = {
+      style = "night",
+    },
+  },
 
-  -- Configure LazyVim to load carbonfox
+  -- Configure LazyVim to load tokyonight
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "carbonfox",
+      colorscheme = "tokyonight",
     },
   },
 }
