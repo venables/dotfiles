@@ -21,6 +21,9 @@ alias gla='git la'
 alias gp='git push'
 alias gs='git status -sb'
 alias gshow='git show'
+# claide-code, opencode aliases
+alias gcl='git claude'
+alias goc='git oc'
 
 # ai tools
 alias cc="claude"

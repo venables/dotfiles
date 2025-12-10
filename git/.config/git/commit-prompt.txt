@@ -1,0 +1,6 @@
+Look at the staged git changes and generate a commit message following these rules:
+
+1. Subject line: max 50 chars, capitalized, imperative mood, no period
+2. If more detail needed, add a blank line then body wrapped at 72 chars explaining what and why
+
+Only output the commit message, nothing else.
