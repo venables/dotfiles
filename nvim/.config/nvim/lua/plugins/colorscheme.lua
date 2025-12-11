@@ -1,17 +1,15 @@
 return {
-  -- add tokyonight
   {
-    "folke/tokyonight.nvim",
+    "rebelot/kanagawa.nvim",
     opts = {
-      style = "night",
+      theme = "wave",
     },
   },
 
-  -- Configure LazyVim to load tokyonight
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "kanagawa",
     },
   },
 }

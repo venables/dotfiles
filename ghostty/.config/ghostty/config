@@ -1,8 +1,7 @@
-# Claude
+# Ghostty config: https://ghostty.org/docs/config/reference
+# Visual editor: https://ghostty.zerebos.com/
+
+theme = Kanagawa Wave
+copy-on-select = true
 keybind = shift+enter=text:\x1b\r
-
-# ssh
 shell-integration-features = ssh-terminfo,ssh-env
-
-# Theme
-theme = tokyonight
