@@ -1,5 +1,8 @@
 # Claude
 keybind = shift+enter=text:\x1b\r
 
+# ssh
+shell-integration-features = ssh-terminfo,ssh-env
+
 # Theme
 theme = tokyonight
