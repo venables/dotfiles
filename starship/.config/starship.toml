@@ -2,6 +2,7 @@
 
 add_newline = true
 format = """
+$hostname\
 $directory\
 $git_branch\
 $git_state\
@@ -9,6 +10,11 @@ $git_status\
 $line_break
 $character
 """
+
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold yellow"
 
 [directory]
 style = "bold cyan"
