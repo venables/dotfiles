@@ -1,15 +1,15 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = true
-format = """
-$hostname\
+
+format = """$hostname\
 $directory\
 $git_branch\
 $git_state\
 $git_status\
-$line_break
-$character
-"""
+$cmd_duration\
+$line_break\
+$character"""
 
 [hostname]
 ssh_only = true
@@ -17,7 +17,7 @@ format = "[$hostname]($style) "
 style = "bold yellow"
 
 [directory]
-style = "bold cyan"
+style = "blue"
 truncation_length = 0
 truncate_to_repo = false
 
@@ -28,7 +28,7 @@ vimcmd_symbol = "[❮](green)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bold purple"
+style = "bright-black"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
@@ -43,4 +43,8 @@ stashed = "≡"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
 style = "bright-black"
