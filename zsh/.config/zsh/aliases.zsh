@@ -21,6 +21,7 @@ alias gla='git la'
 alias gp='git push'
 alias gs='git status -sb'
 alias gshow='git show'
+
 # claide-code, opencode aliases
 alias gcl='git claude'
 alias goc='git oc'
@@ -29,7 +30,7 @@ alias goc='git oc'
 alias cc="claude"
 alias oc="opencode"
 
-# editor
+# editor (open nvim at current location by default
 n() { nvim "${@:-.}"; }
 
 # eza (`ls` replacement)
@@ -61,5 +62,3 @@ fi
 if command -v glow &>/dev/null; then
   alias md="glow -p"
 fi
-
-
