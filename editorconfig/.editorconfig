@@ -1,0 +1,26 @@
+# EditorConfig is awesome: https://editorconfig.org
+# 
+# > [!NOTE]
+# > Must be at root, does not honor $XDG_CONFIG_HOME
+#
+
+# top-most EditorConfig file
+root = true
+
+# global config
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# python config
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Makefiles
+[Makefile*]
+indent_style = tab
