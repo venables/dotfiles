@@ -18,11 +18,6 @@ if command -v fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
 
-# Atuin (shell history)
-if command -v atuin &>/dev/null; then
-  eval "$(atuin init zsh)"
-fi
-
 # Yazi (Shell Wrapper)
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
