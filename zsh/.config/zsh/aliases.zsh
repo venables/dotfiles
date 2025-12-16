@@ -60,5 +60,5 @@ fi
 
 # glow (markdown viewer)
 if command -v glow &>/dev/null; then
-  alias md="glow -p"
+  alias md="glow -t"
 fi
