@@ -2,6 +2,15 @@
 # Visual editor: https://ghostty.zerebos.com/
 
 theme = TokyoNight Night
-copy-on-select = true
+
+# prefs
+copy-on-select = clipboard
+
+# claude
 keybind = shift+enter=text:\x1b\r
+
+# ssh fixes
 shell-integration-features = ssh-terminfo,ssh-env
+
+# keybindings
+keybind = global:cmd+backquote=toggle_quick_terminal
