@@ -142,6 +142,7 @@ Add the following Github CLI extensions:
 ```sh
 gh ext install dlvhdr/gh-dash
 gh ext install seachicken/gh-poi
+gh ext install meiji163/gh-notify
 ```
 
 ## MacOS Settings
