@@ -1,7 +1,8 @@
 [tools]
-node = 'lts'
-python = '3'
-rust = 'stable'
+bun = "latest"
+node = "lts"
+python = "3"
+rust = "stable"
 
 # formatters
 "npm:prettier" = "latest"
