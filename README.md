@@ -135,6 +135,14 @@ mkdir -p ~/.gnupg
 echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > ~/.gnupg/gpg-agent.conf
 ```
 
+### Neovim / Lazyvim
+
+A couple additions once lazyvim is running:
+
+```
+:MasonInstall oxlint
+```
+
 ### GitHub CLI
 
 Add the following Github CLI extensions:
