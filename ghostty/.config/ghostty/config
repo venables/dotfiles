@@ -1,7 +1,7 @@
 # Ghostty config: https://ghostty.org/docs/config/reference
 # Visual editor: https://ghostty.zerebos.com/
 
-theme = TokyoNight Night
+theme = oldworld-oled
 
 # prefs
 copy-on-select = clipboard
