@@ -117,11 +117,29 @@
 ### SSH Keys
 
 ```sh
-ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519_github -C "github"
+eval "$(ssh-agent -s)"
+```
+
+### Default
+
+```sh
+ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519 -C "default"
 ```
 
 ```sh
-eval "$(ssh-agent -s)"
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+```sh
+ssh-copy-id matt@<other-machine>
+```
+
+### Github
+
+I use separate keys per service. Not significantly better, but old habits.
+
+```sh
+ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519_github -C "github"
 ```
 
 ```sh
