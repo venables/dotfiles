@@ -73,6 +73,7 @@
     nvim \
     ssh \
     starship \
+    zed \
     zsh
    ```
 

@@ -14,3 +14,11 @@ shell-integration-features = ssh-terminfo,ssh-env
 
 # keybindings
 keybind = global:cmd+backquote=toggle_quick_terminal
+
+# macos 
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+macos-icon = custom-style
+macos-icon-frame = plastic
+macos-icon-ghost-color = #FFFFFF
+macos-icon-screen-color = #000000
