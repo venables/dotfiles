@@ -64,7 +64,7 @@
    cd ~/.dotfiles
    stow \
     agents \
-    editorconfig \
+    formatters \
     ghostty \
     git \
     homebrew \
