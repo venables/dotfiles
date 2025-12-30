@@ -3,3 +3,5 @@
 -- Add any additional keymaps here
 --
 vim.keymap.set("n", "<D-.>", vim.lsp.buf.code_action, { desc = "Code Action" })
+vim.keymap.set("n", "<D-/>", "gcc", { remap = true })
+vim.keymap.set("v", "<D-/>", "gc", { remap = true })
