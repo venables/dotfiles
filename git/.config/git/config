@@ -63,6 +63,10 @@
   p = push
   s = status
   r = rebase
+  w = worktree
+  wl = worktree list
+  wa = "!f() { git worktree add -b \"$1\" \"../$(basename \"$PWD\")-$1\"; }; f"
+  wr = "!f() { git worktree remove \"../$(basename \"$PWD\")-$1\"; }; f"
   # get the latest `main` branch in sync
   sync = "!f() { BRANCH=${1:-main}; git checkout $BRANCH && git fetch --all --prune && git pull; }; f"
   # Clean branches, including squash-and-merged
