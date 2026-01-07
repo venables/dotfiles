@@ -50,6 +50,7 @@
 [alias]
   a = add
   b = branch
+  br = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
   c = commit
   co = checkout
   cob = checkout -b
