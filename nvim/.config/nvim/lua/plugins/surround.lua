@@ -50,7 +50,8 @@ return {
     enabed = true,
     opts = {
       mappings = {
-        replace = "cs",
+        add = "sa", -- Add surrounding in Normal and Visual modes
+        replace = "cs", --
       },
     },
   },
