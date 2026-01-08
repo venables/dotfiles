@@ -1,5 +1,6 @@
 brew "bat"
 brew "btop"
+brew "claude-squad"
 brew "dust"
 brew "eza"
 brew "fastfetch"

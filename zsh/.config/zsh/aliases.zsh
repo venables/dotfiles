@@ -31,9 +31,20 @@ alias gwr='git wr'
 alias gcl='git claude'
 alias goc='git oc'
 
-# ai tools
-alias cc="claude"
-alias oc="opencode"
+# claude
+if command -v claude &>/dev/null; then
+  alias cc="claude"
+fi
+
+# claude-squad
+if command -v claude-squad &>/dev/null; then
+  alias cs="claude-squad"
+fi
+
+# opencode
+if command -v opencode &>/dev/null; then
+  alias oc="opencode"
+fi
 
 # editor (open nvim at current location by default
 n() { nvim "${@:-.}"; }
