@@ -1,0 +1,8 @@
+{
+  "model": "opus",
+  "enabledPlugins": {
+    "cloud-infrastructure@claude-code-workflows": true,
+    "code-simplifier@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  }
+}
