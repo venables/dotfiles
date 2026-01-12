@@ -1,7 +1,9 @@
 # Ghostty config: https://ghostty.org/docs/config/reference
 # Visual editor: https://ghostty.zerebos.com/
 
-theme = oldworld-oled
+theme = Tokyonight
+
+auto-update-channel = tip
 
 # prefs
 copy-on-select = clipboard
@@ -15,7 +17,7 @@ shell-integration-features = ssh-terminfo,ssh-env
 # keybindings
 keybind = global:cmd+backquote=toggle_quick_terminal
 
-# macos 
+# macos
 macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-icon = custom-style
