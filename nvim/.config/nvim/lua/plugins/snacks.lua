@@ -42,7 +42,6 @@ return {
             "build",
             "coverage",
             "dist",
-            "node_modules",
             "venv",
           },
         },
