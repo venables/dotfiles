@@ -1,6 +1,5 @@
 [tools]
 bun = "latest"
-foundry = "latest"
 node = "latest"
 python = "latest"
 ruby = "latest"
