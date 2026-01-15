@@ -7,5 +7,7 @@ rust = "stable"
 
 # formatters
 "npm:prettier" = "latest"
+"npm:oxlint" = "latest"
+"npm:oxfmt" = "latest"
 shfmt = "latest"
 stylua = "latest"

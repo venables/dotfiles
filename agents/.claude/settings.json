@@ -1,5 +1,18 @@
 {
   "model": "opus",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.(md|ts|tsx|js)$ ]]; then oxfmt \"$CLAUDE_FILE_PATHS\"; fi"
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "cloud-infrastructure@claude-code-workflows": true,
     "code-simplifier@claude-plugins-official": true,
