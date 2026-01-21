@@ -3,7 +3,7 @@
 *.zcompdump
 .zcompdump*
 .zwc
-*.local
+env*.local
 node_modules/
 
 # Claude
