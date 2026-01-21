@@ -49,6 +49,9 @@ fi
 # editor (open nvim at current location by default
 n() { nvim "${@:-.}"; }
 
+# git worktree + claude combo (wt + claude)
+wtc() { wt "$@"; cc; }
+
 # eza (`ls` replacement)
 if command -v eza &>/dev/null; then
   alias ls='eza -a --group-directories-first --icons=auto'
