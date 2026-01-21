@@ -1,46 +1,28 @@
 #!/usr/bin/env bash
-
-#
-# See <https://voz.dev/articles/git/wt>
-#
-
 set -euo pipefail
 
 copy_worktree_files() {
   local src=$1 dest=$2
-  local include_file="$src/.worktreeinclude"
-  local gitignore_file="$src/.gitignore"
-  local use_include=false
+  local include="$src/.worktreeinclude" gitignore="$src/.gitignore"
+  local patterns_file=""
 
-  if [[ -f "$include_file" ]]; then
-    use_include=true
-  elif [[ ! -f "$gitignore_file" ]]; then
-    return 0
-  fi
-
-  local patterns_file="${use_include:+$include_file}"
-  : "${patterns_file:=$gitignore_file}"
+  [[ -f "$include" ]] && patterns_file=$include
+  [[ -z "$patterns_file" && -f "$gitignore" ]] && patterns_file=$gitignore
+  [[ -z "$patterns_file" ]] && return 0
 
   while IFS= read -r pattern || [[ -n "$pattern" ]]; do
-    [[ -z "$pattern" || "$pattern" =~ ^# || "$pattern" =~ ^! ]] && continue
+    [[ -z "$pattern" || "$pattern" =~ ^[#!] ]] && continue
 
-    # If using .worktreeinclude, validate pattern is in .gitignore
-    if $use_include && [[ -f "$gitignore_file" ]]; then
-      if ! grep -qFx "$pattern" "$gitignore_file"; then
-        echo "wt: skipping '$pattern' (not in .gitignore)" >&2
-        continue
-      fi
+    if [[ "$patterns_file" == "$include" && -f "$gitignore" ]] && ! grep -qFx "$pattern" "$gitignore"; then
+      echo "wt: skipping '$pattern' (not in .gitignore)" >&2
+      continue
     fi
 
-    # Strip trailing slash for directories
-    pattern=${pattern%/}
-    # Copy matching files
-    for file in "$src"/$pattern; do
+    for file in "$src"/${pattern%/}; do
       [[ -e "$file" ]] || continue
       local relpath=${file#"$src/"}
-      local destpath="$dest/$relpath"
-      mkdir -p "$(dirname "$destpath")"
-      cp -R "$file" "$destpath"
+      mkdir -p "$(dirname "$dest/$relpath")"
+      cp -R "$file" "$dest/$relpath"
       echo "wt: copied $relpath"
     done
   done < "$patterns_file"
@@ -63,7 +45,6 @@ EOF
 }
 
 [[ $# -eq 0 || "$1" =~ ^(help|--help)$ ]] && { show_help; exit 0; }
-
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "wt: run inside a git repository" >&2; exit 1; }
 
 repo_root=$(git rev-parse --show-toplevel)
@@ -72,23 +53,23 @@ repo_name=$(basename "$repo_root")
 cmd=$1
 case "$cmd" in
   list|ls|prune|add|new|remove|rm) shift ;;
-  *) cmd="add" ;;  # Default to add for branch names
+  *) cmd="add" ;;
 esac
 
 case "$cmd" in
 list|ls) git worktree list "$@" ;;
 prune) git worktree prune "$@" ;;
 add|new)
-  base="" path=""
+  base="" path="" branch=""
   while [[ $# -gt 0 ]]; do
     case "$1" in
       -b|--base) base=$2; shift 2 ;;
       -p|--path) path=$2; shift 2 ;;
       -h|--help) show_help; exit 0 ;;
-      *) [[ -z "${branch:-}" ]] && branch=$1 || path=$1; shift ;;
+      *) [[ -z "$branch" ]] && branch=$1 || path=$1; shift ;;
     esac
   done
-  [[ -z "${branch:-}" ]] && { echo "wt add: branch name required" >&2; exit 1; }
+  [[ -z "$branch" ]] && { echo "wt add: branch name required" >&2; exit 1; }
   : "${path:=$(dirname "$repo_root")/${repo_name}-${branch//\//-}}"
 
   if git show-ref --verify --quiet "refs/heads/$branch"; then
@@ -105,14 +86,14 @@ add|new)
   ;;
 remove|rm)
   [[ $# -eq 0 ]] && { echo "wt remove: provide a path or branch name" >&2; exit 1; }
-  input=$1
+  input=$1 target=""
   if [[ -d "$input" ]]; then
     target=$input
   else
     target=$(git worktree list --porcelain | awk -v b="$input" '/^worktree /{w=$2} /^branch /{gsub(/refs\/heads\//,"",$2); if($2==b){print w;exit}}')
     [[ -z "$target" ]] && guess="$(dirname "$repo_root")/${repo_name}-${input//\//-}" && [[ -d "$guess" ]] && target=$guess
   fi
-  [[ -z "${target:-}" ]] && { echo "wt remove: unable to resolve worktree for '$input'" >&2; exit 1; }
+  [[ -z "$target" ]] && { echo "wt remove: unable to resolve worktree for '$input'" >&2; exit 1; }
   git worktree remove "$target"
   ;;
 esac
