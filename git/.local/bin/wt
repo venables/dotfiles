@@ -8,16 +8,16 @@ set -euo pipefail
 
 show_help() {
   cat <<'EOF'
-Usage: wt <command> [options]
+Usage: wt [command] [options]
 Commands:
+  <branch>                   Add a worktree (shorthand for 'wt add')
   list|ls                    Show active worktrees
-  add|new [-b base] [path]   Add a worktree for <branch>; defaults path to ../<repo>-<branch>
+  add [-b base] <branch>     Add a worktree; path defaults to ../<repo>-<branch>
   remove|rm <path|branch>    Remove a worktree by path or branch name
   prune                      Run git worktree prune
 Examples:
-  wt list
-  wt add feature/login
-  wt add -b main feature/login ../product-site-login
+  wt feature/login
+  wt add -b main feature/login
   wt remove feature/login
 EOF
 }
@@ -28,7 +28,12 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "wt: run inside a 
 
 repo_root=$(git rev-parse --show-toplevel)
 repo_name=$(basename "$repo_root")
-cmd=$1; shift
+
+cmd=$1
+case "$cmd" in
+  list|ls|prune|add|new|remove|rm) shift ;;
+  *) cmd="add" ;;  # Default to add for branch names
+esac
 
 case "$cmd" in
 list|ls) git worktree list "$@" ;;
@@ -69,5 +74,4 @@ remove|rm)
   [[ -z "${target:-}" ]] && { echo "wt remove: unable to resolve worktree for '$input'" >&2; exit 1; }
   git worktree remove "$target"
   ;;
-*) echo "wt: unknown command '$cmd'. See 'wt help'." >&2; exit 1 ;;
 esac
