@@ -31,9 +31,9 @@ alias gwr='git wr'
 alias gcl='git claude'
 alias goc='git oc'
 
-# claude
+# claude code
 if command -v claude &>/dev/null; then
-  alias cc="claude"
+  alias cc="tmuxify claude"
 fi
 
 # claude-squad
@@ -43,7 +43,7 @@ fi
 
 # opencode
 if command -v opencode &>/dev/null; then
-  alias oc="opencode"
+  alias oc="tmuxify opencode"
 fi
 
 # editor (open nvim at current location by default

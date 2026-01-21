@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -eq 0 ]]; then
-  tmux new-session -A -s opencode "opencode"
+[[ $# -eq 0 ]] && { echo "usage: tmuxify <cmd> [name]" >&2; exit 1; }
+
+cmd=$1
+name=${2:-$cmd}
+session=${name//\//-}
+
+if [[ $# -eq 1 ]]; then
+  tmux new-session -A -s "$session" "$cmd"
   exit 0
 fi
-
-name=$1
-session=${name//\//-}
 
 # Create worktree if we're in a git repo
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -19,7 +22,7 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     wt -b main "$name"
   fi
 
-  tmux new-session -A -s "$session" -c "$wt_path" "opencode"
+  tmux new-session -A -s "$session" -c "$wt_path" "$cmd"
 else
-  tmux new-session -A -s "$session" "opencode"
+  tmux new-session -A -s "$session" "$cmd"
 fi
