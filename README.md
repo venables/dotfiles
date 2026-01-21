@@ -24,8 +24,11 @@
 ## Principles
 
 - Initial setup can be manual
-- Always conform to the [XDG Base Directory Spec](https://specifications.freedesktop.org/basedir/latest/) like `$XDG_CONFIG_HOME` (`~/.config`) where possible.
-- Keep local-specific configuration in `*.local` files that can be imported (e.g. `~/.ssh/config.local`)
+- Always conform to the
+  [XDG Base Directory Spec](https://specifications.freedesktop.org/basedir/latest/)
+  like `$XDG_CONFIG_HOME` (`~/.config`) where possible.
+- Keep local-specific configuration in `*.local` files that can be imported
+  (e.g. `~/.ssh/config.local`)
 
 ## Getting started
 
@@ -77,7 +80,8 @@
     zsh
    ```
 
-   Once dotfiles have been `stow`ed, you can use the global bundle command for future updates:
+   Once dotfiles have been `stow`ed, you can use the global bundle command for
+   future updates:
 
    ```sh
    brew bundle --global
@@ -97,7 +101,14 @@
    curl -fsSL https://claude.ai/install.sh | bash
    ```
 
-   > NOTE: We install these directly (outside of homebrew) to better support their auto-update features
+   [Amp](https://opencode.ai/)
+
+   ```sh
+   curl -fsSL https://opencode.ai/install | bash
+   ```
+
+   > NOTE: We install these directly (outside of homebrew) to better support
+   > their auto-update features
 
 ## Configuration
 
@@ -231,7 +242,8 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
 ### Disable Spotlight keyboard shortcuts
 
-Uncheck "Show Spotlight Search" in System Settings > Keyboard > Keyboard Shortcuts > Spotlight
+Uncheck "Show Spotlight Search" in System Settings > Keyboard > Keyboard
+Shortcuts > Spotlight
 
 ## Reference
 
