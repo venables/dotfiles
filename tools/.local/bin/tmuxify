@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
+# tmuxify - run a command in a named tmux session
+# Usage: tmuxify <cmd> [name]
+# When name is omitted, derives session name from cmd + current directory (e.g., "claude-dotfiles")
+# When in a git repo with a name arg, creates/uses a worktree for that branch
 set -euo pipefail
 
 [[ $# -eq 0 ]] && { echo "usage: tmuxify <cmd> [name]" >&2; exit 1; }
 
 cmd=$1
-name=${2:-$cmd}
-session=${name//\//-}
+dir=$(basename "$PWD")
 
 if [[ $# -eq 1 ]]; then
+  session="${cmd}-${dir}"
   tmux new-session -A -s "$session" "$cmd"
   exit 0
 fi
+
+name=$2
+session=${name//\//-}
 
 # Create worktree if we're in a git repo
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
