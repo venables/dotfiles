@@ -6,6 +6,46 @@
 
 set -euo pipefail
 
+copy_worktree_files() {
+  local src=$1 dest=$2
+  local include_file="$src/.worktreeinclude"
+  local gitignore_file="$src/.gitignore"
+  local use_include=false
+
+  if [[ -f "$include_file" ]]; then
+    use_include=true
+  elif [[ ! -f "$gitignore_file" ]]; then
+    return 0
+  fi
+
+  local patterns_file="${use_include:+$include_file}"
+  : "${patterns_file:=$gitignore_file}"
+
+  while IFS= read -r pattern || [[ -n "$pattern" ]]; do
+    [[ -z "$pattern" || "$pattern" =~ ^# || "$pattern" =~ ^! ]] && continue
+
+    # If using .worktreeinclude, validate pattern is in .gitignore
+    if $use_include && [[ -f "$gitignore_file" ]]; then
+      if ! grep -qFx "$pattern" "$gitignore_file"; then
+        echo "wt: skipping '$pattern' (not in .gitignore)" >&2
+        continue
+      fi
+    fi
+
+    # Strip trailing slash for directories
+    pattern=${pattern%/}
+    # Copy matching files
+    for file in "$src"/$pattern; do
+      [[ -e "$file" ]] || continue
+      local relpath=${file#"$src/"}
+      local destpath="$dest/$relpath"
+      mkdir -p "$(dirname "$destpath")"
+      cp -R "$file" "$destpath"
+      echo "wt: copied $relpath"
+    done
+  done < "$patterns_file"
+}
+
 show_help() {
   cat <<'EOF'
 Usage: wt [command] [options]
@@ -61,6 +101,7 @@ add|new)
     echo "wt add: branch '$branch' not found. Use --base <existing-branch> to create it." >&2
     exit 1
   fi
+  copy_worktree_files "$repo_root" "$path"
   ;;
 remove|rm)
   [[ $# -eq 0 ]] && { echo "wt remove: provide a path or branch name" >&2; exit 1; }
