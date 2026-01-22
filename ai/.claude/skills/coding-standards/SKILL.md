@@ -1,8 +1,6 @@
 ---
 name: coding-standards
-description:
-  Universal coding standards, best practices, and patterns for TypeScript,
-  JavaScript, React, and Node.js development.
+description: Universal coding standards, best practices, and patterns for TypeScript, JavaScript, React, and Node.js development.
 ---
 
 # Coding Standards & Best Practices
@@ -12,28 +10,24 @@ Universal coding standards applicable across all projects.
 ## Code Quality Principles
 
 ### 1. Readability First
-
 - Code is read more than written
 - Clear variable and function names
 - Self-documenting code preferred over comments
 - Consistent formatting
 
 ### 2. KISS (Keep It Simple, Stupid)
-
 - Simplest solution that works
 - Avoid over-engineering
 - No premature optimization
 - Easy to understand > clever code
 
 ### 3. DRY (Don't Repeat Yourself)
-
 - Extract common logic into functions
 - Create reusable components
 - Share utilities across modules
 - Avoid copy-paste programming
 
 ### 4. YAGNI (You Aren't Gonna Need It)
-
 - Don't build features before they're needed
 - Avoid speculative generality
 - Add complexity only when required
@@ -43,51 +37,51 @@ Universal coding standards applicable across all projects.
 
 ### Variable Naming
 
-```ts
+```typescript
 // ✅ GOOD: Descriptive names
-const marketSearchQuery = "election"
+const marketSearchQuery = 'election'
 const isUserAuthenticated = true
 const totalRevenue = 1000
 
 // ❌ BAD: Unclear names
-const q = "election"
+const q = 'election'
 const flag = true
 const x = 1000
 ```
 
 ### Function Naming
 
-```ts
+```typescript
 // ✅ GOOD: Verb-noun pattern
-async function fetchMarketData(marketId: string) {}
-function calculateSimilarity(a: number[], b: number[]) {}
-function isValidEmail(email: string): boolean {}
+async function fetchMarketData(marketId: string) { }
+function calculateSimilarity(a: number[], b: number[]) { }
+function isValidEmail(email: string): boolean { }
 
 // ❌ BAD: Unclear or noun-only
-async function market(id: string) {}
-function similarity(a, b) {}
-function email(e) {}
+async function market(id: string) { }
+function similarity(a, b) { }
+function email(e) { }
 ```
 
 ### Immutability Pattern (CRITICAL)
 
-```ts
+```typescript
 // ✅ ALWAYS use spread operator
 const updatedUser = {
   ...user,
-  name: "New Name"
+  name: 'New Name'
 }
 
 const updatedArray = [...items, newItem]
 
 // ❌ NEVER mutate directly
-user.name = "New Name" // BAD
-items.push(newItem) // BAD
+user.name = 'New Name'  // BAD
+items.push(newItem)     // BAD
 ```
 
 ### Error Handling
 
-```ts
+```typescript
 // ✅ GOOD: Comprehensive error handling
 async function fetchData(url: string) {
   try {
@@ -99,8 +93,8 @@ async function fetchData(url: string) {
 
     return await response.json()
   } catch (error) {
-    console.error("Fetch failed:", error)
-    throw new Error("Failed to fetch data")
+    console.error('Fetch failed:', error)
+    throw new Error('Failed to fetch data')
   }
 }
 
@@ -113,7 +107,7 @@ async function fetchData(url) {
 
 ### Async/Await Best Practices
 
-```ts
+```typescript
 // ✅ GOOD: Parallel execution when possible
 const [users, markets, stats] = await Promise.all([
   fetchUsers(),
@@ -129,12 +123,12 @@ const stats = await fetchStats()
 
 ### Type Safety
 
-```ts
+```typescript
 // ✅ GOOD: Proper types
 interface Market {
   id: string
   name: string
-  status: "active" | "resolved" | "closed"
+  status: 'active' | 'resolved' | 'closed'
   created_at: Date
 }
 
@@ -152,7 +146,7 @@ function getMarket(id: any): Promise<any> {
 
 ### Component Structure
 
-```ts
+```typescript
 // ✅ GOOD: Functional component with types
 interface ButtonProps {
   children: React.ReactNode
@@ -186,7 +180,7 @@ export function Button(props) {
 
 ### Custom Hooks
 
-```ts
+```typescript
 // ✅ GOOD: Reusable custom hook
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
@@ -208,20 +202,20 @@ const debouncedQuery = useDebounce(searchQuery, 500)
 
 ### State Management
 
-```ts
+```typescript
 // ✅ GOOD: Proper state updates
 const [count, setCount] = useState(0)
 
 // Functional update for state based on previous state
-setCount((prev) => prev + 1)
+setCount(prev => prev + 1)
 
 // ❌ BAD: Direct state reference
-setCount(count + 1) // Can be stale in async scenarios
+setCount(count + 1)  // Can be stale in async scenarios
 ```
 
 ### Conditional Rendering
 
-```ts
+```typescript
 // ✅ GOOD: Clear conditional rendering
 {isLoading && <Spinner />}
 {error && <ErrorMessage error={error} />}
@@ -249,7 +243,7 @@ GET /api/markets?status=active&limit=10&offset=0
 
 ### Response Format
 
-```ts
+```typescript
 // ✅ GOOD: Consistent response structure
 interface ApiResponse<T> {
   success: boolean
@@ -270,19 +264,16 @@ return NextResponse.json({
 })
 
 // Error response
-return NextResponse.json(
-  {
-    success: false,
-    error: "Invalid request"
-  },
-  { status: 400 }
-)
+return NextResponse.json({
+  success: false,
+  error: 'Invalid request'
+}, { status: 400 })
 ```
 
 ### Input Validation
 
-```ts
-import { z } from "zod"
+```typescript
+import { z } from 'zod'
 
 // ✅ GOOD: Schema validation
 const CreateMarketSchema = z.object({
@@ -300,14 +291,11 @@ export async function POST(request: Request) {
     // Proceed with validated data
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Validation failed",
-          details: error.errors
-        },
-        { status: 400 }
-      )
+      return NextResponse.json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors
+      }, { status: 400 })
     }
   }
 }
@@ -349,7 +337,7 @@ types/market.types.ts         # camelCase with .types suffix
 
 ### When to Comment
 
-```ts
+```typescript
 // ✅ GOOD: Explain WHY, not WHAT
 // Use exponential backoff to avoid overwhelming the API during outages
 const delay = Math.min(1000 * Math.pow(2, retryCount), 30000)
@@ -367,7 +355,7 @@ name = user.name
 
 ### JSDoc for Public APIs
 
-````ts
+```typescript
 /**
  * Searches markets using semantic similarity.
  *
@@ -377,7 +365,7 @@ name = user.name
  * @throws {Error} If OpenAI API fails or Redis unavailable
  *
  * @example
- * ```ts
+ * ```typescript
  * const results = await searchMarkets('election', 5)
  * console.log(results[0].name) // "Trump vs Biden"
  * ```
@@ -388,14 +376,14 @@ export async function searchMarkets(
 ): Promise<Market[]> {
   // Implementation
 }
-````
+```
 
 ## Performance Best Practices
 
 ### Memoization
 
-```ts
-import { useMemo, useCallback } from "react"
+```typescript
+import { useMemo, useCallback } from 'react'
 
 // ✅ GOOD: Memoize expensive computations
 const sortedMarkets = useMemo(() => {
@@ -410,7 +398,7 @@ const handleSearch = useCallback((query: string) => {
 
 ### Lazy Loading
 
-```ts
+```typescript
 import { lazy, Suspense } from 'react'
 
 // ✅ GOOD: Lazy load heavy components
@@ -427,23 +415,25 @@ export function Dashboard() {
 
 ### Database Queries
 
-```ts
+```typescript
 // ✅ GOOD: Select only needed columns
 const { data } = await supabase
-  .from("markets")
-  .select("id, name, status")
+  .from('markets')
+  .select('id, name, status')
   .limit(10)
 
 // ❌ BAD: Select everything
-const { data } = await supabase.from("markets").select("*")
+const { data } = await supabase
+  .from('markets')
+  .select('*')
 ```
 
 ## Testing Standards
 
 ### Test Structure (AAA Pattern)
 
-```ts
-test("calculates similarity correctly", () => {
+```typescript
+test('calculates similarity correctly', () => {
   // Arrange
   const vector1 = [1, 0, 0]
   const vector2 = [0, 1, 0]
@@ -458,15 +448,15 @@ test("calculates similarity correctly", () => {
 
 ### Test Naming
 
-```ts
+```typescript
 // ✅ GOOD: Descriptive test names
-test("returns empty array when no markets match query", () => {})
-test("throws error when OpenAI API key is missing", () => {})
-test("falls back to substring search when Redis unavailable", () => {})
+test('returns empty array when no markets match query', () => { })
+test('throws error when OpenAI API key is missing', () => { })
+test('falls back to substring search when Redis unavailable', () => { })
 
 // ❌ BAD: Vague test names
-test("works", () => {})
-test("test search", () => {})
+test('works', () => { })
+test('test search', () => { })
 ```
 
 ## Code Smell Detection
@@ -474,8 +464,7 @@ test("test search", () => {})
 Watch for these anti-patterns:
 
 ### 1. Long Functions
-
-```ts
+```typescript
 // ❌ BAD: Function > 50 lines
 function processMarketData() {
   // 100 lines of code
@@ -490,8 +479,7 @@ function processMarketData() {
 ```
 
 ### 2. Deep Nesting
-
-```ts
+```typescript
 // ❌ BAD: 5+ levels of nesting
 if (user) {
   if (user.isAdmin) {
@@ -516,21 +504,17 @@ if (!hasPermission) return
 ```
 
 ### 3. Magic Numbers
-
-```ts
+```typescript
 // ❌ BAD: Unexplained numbers
-if (retryCount > 3) {
-}
+if (retryCount > 3) { }
 setTimeout(callback, 500)
 
 // ✅ GOOD: Named constants
 const MAX_RETRIES = 3
 const DEBOUNCE_DELAY_MS = 500
 
-if (retryCount > MAX_RETRIES) {
-}
+if (retryCount > MAX_RETRIES) { }
 setTimeout(callback, DEBOUNCE_DELAY_MS)
 ```
 
-**Remember**: Code quality is not negotiable. Clear, maintainable code enables
-rapid development and confident refactoring.
+**Remember**: Code quality is not negotiable. Clear, maintainable code enables rapid development and confident refactoring.

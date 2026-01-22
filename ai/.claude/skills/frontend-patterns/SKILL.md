@@ -1,8 +1,6 @@
 ---
 name: frontend-patterns
-description:
-  Frontend development patterns for React, Next.js, state management,
-  performance optimization, and UI best practices.
+description: Frontend development patterns for React, Next.js, state management, performance optimization, and UI best practices.
 ---
 
 # Frontend Development Patterns
@@ -13,7 +11,7 @@ Modern frontend patterns for React, Next.js, and performant user interfaces.
 
 ### Composition Over Inheritance
 
-```ts
+```typescript
 // ✅ GOOD: Component composition
 interface CardProps {
   children: React.ReactNode
@@ -41,7 +39,7 @@ export function CardBody({ children }: { children: React.ReactNode }) {
 
 ### Compound Components
 
-```ts
+```typescript
 interface TabsContextValue {
   activeTab: string
   setActiveTab: (tab: string) => void
@@ -91,7 +89,7 @@ export function Tab({ id, children }: { id: string, children: React.ReactNode })
 
 ### Render Props Pattern
 
-```ts
+```typescript
 interface DataLoaderProps<T> {
   url: string
   children: (data: T | null, loading: boolean, error: Error | null) => React.ReactNode
@@ -127,12 +125,12 @@ export function DataLoader<T>({ url, children }: DataLoaderProps<T>) {
 
 ### State Management Hook
 
-```ts
+```typescript
 export function useToggle(initialValue = false): [boolean, () => void] {
   const [value, setValue] = useState(initialValue)
 
   const toggle = useCallback(() => {
-    setValue((v) => !v)
+    setValue(v => !v)
   }, [])
 
   return [value, toggle]
@@ -144,7 +142,7 @@ const [isOpen, toggleOpen] = useToggle()
 
 ### Async Data Fetching Hook
 
-```ts
+```typescript
 interface UseQueryOptions<T> {
   onSuccess?: (data: T) => void
   onError?: (error: Error) => void
@@ -187,20 +185,19 @@ export function useQuery<T>(
 }
 
 // Usage
-const {
-  data: markets,
-  loading,
-  error,
-  refetch
-} = useQuery("markets", () => fetch("/api/markets").then((r) => r.json()), {
-  onSuccess: (data) => console.log("Fetched", data.length, "markets"),
-  onError: (err) => console.error("Failed:", err)
-})
+const { data: markets, loading, error, refetch } = useQuery(
+  'markets',
+  () => fetch('/api/markets').then(r => r.json()),
+  {
+    onSuccess: data => console.log('Fetched', data.length, 'markets'),
+    onError: err => console.error('Failed:', err)
+  }
+)
 ```
 
 ### Debounce Hook
 
-```ts
+```typescript
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value)
 
@@ -216,7 +213,7 @@ export function useDebounce<T>(value: T, delay: number): T {
 }
 
 // Usage
-const [searchQuery, setSearchQuery] = useState("")
+const [searchQuery, setSearchQuery] = useState('')
 const debouncedQuery = useDebounce(searchQuery, 500)
 
 useEffect(() => {
@@ -230,7 +227,7 @@ useEffect(() => {
 
 ### Context + Reducer Pattern
 
-```ts
+```typescript
 interface State {
   markets: Market[]
   selectedMarket: Market | null
@@ -285,7 +282,7 @@ export function useMarkets() {
 
 ### Memoization
 
-```ts
+```typescript
 // ✅ useMemo for expensive computations
 const sortedMarkets = useMemo(() => {
   return markets.sort((a, b) => b.volume - a.volume)
@@ -309,7 +306,7 @@ export const MarketCard = React.memo<MarketCardProps>(({ market }) => {
 
 ### Code Splitting & Lazy Loading
 
-```ts
+```typescript
 import { lazy, Suspense } from 'react'
 
 // ✅ Lazy load heavy components
@@ -333,7 +330,7 @@ export function Dashboard() {
 
 ### Virtualization for Long Lists
 
-```ts
+```typescript
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 export function VirtualMarketList({ markets }: { markets: Market[] }) {
@@ -379,7 +376,7 @@ export function VirtualMarketList({ markets }: { markets: Market[] }) {
 
 ### Controlled Form with Validation
 
-```ts
+```typescript
 interface FormData {
   name: string
   description: string
@@ -454,7 +451,7 @@ export function CreateMarketForm() {
 
 ## Error Boundary Pattern
 
-```ts
+```typescript
 interface ErrorBoundaryState {
   hasError: boolean
   error: Error | null
@@ -504,7 +501,7 @@ export class ErrorBoundary extends React.Component<
 
 ### Framer Motion Animations
 
-```ts
+```typescript
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ✅ List animations
@@ -558,7 +555,7 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
 
 ### Keyboard Navigation
 
-```ts
+```typescript
 export function Dropdown({ options, onSelect }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -599,7 +596,7 @@ export function Dropdown({ options, onSelect }: DropdownProps) {
 
 ### Focus Management
 
-```ts
+```typescript
 export function Modal({ isOpen, onClose, children }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
@@ -631,5 +628,4 @@ export function Modal({ isOpen, onClose, children }: ModalProps) {
 }
 ```
 
-**Remember**: Modern frontend patterns enable maintainable, performant user
-interfaces. Choose patterns that fit your project complexity.
+**Remember**: Modern frontend patterns enable maintainable, performant user interfaces. Choose patterns that fit your project complexity.

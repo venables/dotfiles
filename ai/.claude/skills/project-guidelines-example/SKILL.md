@@ -1,18 +1,14 @@
 # Project Guidelines Skill (Example)
 
-This is an example of a project-specific skill. Use this as a template for your
-own projects.
+This is an example of a project-specific skill. Use this as a template for your own projects.
 
-Based on a real production application: [Zenith](https://zenith.chat) -
-AI-powered customer discovery platform.
+Based on a real production application: [Zenith](https://zenith.chat) - AI-powered customer discovery platform.
 
 ---
 
 ## When to Use
 
-Reference this skill when working on the specific project it's designed for.
-Project skills contain:
-
+Reference this skill when working on the specific project it's designed for. Project skills contain:
 - Architecture overview
 - File structure
 - Code patterns
@@ -24,7 +20,6 @@ Project skills contain:
 ## Architecture Overview
 
 **Tech Stack:**
-
 - **Frontend**: Next.js 15 (App Router), TypeScript, React
 - **Backend**: FastAPI (Python), Pydantic models
 - **Database**: Supabase (PostgreSQL)
@@ -33,7 +28,6 @@ Project skills contain:
 - **Testing**: Playwright (E2E), pytest (backend), React Testing Library
 
 **Services:**
-
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         Frontend                            │
@@ -119,7 +113,7 @@ class ApiResponse(BaseModel, Generic[T]):
 
 ### Frontend API Calls (TypeScript)
 
-```ts
+```typescript
 interface ApiResponse<T> {
   success: boolean
   data?: T
@@ -134,9 +128,9 @@ async function fetchApi<T>(
     const response = await fetch(`/api${endpoint}`, {
       ...options,
       headers: {
-        "Content-Type": "application/json",
-        ...options?.headers
-      }
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
     })
 
     if (!response.ok) {
@@ -187,8 +181,8 @@ async def analyze_with_claude(content: str) -> AnalysisResult:
 
 ### Custom Hooks (React)
 
-```ts
-import { useState, useCallback } from "react"
+```typescript
+import { useState, useCallback } from 'react'
 
 interface UseApiState<T> {
   data: T | null
@@ -196,15 +190,17 @@ interface UseApiState<T> {
   error: string | null
 }
 
-export function useApi<T>(fetchFn: () => Promise<ApiResponse<T>>) {
+export function useApi<T>(
+  fetchFn: () => Promise<ApiResponse<T>>
+) {
   const [state, setState] = useState<UseApiState<T>>({
     data: null,
     loading: false,
-    error: null
+    error: null,
   })
 
   const execute = useCallback(async () => {
-    setState((prev) => ({ ...prev, loading: true, error: null }))
+    setState(prev => ({ ...prev, loading: true, error: null }))
 
     const result = await fetchFn()
 
@@ -237,7 +233,6 @@ poetry run pytest tests/test_auth.py -v
 ```
 
 **Test structure:**
-
 ```python
 import pytest
 from httpx import AsyncClient
@@ -269,8 +264,7 @@ npm run test:e2e
 ```
 
 **Test structure:**
-
-```ts
+```typescript
 import { render, screen, fireEvent } from '@testing-library/react'
 import { WorkspacePanel } from './WorkspacePanel'
 

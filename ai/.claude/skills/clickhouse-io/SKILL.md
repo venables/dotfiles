@@ -1,23 +1,17 @@
 ---
 name: clickhouse-io
-description:
-  ClickHouse database patterns, query optimization, analytics, and data
-  engineering best practices for high-performance analytical workloads.
+description: ClickHouse database patterns, query optimization, analytics, and data engineering best practices for high-performance analytical workloads.
 ---
 
 # ClickHouse Analytics Patterns
 
-ClickHouse-specific patterns for high-performance analytics and data
-engineering.
+ClickHouse-specific patterns for high-performance analytics and data engineering.
 
 ## Overview
 
-ClickHouse is a column-oriented database management system (DBMS) for online
-analytical processing (OLAP). It's optimized for fast analytical queries on
-large datasets.
+ClickHouse is a column-oriented database management system (DBMS) for online analytical processing (OLAP). It's optimized for fast analytical queries on large datasets.
 
 **Key Features:**
-
 - Column-oriented storage
 - Data compression
 - Parallel query execution
@@ -156,8 +150,8 @@ ORDER BY market_id, date;
 
 ### Bulk Insert (Recommended)
 
-```ts
-import { ClickHouse } from "clickhouse"
+```typescript
+import { ClickHouse } from 'clickhouse'
 
 const clickhouse = new ClickHouse({
   url: process.env.CLICKHOUSE_URL,
@@ -170,50 +164,38 @@ const clickhouse = new ClickHouse({
 
 // ✅ Batch insert (efficient)
 async function bulkInsertTrades(trades: Trade[]) {
-  const values = trades
-    .map(
-      (trade) => `(
+  const values = trades.map(trade => `(
     '${trade.id}',
     '${trade.market_id}',
     '${trade.user_id}',
     ${trade.amount},
     '${trade.timestamp.toISOString()}'
-  )`
-    )
-    .join(",")
+  )`).join(',')
 
-  await clickhouse
-    .query(
-      `
+  await clickhouse.query(`
     INSERT INTO trades (id, market_id, user_id, amount, timestamp)
     VALUES ${values}
-  `
-    )
-    .toPromise()
+  `).toPromise()
 }
 
 // ❌ Individual inserts (slow)
 async function insertTrade(trade: Trade) {
   // Don't do this in a loop!
-  await clickhouse
-    .query(
-      `
+  await clickhouse.query(`
     INSERT INTO trades VALUES ('${trade.id}', ...)
-  `
-    )
-    .toPromise()
+  `).toPromise()
 }
 ```
 
 ### Streaming Insert
 
-```ts
+```typescript
 // For continuous data ingestion
-import { createWriteStream } from "fs"
-import { pipeline } from "stream/promises"
+import { createWriteStream } from 'fs'
+import { pipeline } from 'stream/promises'
 
 async function streamInserts() {
-  const stream = clickhouse.insert("trades").stream()
+  const stream = clickhouse.insert('trades').stream()
 
   for await (const batch of dataSource) {
     stream.write(batch)
@@ -369,15 +351,15 @@ ORDER BY cohort, months_since_signup;
 
 ### ETL Pattern
 
-```ts
+```typescript
 // Extract, Transform, Load
 async function etlPipeline() {
   // 1. Extract from source
   const rawData = await extractFromPostgres()
 
   // 2. Transform
-  const transformed = rawData.map((row) => ({
-    date: new Date(row.created_at).toISOString().split("T")[0],
+  const transformed = rawData.map(row => ({
+    date: new Date(row.created_at).toISOString().split('T')[0],
     market_id: row.market_slug,
     volume: parseFloat(row.total_volume),
     trades: parseInt(row.trade_count)
@@ -388,26 +370,26 @@ async function etlPipeline() {
 }
 
 // Run periodically
-setInterval(etlPipeline, 60 * 60 * 1000) // Every hour
+setInterval(etlPipeline, 60 * 60 * 1000)  // Every hour
 ```
 
 ### Change Data Capture (CDC)
 
-```ts
+```typescript
 // Listen to PostgreSQL changes and sync to ClickHouse
-import { Client } from "pg"
+import { Client } from 'pg'
 
 const pgClient = new Client({ connectionString: process.env.DATABASE_URL })
 
-pgClient.query("LISTEN market_updates")
+pgClient.query('LISTEN market_updates')
 
-pgClient.on("notification", async (msg) => {
+pgClient.on('notification', async (msg) => {
   const update = JSON.parse(msg.payload)
 
-  await clickhouse.insert("market_updates", [
+  await clickhouse.insert('market_updates', [
     {
       market_id: update.id,
-      event_type: update.operation, // INSERT, UPDATE, DELETE
+      event_type: update.operation,  // INSERT, UPDATE, DELETE
       timestamp: new Date(),
       data: JSON.stringify(update.new_data)
     }
@@ -418,37 +400,30 @@ pgClient.on("notification", async (msg) => {
 ## Best Practices
 
 ### 1. Partitioning Strategy
-
 - Partition by time (usually month or day)
 - Avoid too many partitions (performance impact)
 - Use DATE type for partition key
 
 ### 2. Ordering Key
-
 - Put most frequently filtered columns first
 - Consider cardinality (high cardinality first)
 - Order impacts compression
 
 ### 3. Data Types
-
 - Use smallest appropriate type (UInt32 vs UInt64)
 - Use LowCardinality for repeated strings
 - Use Enum for categorical data
 
 ### 4. Avoid
-
-- SELECT \* (specify columns)
+- SELECT * (specify columns)
 - FINAL (merge data before query instead)
 - Too many JOINs (denormalize for analytics)
 - Small frequent inserts (batch instead)
 
 ### 5. Monitoring
-
 - Track query performance
 - Monitor disk usage
 - Check merge operations
 - Review slow query log
 
-**Remember**: ClickHouse excels at analytical workloads. Design tables for your
-query patterns, batch inserts, and leverage materialized views for real-time
-aggregations.
+**Remember**: ClickHouse excels at analytical workloads. Design tables for your query patterns, batch inserts, and leverage materialized views for real-time aggregations.

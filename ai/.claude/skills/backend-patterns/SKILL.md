@@ -1,20 +1,17 @@
 ---
 name: backend-patterns
-description:
-  Backend architecture patterns, API design, database optimization, and
-  server-side best practices for Node.js, Express, and Next.js API routes.
+description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes.
 ---
 
 # Backend Development Patterns
 
-Backend architecture patterns and best practices for scalable server-side
-applications.
+Backend architecture patterns and best practices for scalable server-side applications.
 
 ## API Design Patterns
 
 ### RESTful API Structure
 
-```ts
+```typescript
 // ✅ Resource-based URLs
 GET    /api/markets                 # List resources
 GET    /api/markets/:id             # Get single resource
@@ -29,7 +26,7 @@ GET /api/markets?status=active&sort=volume&limit=20&offset=0
 
 ### Repository Pattern
 
-```ts
+```typescript
 // Abstract data access logic
 interface MarketRepository {
   findAll(filters?: MarketFilters): Promise<Market[]>
@@ -41,10 +38,10 @@ interface MarketRepository {
 
 class SupabaseMarketRepository implements MarketRepository {
   async findAll(filters?: MarketFilters): Promise<Market[]> {
-    let query = supabase.from("markets").select("*")
+    let query = supabase.from('markets').select('*')
 
     if (filters?.status) {
-      query = query.eq("status", filters.status)
+      query = query.eq('status', filters.status)
     }
 
     if (filters?.limit) {
@@ -63,7 +60,7 @@ class SupabaseMarketRepository implements MarketRepository {
 
 ### Service Layer Pattern
 
-```ts
+```typescript
 // Business logic separated from data access
 class MarketService {
   constructor(private marketRepo: MarketRepository) {}
@@ -74,12 +71,12 @@ class MarketService {
     const results = await this.vectorSearch(embedding, limit)
 
     // Fetch full data
-    const markets = await this.marketRepo.findByIds(results.map((r) => r.id))
+    const markets = await this.marketRepo.findByIds(results.map(r => r.id))
 
     // Sort by similarity
     return markets.sort((a, b) => {
-      const scoreA = results.find((r) => r.id === a.id)?.score || 0
-      const scoreB = results.find((r) => r.id === b.id)?.score || 0
+      const scoreA = results.find(r => r.id === a.id)?.score || 0
+      const scoreB = results.find(r => r.id === b.id)?.score || 0
       return scoreA - scoreB
     })
   }
@@ -92,14 +89,14 @@ class MarketService {
 
 ### Middleware Pattern
 
-```ts
+```typescript
 // Request/response processing pipeline
 export function withAuth(handler: NextApiHandler): NextApiHandler {
   return async (req, res) => {
-    const token = req.headers.authorization?.replace("Bearer ", "")
+    const token = req.headers.authorization?.replace('Bearer ', '')
 
     if (!token) {
-      return res.status(401).json({ error: "Unauthorized" })
+      return res.status(401).json({ error: 'Unauthorized' })
     }
 
     try {
@@ -107,7 +104,7 @@ export function withAuth(handler: NextApiHandler): NextApiHandler {
       req.user = user
       return handler(req, res)
     } catch (error) {
-      return res.status(401).json({ error: "Invalid token" })
+      return res.status(401).json({ error: 'Invalid token' })
     }
   }
 }
@@ -122,42 +119,44 @@ export default withAuth(async (req, res) => {
 
 ### Query Optimization
 
-```ts
+```typescript
 // ✅ GOOD: Select only needed columns
 const { data } = await supabase
-  .from("markets")
-  .select("id, name, status, volume")
-  .eq("status", "active")
-  .order("volume", { ascending: false })
+  .from('markets')
+  .select('id, name, status, volume')
+  .eq('status', 'active')
+  .order('volume', { ascending: false })
   .limit(10)
 
 // ❌ BAD: Select everything
-const { data } = await supabase.from("markets").select("*")
+const { data } = await supabase
+  .from('markets')
+  .select('*')
 ```
 
 ### N+1 Query Prevention
 
-```ts
+```typescript
 // ❌ BAD: N+1 query problem
 const markets = await getMarkets()
 for (const market of markets) {
-  market.creator = await getUser(market.creator_id) // N queries
+  market.creator = await getUser(market.creator_id)  // N queries
 }
 
 // ✅ GOOD: Batch fetch
 const markets = await getMarkets()
-const creatorIds = markets.map((m) => m.creator_id)
-const creators = await getUsers(creatorIds) // 1 query
-const creatorMap = new Map(creators.map((c) => [c.id, c]))
+const creatorIds = markets.map(m => m.creator_id)
+const creators = await getUsers(creatorIds)  // 1 query
+const creatorMap = new Map(creators.map(c => [c.id, c]))
 
-markets.forEach((market) => {
+markets.forEach(market => {
   market.creator = creatorMap.get(market.creator_id)
 })
 ```
 
 ### Transaction Pattern
 
-```ts
+```typescript
 async function createMarketWithPosition(
   marketData: CreateMarketDto,
   positionData: CreatePositionDto
@@ -197,7 +196,7 @@ $$;
 
 ### Redis Caching Layer
 
-```ts
+```typescript
 class CachedMarketRepository implements MarketRepository {
   constructor(
     private baseRepo: MarketRepository,
@@ -231,7 +230,7 @@ class CachedMarketRepository implements MarketRepository {
 
 ### Cache-Aside Pattern
 
-```ts
+```typescript
 async function getMarketWithCache(id: string): Promise<Market> {
   const cacheKey = `market:${id}`
 
@@ -242,7 +241,7 @@ async function getMarketWithCache(id: string): Promise<Market> {
   // Cache miss - fetch from DB
   const market = await db.markets.findUnique({ where: { id } })
 
-  if (!market) throw new Error("Market not found")
+  if (!market) throw new Error('Market not found')
 
   // Update cache
   await redis.setex(cacheKey, 300, JSON.stringify(market))
@@ -255,7 +254,7 @@ async function getMarketWithCache(id: string): Promise<Market> {
 
 ### Centralized Error Handler
 
-```ts
+```typescript
 class ApiError extends Error {
   constructor(
     public statusCode: number,
@@ -269,36 +268,27 @@ class ApiError extends Error {
 
 export function errorHandler(error: unknown, req: Request): Response {
   if (error instanceof ApiError) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message
-      },
-      { status: error.statusCode }
-    )
+    return NextResponse.json({
+      success: false,
+      error: error.message
+    }, { status: error.statusCode })
   }
 
   if (error instanceof z.ZodError) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Validation failed",
-        details: error.errors
-      },
-      { status: 400 }
-    )
+    return NextResponse.json({
+      success: false,
+      error: 'Validation failed',
+      details: error.errors
+    }, { status: 400 })
   }
 
   // Log unexpected errors
-  console.error("Unexpected error:", error)
+  console.error('Unexpected error:', error)
 
-  return NextResponse.json(
-    {
-      success: false,
-      error: "Internal server error"
-    },
-    { status: 500 }
-  )
+  return NextResponse.json({
+    success: false,
+    error: 'Internal server error'
+  }, { status: 500 })
 }
 
 // Usage
@@ -314,7 +304,7 @@ export async function GET(request: Request) {
 
 ### Retry with Exponential Backoff
 
-```ts
+```typescript
 async function fetchWithRetry<T>(
   fn: () => Promise<T>,
   maxRetries = 3
@@ -330,7 +320,7 @@ async function fetchWithRetry<T>(
       if (i < maxRetries - 1) {
         // Exponential backoff: 1s, 2s, 4s
         const delay = Math.pow(2, i) * 1000
-        await new Promise((resolve) => setTimeout(resolve, delay))
+        await new Promise(resolve => setTimeout(resolve, delay))
       }
     }
   }
@@ -346,13 +336,13 @@ const data = await fetchWithRetry(() => fetchFromAPI())
 
 ### JWT Token Validation
 
-```ts
-import jwt from "jsonwebtoken"
+```typescript
+import jwt from 'jsonwebtoken'
 
 interface JWTPayload {
   userId: string
   email: string
-  role: "admin" | "user"
+  role: 'admin' | 'user'
 }
 
 export function verifyToken(token: string): JWTPayload {
@@ -360,15 +350,15 @@ export function verifyToken(token: string): JWTPayload {
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload
     return payload
   } catch (error) {
-    throw new ApiError(401, "Invalid token")
+    throw new ApiError(401, 'Invalid token')
   }
 }
 
 export async function requireAuth(request: Request) {
-  const token = request.headers.get("authorization")?.replace("Bearer ", "")
+  const token = request.headers.get('authorization')?.replace('Bearer ', '')
 
   if (!token) {
-    throw new ApiError(401, "Missing authorization token")
+    throw new ApiError(401, 'Missing authorization token')
   }
 
   return verifyToken(token)
@@ -386,18 +376,18 @@ export async function GET(request: Request) {
 
 ### Role-Based Access Control
 
-```ts
-type Permission = "read" | "write" | "delete" | "admin"
+```typescript
+type Permission = 'read' | 'write' | 'delete' | 'admin'
 
 interface User {
   id: string
-  role: "admin" | "moderator" | "user"
+  role: 'admin' | 'moderator' | 'user'
 }
 
-const rolePermissions: Record<User["role"], Permission[]> = {
-  admin: ["read", "write", "delete", "admin"],
-  moderator: ["read", "write", "delete"],
-  user: ["read", "write"]
+const rolePermissions: Record<User['role'], Permission[]> = {
+  admin: ['read', 'write', 'delete', 'admin'],
+  moderator: ['read', 'write', 'delete'],
+  user: ['read', 'write']
 }
 
 export function hasPermission(user: User, permission: Permission): boolean {
@@ -409,7 +399,7 @@ export function requirePermission(permission: Permission) {
     const user = await requireAuth(request)
 
     if (!hasPermission(user, permission)) {
-      throw new ApiError(403, "Insufficient permissions")
+      throw new ApiError(403, 'Insufficient permissions')
     }
 
     return user
@@ -417,7 +407,7 @@ export function requirePermission(permission: Permission) {
 }
 
 // Usage
-export const DELETE = requirePermission("delete")(async (request: Request) => {
+export const DELETE = requirePermission('delete')(async (request: Request) => {
   // Handler with permission check
 })
 ```
@@ -426,7 +416,7 @@ export const DELETE = requirePermission("delete")(async (request: Request) => {
 
 ### Simple In-Memory Rate Limiter
 
-```ts
+```typescript
 class RateLimiter {
   private requests = new Map<string, number[]>()
 
@@ -439,10 +429,10 @@ class RateLimiter {
     const requests = this.requests.get(identifier) || []
 
     // Remove old requests outside window
-    const recentRequests = requests.filter((time) => now - time < windowMs)
+    const recentRequests = requests.filter(time => now - time < windowMs)
 
     if (recentRequests.length >= maxRequests) {
-      return false // Rate limit exceeded
+      return false  // Rate limit exceeded
     }
 
     // Add current request
@@ -456,17 +446,14 @@ class RateLimiter {
 const limiter = new RateLimiter()
 
 export async function GET(request: Request) {
-  const ip = request.headers.get("x-forwarded-for") || "unknown"
+  const ip = request.headers.get('x-forwarded-for') || 'unknown'
 
-  const allowed = await limiter.checkLimit(ip, 100, 60000) // 100 req/min
+  const allowed = await limiter.checkLimit(ip, 100, 60000)  // 100 req/min
 
   if (!allowed) {
-    return NextResponse.json(
-      {
-        error: "Rate limit exceeded"
-      },
-      { status: 429 }
-    )
+    return NextResponse.json({
+      error: 'Rate limit exceeded'
+    }, { status: 429 })
   }
 
   // Continue with request
@@ -477,7 +464,7 @@ export async function GET(request: Request) {
 
 ### Simple Queue Pattern
 
-```ts
+```typescript
 class JobQueue<T> {
   private queue: T[] = []
   private processing = false
@@ -499,7 +486,7 @@ class JobQueue<T> {
       try {
         await this.execute(job)
       } catch (error) {
-        console.error("Job failed:", error)
+        console.error('Job failed:', error)
       }
     }
 
@@ -524,7 +511,7 @@ export async function POST(request: Request) {
   // Add to queue instead of blocking
   await indexQueue.add({ marketId })
 
-  return NextResponse.json({ success: true, message: "Job queued" })
+  return NextResponse.json({ success: true, message: 'Job queued' })
 }
 ```
 
@@ -532,7 +519,7 @@ export async function POST(request: Request) {
 
 ### Structured Logging
 
-```ts
+```typescript
 interface LogContext {
   userId?: string
   requestId?: string
@@ -542,7 +529,7 @@ interface LogContext {
 }
 
 class Logger {
-  log(level: "info" | "warn" | "error", message: string, context?: LogContext) {
+  log(level: 'info' | 'warn' | 'error', message: string, context?: LogContext) {
     const entry = {
       timestamp: new Date().toISOString(),
       level,
@@ -554,15 +541,15 @@ class Logger {
   }
 
   info(message: string, context?: LogContext) {
-    this.log("info", message, context)
+    this.log('info', message, context)
   }
 
   warn(message: string, context?: LogContext) {
-    this.log("warn", message, context)
+    this.log('warn', message, context)
   }
 
   error(message: string, error: Error, context?: LogContext) {
-    this.log("error", message, {
+    this.log('error', message, {
       ...context,
       error: error.message,
       stack: error.stack
@@ -576,21 +563,20 @@ const logger = new Logger()
 export async function GET(request: Request) {
   const requestId = crypto.randomUUID()
 
-  logger.info("Fetching markets", {
+  logger.info('Fetching markets', {
     requestId,
-    method: "GET",
-    path: "/api/markets"
+    method: 'GET',
+    path: '/api/markets'
   })
 
   try {
     const markets = await fetchMarkets()
     return NextResponse.json({ success: true, data: markets })
   } catch (error) {
-    logger.error("Failed to fetch markets", error as Error, { requestId })
-    return NextResponse.json({ error: "Internal error" }, { status: 500 })
+    logger.error('Failed to fetch markets', error as Error, { requestId })
+    return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
 ```
 
-**Remember**: Backend patterns enable scalable, maintainable server-side
-applications. Choose patterns that fit your complexity level.
+**Remember**: Backend patterns enable scalable, maintainable server-side applications. Choose patterns that fit your complexity level.
