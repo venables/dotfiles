@@ -14,7 +14,7 @@
             "type": "command",
             "command": "~/.claude/hooks/block-dev-server.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Bash\" && tool_input.command matches \"(npm (install|test)|pnpm (install|test)|yarn (install|test)|bun (install|test)|cargo build|make|docker|pytest|vitest|playwright)\"",
@@ -23,7 +23,7 @@
             "type": "command",
             "command": "~/.claude/hooks/tmux-reminder.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Bash\" && tool_input.command matches \"git push\"",
@@ -32,7 +32,7 @@
             "type": "command",
             "command": "~/.claude/hooks/review-before-push.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Write\" && tool_input.file_path matches \"\\\\.(md|txt)$\" && !(tool_input.file_path matches \"README\\\\.md|CLAUDE\\\\.md|AGENTS\\\\.md|CONTRIBUTING\\\\.md\")",
@@ -41,7 +41,7 @@
             "type": "command",
             "command": "~/.claude/hooks/block-doc-files.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Edit\" || tool == \"Write\"",
@@ -50,7 +50,7 @@
             "type": "command",
             "command": "~/.claude/hooks/strategic-compact/suggest-compact.sh"
           }
-        ],
+        ]
       }
     ],
     "PostToolUse": [
@@ -61,7 +61,7 @@
             "type": "command",
             "command": "~/.claude/hooks/log-pr-creation.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx|js|jsx|md|mdx|json|jsonc|yaml|toml|html|css)$\"",
@@ -70,7 +70,7 @@
             "type": "command",
             "command": "~/.claude/hooks/format-oxfmt.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx)$\"",
@@ -79,7 +79,7 @@
             "type": "command",
             "command": "~/.claude/hooks/typescript-check.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx|js|jsx)$\"",
@@ -88,7 +88,7 @@
             "type": "command",
             "command": "~/.claude/hooks/warn-console-log.sh"
           }
-        ],
+        ]
       }
     ],
     "PreCompact": [
@@ -99,7 +99,7 @@
             "type": "command",
             "command": "~/.claude/hooks/memory-persistence/pre-compact.sh"
           }
-        ],
+        ]
       }
     ],
     "SessionStart": [
@@ -110,7 +110,7 @@
             "type": "command",
             "command": "~/.claude/hooks/memory-persistence/session-start.sh"
           }
-        ],
+        ]
       }
     ],
     "Stop": [
@@ -121,7 +121,7 @@
             "type": "command",
             "command": "~/.claude/hooks/audit-console-log.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "*",
@@ -130,7 +130,7 @@
             "type": "command",
             "command": "~/.claude/hooks/memory-persistence/session-end.sh"
           }
-        ],
+        ]
       },
       {
         "matcher": "*",
@@ -139,7 +139,7 @@
             "type": "command",
             "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"
           }
-        ],
+        ]
       }
     ]
   },
