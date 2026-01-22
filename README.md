@@ -25,12 +25,13 @@
 
 Located in `tools/.local/bin/`:
 
-| Script    | Usage                       | Description                                        |
-| --------- | --------------------------- | -------------------------------------------------- |
-| `wt`      | `wt <branch>`               | Git worktree helper. Creates `../<repo>-<branch>`. |
-| `tmuxify` | `tmuxify <cmd> [branch]`    | Wraps any command with tmux + worktree workflow.   |
+| Script    | Usage                    | Description                                        |
+| --------- | ------------------------ | -------------------------------------------------- |
+| `wt`      | `wt <branch>`            | Git worktree helper. Creates `../<repo>-<branch>`. |
+| `tmuxify` | `tmuxify <cmd> [branch]` | Wraps any command with tmux + worktree workflow.   |
 
 The `cc` and `oc` aliases use `tmuxify`:
+
 - `cc` / `oc` - start claude/opencode in a tmux session
 - `cc feature-1` / `oc feature-1` - create worktree, start named tmux session, run in worktree
 
