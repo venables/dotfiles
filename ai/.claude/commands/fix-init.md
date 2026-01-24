@@ -18,11 +18,12 @@ Follow these steps:
 
 3. **Group the rest**: Organize remaining instructions into logical categories
    (e.g., TypeScript conventions, testing patterns, API design, Git workflow).
-   For each group, create a separate markdown file.
+   For each group, create a separate markdown file in the `.claude/rules`
+   directory.
 
 4. **Create the file structure**: Output:
    - A minimal root CLAUDE.md with markdown links to the separate files
-   - Each separate file with its relevant instructions
+   - Each separate file with its relevant instructions in `.claude/rules`
    - A suggested docs/ folder structure
 
 5. **Flag for deletion**: Identify any instructions that are:

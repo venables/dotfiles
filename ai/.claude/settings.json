@@ -8,24 +8,6 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "tool == \"Bash\" && tool_input.command matches \"(npm run dev|pnpm( run)? dev|yarn dev|bun run dev)\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-dev-server.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "tool == \"Bash\" && tool_input.command matches \"(npm (install|test)|pnpm (install|test)|yarn (install|test)|bun (install|test)|cargo build|make|docker|pytest|vitest|playwright)\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/tmux-reminder.sh"
-          }
-        ]
-      },
-      {
         "matcher": "tool == \"Bash\" && tool_input.command matches \"git push\"",
         "hooks": [
           {
@@ -33,111 +15,24 @@
             "command": "~/.claude/hooks/review-before-push.sh"
           }
         ]
-      },
-      {
-        "matcher": "tool == \"Write\" && tool_input.file_path matches \"\\\\.(md|txt)$\" && !(tool_input.file_path matches \"README\\\\.md|CLAUDE\\\\.md|AGENTS\\\\.md|CONTRIBUTING\\\\.md\")",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-doc-files.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "tool == \"Edit\" || tool == \"Write\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/strategic-compact/suggest-compact.sh"
-          }
-        ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "tool == \"Bash\"",
+        "matcher": "Edit|MultiEdit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/log-pr-creation.sh"
+            "command": "~/.claude/hooks/code-format.sh"
           }
         ]
       },
       {
-        "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx|js|jsx|md|mdx|json|jsonc|yaml|toml|html|css)$\"",
+        "matcher": "Edit|MultiEdit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/format-oxfmt.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx)$\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/typescript-check.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\\\.(ts|tsx|js|jsx)$\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/warn-console-log.sh"
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/memory-persistence/pre-compact.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/memory-persistence/session-start.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/audit-console-log.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/memory-persistence/session-end.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"
+            "command": "~/.claude/hooks/code-typecheck.sh"
           }
         ]
       }
@@ -153,7 +48,6 @@
     "feature-dev@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true
+    "learning-output-style@claude-plugins-official": true
   }
 }
