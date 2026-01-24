@@ -1,7 +1,6 @@
 ---
 name: build-error-resolver
-description:
-  Build and TypeScript error resolution specialist. Use PROACTIVELY when build
+description: Build and TypeScript error resolution specialist. Use PROACTIVELY when build
   fails or type errors occur. Fixes build/type errors only with minimal diffs,
   no architectural edits. Focuses on getting the build green quickly.
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -116,12 +115,12 @@ For each error:
 ```ts
 // ❌ ERROR: Parameter 'x' implicitly has an 'any' type
 function add(x, y) {
-  return x + y
+  return x + y;
 }
 
 // ✅ FIX: Add type annotations
 function add(x: number, y: number): number {
-  return x + y
+  return x + y;
 }
 ```
 
@@ -129,13 +128,13 @@ function add(x: number, y: number): number {
 
 ```ts
 // ❌ ERROR: Object is possibly 'undefined'
-const name = user.name.toUpperCase()
+const name = user.name.toUpperCase();
 
 // ✅ FIX: Optional chaining
-const name = user?.name?.toUpperCase()
+const name = user?.name?.toUpperCase();
 
 // ✅ OR: Null check
-const name = user && user.name ? user.name.toUpperCase() : ""
+const name = user && user.name ? user.name.toUpperCase() : "";
 ```
 
 **Pattern 3: Missing Properties**
@@ -143,14 +142,14 @@ const name = user && user.name ? user.name.toUpperCase() : ""
 ```ts
 // ❌ ERROR: Property 'age' does not exist on type 'User'
 interface User {
-  name: string
+  name: string;
 }
-const user: User = { name: "John", age: 30 }
+const user: User = { name: "John", age: 30 };
 
 // ✅ FIX: Add property to interface
 interface User {
-  name: string
-  age?: number // Optional if not always present
+  name: string;
+  age?: number; // Optional if not always present
 }
 ```
 
@@ -180,13 +179,13 @@ npm install @/lib/utils
 
 ```ts
 // ❌ ERROR: Type 'string' is not assignable to type 'number'
-const age: number = "30"
+const age: number = "30";
 
 // ✅ FIX: Parse string to number
-const age: number = parseInt("30", 10)
+const age: number = parseInt("30", 10);
 
 // ✅ OR: Change type
-const age: string = "30"
+const age: string = "30";
 ```
 
 **Pattern 6: Generic Constraints**
@@ -194,17 +193,17 @@ const age: string = "30"
 ```ts
 // ❌ ERROR: Type 'T' is not assignable to type 'string'
 function getLength<T>(item: T): number {
-  return item.length
+  return item.length;
 }
 
 // ✅ FIX: Add constraint
 function getLength<T extends { length: number }>(item: T): number {
-  return item.length
+  return item.length;
 }
 
 // ✅ OR: More specific constraint
 function getLength<T extends string | any[]>(item: T): number {
-  return item.length
+  return item.length;
 }
 ```
 
@@ -214,16 +213,16 @@ function getLength<T extends string | any[]>(item: T): number {
 // ❌ ERROR: React Hook "useState" cannot be called in a function
 function MyComponent() {
   if (condition) {
-    const [state, setState] = useState(0) // ERROR!
+    const [state, setState] = useState(0); // ERROR!
   }
 }
 
 // ✅ FIX: Move hooks to top level
 function MyComponent() {
-  const [state, setState] = useState(0)
+  const [state, setState] = useState(0);
 
   if (!condition) {
-    return null
+    return null;
   }
 
   // Use state here
@@ -235,12 +234,12 @@ function MyComponent() {
 ```ts
 // ❌ ERROR: 'await' expressions are only allowed within async functions
 function fetchData() {
-  const data = await fetch("/api/data")
+  const data = await fetch("/api/data");
 }
 
 // ✅ FIX: Add async keyword
 async function fetchData() {
-  const data = await fetch("/api/data")
+  const data = await fetch("/api/data");
 }
 ```
 
@@ -313,50 +312,50 @@ const Component = ({ children }: Props) => {
 
 ```ts
 // ❌ ERROR: Type 'any' not assignable
-const { data } = await supabase.from("markets").select("*")
+const { data } = await supabase.from("markets").select("*");
 
 // ✅ FIX: Add type annotation
 interface Market {
-  id: string
-  name: string
-  slug: string
+  id: string;
+  name: string;
+  slug: string;
   // ... other fields
 }
 
 const { data } = (await supabase.from("markets").select("*")) as {
-  data: Market[] | null
-  error: any
-}
+  data: Market[] | null;
+  error: any;
+};
 ```
 
 ### Redis Stack Types
 
 ```ts
 // ❌ ERROR: Property 'ft' does not exist on type 'RedisClientType'
-const results = await client.ft.search("idx:markets", query)
+const results = await client.ft.search("idx:markets", query);
 
 // ✅ FIX: Use proper Redis Stack types
-import { createClient } from "redis"
+import { createClient } from "redis";
 
 const client = createClient({
-  url: process.env.REDIS_URL
-})
+  url: process.env.REDIS_URL,
+});
 
-await client.connect()
+await client.connect();
 
 // Type is inferred correctly now
-const results = await client.ft.search("idx:markets", query)
+const results = await client.ft.search("idx:markets", query);
 ```
 
 ### Solana Web3.js Types
 
 ```ts
 // ❌ ERROR: Argument of type 'string' not assignable to 'PublicKey'
-const publicKey = wallet.address
+const publicKey = wallet.address;
 
 // ✅ FIX: Use PublicKey constructor
-import { PublicKey } from "@solana/web3.js"
-const publicKey = new PublicKey(wallet.address)
+import { PublicKey } from "@solana/web3.js";
+const publicKey = new PublicKey(wallet.address);
 ```
 
 ## Minimal Diff Strategy
@@ -392,18 +391,18 @@ error) ❌ Optimize performance ❌ Improve code style
 
 function processData(data) {
   // Line 45 - ERROR: 'data' implicitly has 'any' type
-  return data.map((item) => item.value)
+  return data.map((item) => item.value);
 }
 
 // ✅ MINIMAL FIX:
 function processData(data: any[]) {
   // Only change this line
-  return data.map((item) => item.value)
+  return data.map((item) => item.value);
 }
 
 // ✅ BETTER MINIMAL FIX (if type known):
 function processData(data: Array<{ value: number }>) {
-  return data.map((item) => item.value)
+  return data.map((item) => item.value);
 }
 ```
 

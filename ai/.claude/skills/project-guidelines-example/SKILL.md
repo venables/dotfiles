@@ -9,6 +9,7 @@ Based on a real production application: [Zenith](https://zenith.chat) - AI-power
 ## When to Use
 
 Reference this skill when working on the specific project it's designed for. Project skills contain:
+
 - Architecture overview
 - File structure
 - Code patterns
@@ -20,6 +21,7 @@ Reference this skill when working on the specific project it's designed for. Pro
 ## Architecture Overview
 
 **Tech Stack:**
+
 - **Frontend**: Next.js 15 (App Router), TypeScript, React
 - **Backend**: FastAPI (Python), Pydantic models
 - **Database**: Supabase (PostgreSQL)
@@ -28,6 +30,7 @@ Reference this skill when working on the specific project it's designed for. Pro
 - **Testing**: Playwright (E2E), pytest (backend), React Testing Library
 
 **Services:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         Frontend                            │
@@ -115,31 +118,28 @@ class ApiResponse(BaseModel, Generic[T]):
 
 ```typescript
 interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
+  success: boolean;
+  data?: T;
+  error?: string;
 }
 
-async function fetchApi<T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<ApiResponse<T>> {
+async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(`/api${endpoint}`, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options?.headers,
       },
-    })
+    });
 
     if (!response.ok) {
-      return { success: false, error: `HTTP ${response.status}` }
+      return { success: false, error: `HTTP ${response.status}` };
     }
 
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    return { success: false, error: String(error) }
+    return { success: false, error: String(error) };
   }
 }
 ```
@@ -182,36 +182,34 @@ async def analyze_with_claude(content: str) -> AnalysisResult:
 ### Custom Hooks (React)
 
 ```typescript
-import { useState, useCallback } from 'react'
+import { useState, useCallback } from "react";
 
 interface UseApiState<T> {
-  data: T | null
-  loading: boolean
-  error: string | null
+  data: T | null;
+  loading: boolean;
+  error: string | null;
 }
 
-export function useApi<T>(
-  fetchFn: () => Promise<ApiResponse<T>>
-) {
+export function useApi<T>(fetchFn: () => Promise<ApiResponse<T>>) {
   const [state, setState] = useState<UseApiState<T>>({
     data: null,
     loading: false,
     error: null,
-  })
+  });
 
   const execute = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }))
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
-    const result = await fetchFn()
+    const result = await fetchFn();
 
     if (result.success) {
-      setState({ data: result.data!, loading: false, error: null })
+      setState({ data: result.data!, loading: false, error: null });
     } else {
-      setState({ data: null, loading: false, error: result.error! })
+      setState({ data: null, loading: false, error: result.error! });
     }
-  }, [fetchFn])
+  }, [fetchFn]);
 
-  return { ...state, execute }
+  return { ...state, execute };
 }
 ```
 
@@ -233,6 +231,7 @@ poetry run pytest tests/test_auth.py -v
 ```
 
 **Test structure:**
+
 ```python
 import pytest
 from httpx import AsyncClient
@@ -264,6 +263,7 @@ npm run test:e2e
 ```
 
 **Test structure:**
+
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react'
 import { WorkspacePanel } from './WorkspacePanel'

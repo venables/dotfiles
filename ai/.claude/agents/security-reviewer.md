@@ -1,7 +1,6 @@
 ---
 name: security-reviewer
-description:
-  Security vulnerability detection and remediation specialist. Use PROACTIVELY
+description: Security vulnerability detection and remediation specialist. Use PROACTIVELY
   after writing code that handles user input, authentication, API endpoints, or
   sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top
   10 vulnerabilities.
@@ -197,14 +196,14 @@ Search Security (Redis + OpenAI):
 
 ```javascript
 // ❌ CRITICAL: Hardcoded secrets
-const apiKey = "sk-proj-xxxxx"
-const password = "admin123"
-const token = "ghp_xxxxxxxxxxxx"
+const apiKey = "sk-proj-xxxxx";
+const password = "admin123";
+const token = "ghp_xxxxxxxxxxxx";
 
 // ✅ CORRECT: Environment variables
-const apiKey = process.env.OPENAI_API_KEY
+const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
-  throw new Error("OPENAI_API_KEY not configured")
+  throw new Error("OPENAI_API_KEY not configured");
 }
 ```
 
@@ -212,51 +211,51 @@ if (!apiKey) {
 
 ```javascript
 // ❌ CRITICAL: SQL injection vulnerability
-const query = `SELECT * FROM users WHERE id = ${userId}`
-await db.query(query)
+const query = `SELECT * FROM users WHERE id = ${userId}`;
+await db.query(query);
 
 // ✅ CORRECT: Parameterized queries
-const { data } = await supabase.from("users").select("*").eq("id", userId)
+const { data } = await supabase.from("users").select("*").eq("id", userId);
 ```
 
 ### 3. Command Injection (CRITICAL)
 
 ```javascript
 // ❌ CRITICAL: Command injection
-const { exec } = require("child_process")
-exec(`ping ${userInput}`, callback)
+const { exec } = require("child_process");
+exec(`ping ${userInput}`, callback);
 
 // ✅ CORRECT: Use libraries, not shell commands
-const dns = require("dns")
-dns.lookup(userInput, callback)
+const dns = require("dns");
+dns.lookup(userInput, callback);
 ```
 
 ### 4. Cross-Site Scripting (XSS) (HIGH)
 
 ```javascript
 // ❌ HIGH: XSS vulnerability
-element.innerHTML = userInput
+element.innerHTML = userInput;
 
 // ✅ CORRECT: Use textContent or sanitize
-element.textContent = userInput
+element.textContent = userInput;
 // OR
-import DOMPurify from "dompurify"
-element.innerHTML = DOMPurify.sanitize(userInput)
+import DOMPurify from "dompurify";
+element.innerHTML = DOMPurify.sanitize(userInput);
 ```
 
 ### 5. Server-Side Request Forgery (SSRF) (HIGH)
 
 ```javascript
 // ❌ HIGH: SSRF vulnerability
-const response = await fetch(userProvidedUrl)
+const response = await fetch(userProvidedUrl);
 
 // ✅ CORRECT: Validate and whitelist URLs
-const allowedDomains = ["api.example.com", "cdn.example.com"]
-const url = new URL(userProvidedUrl)
+const allowedDomains = ["api.example.com", "cdn.example.com"];
+const url = new URL(userProvidedUrl);
 if (!allowedDomains.includes(url.hostname)) {
-  throw new Error("Invalid URL")
+  throw new Error("Invalid URL");
 }
-const response = await fetch(url.toString())
+const response = await fetch(url.toString());
 ```
 
 ### 6. Insecure Authentication (CRITICAL)
@@ -268,8 +267,8 @@ if (password === storedPassword) {
 }
 
 // ✅ CORRECT: Hashed password comparison
-import bcrypt from "bcrypt"
-const isValid = await bcrypt.compare(password, hashedPassword)
+import bcrypt from "bcrypt";
+const isValid = await bcrypt.compare(password, hashedPassword);
 ```
 
 ### 7. Insufficient Authorization (CRITICAL)
@@ -277,27 +276,27 @@ const isValid = await bcrypt.compare(password, hashedPassword)
 ```javascript
 // ❌ CRITICAL: No authorization check
 app.get("/api/user/:id", async (req, res) => {
-  const user = await getUser(req.params.id)
-  res.json(user)
-})
+  const user = await getUser(req.params.id);
+  res.json(user);
+});
 
 // ✅ CORRECT: Verify user can access resource
 app.get("/api/user/:id", authenticateUser, async (req, res) => {
   if (req.user.id !== req.params.id && !req.user.isAdmin) {
-    return res.status(403).json({ error: "Forbidden" })
+    return res.status(403).json({ error: "Forbidden" });
   }
-  const user = await getUser(req.params.id)
-  res.json(user)
-})
+  const user = await getUser(req.params.id);
+  res.json(user);
+});
 ```
 
 ### 8. Race Conditions in Financial Operations (CRITICAL)
 
 ```javascript
 // ❌ CRITICAL: Race condition in balance check
-const balance = await getBalance(userId)
+const balance = await getBalance(userId);
 if (balance >= amount) {
-  await withdraw(userId, amount) // Another request could withdraw in parallel!
+  await withdraw(userId, amount); // Another request could withdraw in parallel!
 }
 
 // ✅ CORRECT: Atomic transaction with lock
@@ -305,14 +304,14 @@ await db.transaction(async (trx) => {
   const balance = await trx("balances")
     .where({ user_id: userId })
     .forUpdate() // Lock row
-    .first()
+    .first();
 
   if (balance.amount < amount) {
-    throw new Error("Insufficient balance")
+    throw new Error("Insufficient balance");
   }
 
-  await trx("balances").where({ user_id: userId }).decrement("amount", amount)
-})
+  await trx("balances").where({ user_id: userId }).decrement("amount", amount);
+});
 ```
 
 ### 9. Insufficient Rate Limiting (HIGH)
@@ -320,36 +319,36 @@ await db.transaction(async (trx) => {
 ```javascript
 // ❌ HIGH: No rate limiting
 app.post("/api/trade", async (req, res) => {
-  await executeTrade(req.body)
-  res.json({ success: true })
-})
+  await executeTrade(req.body);
+  res.json({ success: true });
+});
 
 // ✅ CORRECT: Rate limiting
-import rateLimit from "express-rate-limit"
+import rateLimit from "express-rate-limit";
 
 const tradeLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 10, // 10 requests per minute
-  message: "Too many trade requests, please try again later"
-})
+  message: "Too many trade requests, please try again later",
+});
 
 app.post("/api/trade", tradeLimiter, async (req, res) => {
-  await executeTrade(req.body)
-  res.json({ success: true })
-})
+  await executeTrade(req.body);
+  res.json({ success: true });
+});
 ```
 
 ### 10. Logging Sensitive Data (MEDIUM)
 
 ```javascript
 // ❌ MEDIUM: Logging sensitive data
-console.log("User login:", { email, password, apiKey })
+console.log("User login:", { email, password, apiKey });
 
 // ✅ CORRECT: Sanitize logs
 console.log("User login:", {
   email: email.replace(/(?<=.).(?=.*@)/g, "*"),
-  passwordProvided: !!password
-})
+  passwordProvided: !!password,
+});
 ```
 
 ## Security Review Report Format

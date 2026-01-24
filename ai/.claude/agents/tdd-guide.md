@@ -1,7 +1,6 @@
 ---
 name: tdd-guide
-description:
-  Test-Driven Development specialist enforcing write-tests-first methodology.
+description: Test-Driven Development specialist enforcing write-tests-first methodology.
   Use PROACTIVELY when writing new features, fixing bugs, or refactoring code.
   Ensures 80%+ test coverage.
 tools: Read, Write, Edit, Bash, Grep
@@ -27,13 +26,13 @@ developed test-first with comprehensive coverage.
 // ALWAYS start with a failing test
 describe("searchMarkets", () => {
   it("returns semantically similar markets", async () => {
-    const results = await searchMarkets("election")
+    const results = await searchMarkets("election");
 
-    expect(results).toHaveLength(5)
-    expect(results[0].name).toContain("Trump")
-    expect(results[1].name).toContain("Biden")
-  })
-})
+    expect(results).toHaveLength(5);
+    expect(results[0].name).toContain("Trump");
+    expect(results[1].name).toContain("Biden");
+  });
+});
 ```
 
 ### Step 2: Run Test (Verify it FAILS)
@@ -47,9 +46,9 @@ npm test
 
 ```ts
 export async function searchMarkets(query: string) {
-  const embedding = await generateEmbedding(query)
-  const results = await vectorSearch(embedding)
-  return results
+  const embedding = await generateEmbedding(query);
+  const results = await vectorSearch(embedding);
+  return results;
 }
 ```
 
@@ -81,24 +80,24 @@ npm run test:coverage
 Test individual functions in isolation:
 
 ```ts
-import { calculateSimilarity } from "./utils"
+import { calculateSimilarity } from "./utils";
 
 describe("calculateSimilarity", () => {
   it("returns 1.0 for identical embeddings", () => {
-    const embedding = [0.1, 0.2, 0.3]
-    expect(calculateSimilarity(embedding, embedding)).toBe(1.0)
-  })
+    const embedding = [0.1, 0.2, 0.3];
+    expect(calculateSimilarity(embedding, embedding)).toBe(1.0);
+  });
 
   it("returns 0.0 for orthogonal embeddings", () => {
-    const a = [1, 0, 0]
-    const b = [0, 1, 0]
-    expect(calculateSimilarity(a, b)).toBe(0.0)
-  })
+    const a = [1, 0, 0];
+    const b = [0, 1, 0];
+    expect(calculateSimilarity(a, b)).toBe(0.0);
+  });
 
   it("handles null gracefully", () => {
-    expect(() => calculateSimilarity(null, [])).toThrow()
-  })
-})
+    expect(() => calculateSimilarity(null, [])).toThrow();
+  });
+});
 ```
 
 ### 2. Integration Tests (Mandatory)
@@ -106,45 +105,39 @@ describe("calculateSimilarity", () => {
 Test API endpoints and database operations:
 
 ```ts
-import { NextRequest } from "next/server"
-import { GET } from "./route"
+import { NextRequest } from "next/server";
+import { GET } from "./route";
 
 describe("GET /api/markets/search", () => {
   it("returns 200 with valid results", async () => {
-    const request = new NextRequest(
-      "http://localhost/api/markets/search?q=trump"
-    )
-    const response = await GET(request, {})
-    const data = await response.json()
+    const request = new NextRequest("http://localhost/api/markets/search?q=trump");
+    const response = await GET(request, {});
+    const data = await response.json();
 
-    expect(response.status).toBe(200)
-    expect(data.success).toBe(true)
-    expect(data.results.length).toBeGreaterThan(0)
-  })
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.results.length).toBeGreaterThan(0);
+  });
 
   it("returns 400 for missing query", async () => {
-    const request = new NextRequest("http://localhost/api/markets/search")
-    const response = await GET(request, {})
+    const request = new NextRequest("http://localhost/api/markets/search");
+    const response = await GET(request, {});
 
-    expect(response.status).toBe(400)
-  })
+    expect(response.status).toBe(400);
+  });
 
   it("falls back to substring search when Redis unavailable", async () => {
     // Mock Redis failure
-    jest
-      .spyOn(redis, "searchMarketsByVector")
-      .mockRejectedValue(new Error("Redis down"))
+    jest.spyOn(redis, "searchMarketsByVector").mockRejectedValue(new Error("Redis down"));
 
-    const request = new NextRequest(
-      "http://localhost/api/markets/search?q=test"
-    )
-    const response = await GET(request, {})
-    const data = await response.json()
+    const request = new NextRequest("http://localhost/api/markets/search?q=test");
+    const response = await GET(request, {});
+    const data = await response.json();
 
-    expect(response.status).toBe(200)
-    expect(data.fallback).toBe(true)
-  })
-})
+    expect(response.status).toBe(200);
+    expect(data.fallback).toBe(true);
+  });
+});
 ```
 
 ### 3. E2E Tests (For Critical Flows)
@@ -152,26 +145,26 @@ describe("GET /api/markets/search", () => {
 Test complete user journeys with Playwright:
 
 ```ts
-import { test, expect } from "@playwright/test"
+import { test, expect } from "@playwright/test";
 
 test("user can search and view market", async ({ page }) => {
-  await page.goto("/")
+  await page.goto("/");
 
   // Search for market
-  await page.fill('input[placeholder="Search markets"]', "election")
-  await page.waitForTimeout(600) // Debounce
+  await page.fill('input[placeholder="Search markets"]', "election");
+  await page.waitForTimeout(600); // Debounce
 
   // Verify results
-  const results = page.locator('[data-testid="market-card"]')
-  await expect(results).toHaveCount(5, { timeout: 5000 })
+  const results = page.locator('[data-testid="market-card"]');
+  await expect(results).toHaveCount(5, { timeout: 5000 });
 
   // Click first result
-  await results.first().click()
+  await results.first().click();
 
   // Verify market page loaded
-  await expect(page).toHaveURL(/\/markets\//)
-  await expect(page.locator("h1")).toBeVisible()
-})
+  await expect(page).toHaveURL(/\/markets\//);
+  await expect(page.locator("h1")).toBeVisible();
+});
 ```
 
 ## Mocking External Dependencies
@@ -186,13 +179,13 @@ jest.mock("@/lib/supabase", () => ({
         eq: jest.fn(() =>
           Promise.resolve({
             data: mockMarkets,
-            error: null
-          })
-        )
-      }))
-    }))
-  }
-}))
+            error: null,
+          }),
+        ),
+      })),
+    })),
+  },
+}));
 ```
 
 ### Mock Redis
@@ -202,18 +195,18 @@ jest.mock("@/lib/redis", () => ({
   searchMarketsByVector: jest.fn(() =>
     Promise.resolve([
       { slug: "test-1", similarity_score: 0.95 },
-      { slug: "test-2", similarity_score: 0.9 }
-    ])
-  )
-}))
+      { slug: "test-2", similarity_score: 0.9 },
+    ]),
+  ),
+}));
 ```
 
 ### Mock OpenAI
 
 ```ts
 jest.mock("@/lib/openai", () => ({
-  generateEmbedding: jest.fn(() => Promise.resolve(new Array(1536).fill(0.1)))
-}))
+  generateEmbedding: jest.fn(() => Promise.resolve(new Array(1536).fill(0.1))),
+}));
 ```
 
 ## Edge Cases You MUST Test
@@ -248,14 +241,14 @@ Before marking tests complete:
 
 ```ts
 // DON'T test internal state
-expect(component.state.count).toBe(5)
+expect(component.state.count).toBe(5);
 ```
 
 ### ✅ Test User-Visible Behavior
 
 ```ts
 // DO test what users see
-expect(screen.getByText("Count: 5")).toBeInTheDocument()
+expect(screen.getByText("Count: 5")).toBeInTheDocument();
 ```
 
 ### ❌ Tests Depend on Each Other
@@ -264,10 +257,10 @@ expect(screen.getByText("Count: 5")).toBeInTheDocument()
 // DON'T rely on previous test
 test("creates user", () => {
   /* ... */
-})
+});
 test("updates same user", () => {
   /* needs previous test */
-})
+});
 ```
 
 ### ✅ Independent Tests
@@ -275,9 +268,9 @@ test("updates same user", () => {
 ```ts
 // DO setup data in each test
 test("updates user", () => {
-  const user = createTestUser()
+  const user = createTestUser();
   // Test logic
-})
+});
 ```
 
 ## Coverage Report

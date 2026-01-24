@@ -32,23 +32,19 @@ Edit `config.json` to customize:
     "debugging_techniques",
     "project_specific"
   ],
-  "ignore_patterns": [
-    "simple_typos",
-    "one_time_fixes",
-    "external_api_issues"
-  ]
+  "ignore_patterns": ["simple_typos", "one_time_fixes", "external_api_issues"]
 }
 ```
 
 ## Pattern Types
 
-| Pattern | Description |
-|---------|-------------|
-| `error_resolution` | How specific errors were resolved |
-| `user_corrections` | Patterns from user corrections |
-| `workarounds` | Solutions to framework/library quirks |
-| `debugging_techniques` | Effective debugging approaches |
-| `project_specific` | Project-specific conventions |
+| Pattern                | Description                           |
+| ---------------------- | ------------------------------------- |
+| `error_resolution`     | How specific errors were resolved     |
+| `user_corrections`     | Patterns from user corrections        |
+| `workarounds`          | Solutions to framework/library quirks |
+| `debugging_techniques` | Effective debugging approaches        |
+| `project_specific`     | Project-specific conventions          |
 
 ## Hook Setup
 
@@ -57,13 +53,17 @@ Add to your `~/.claude/settings.json`:
 ```json
 {
   "hooks": {
-    "Stop": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"
-      }]
-    }]
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/continuous-learning/evaluate-session.sh"
+          }
+        ]
+      }
+    ]
   }
 }
 ```

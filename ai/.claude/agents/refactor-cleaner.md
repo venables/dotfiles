@@ -1,7 +1,6 @@
 ---
 name: refactor-cleaner
-description:
-  Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing
+description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing
   unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck,
   ts-prune) to identify dead code and safely removes it.
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -167,10 +166,10 @@ After each removal:
 
 ```ts
 // ❌ Remove unused imports
-import { useState, useEffect, useMemo } from "react" // Only useState used
+import { useState, useEffect, useMemo } from "react"; // Only useState used
 
 // ✅ Keep only what's used
-import { useState } from "react"
+import { useState } from "react";
 ```
 
 ### 2. Dead Code Branches
@@ -179,7 +178,7 @@ import { useState } from "react"
 // ❌ Remove unreachable code
 if (false) {
   // This never executes
-  doSomething()
+  doSomething();
 }
 
 // ❌ Remove unused functions

@@ -1,7 +1,6 @@
 ---
 name: doc-updater
-description:
-  Documentation and codemap specialist. Use PROACTIVELY for updating codemaps
+description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps
   and documentation. Runs /update-codemaps and /update-docs, generates
   docs/CODEMAPS/*, updates READMEs and guides.
 tools: Read, Write, Edit, Bash, Grep, Glob
@@ -304,31 +303,31 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
  * Usage: tsx scripts/codemaps/generate.ts
  */
 
-import { Project } from "ts-morph"
-import * as fs from "fs"
-import * as path from "path"
+import { Project } from "ts-morph";
+import * as fs from "fs";
+import * as path from "path";
 
 async function generateCodemaps() {
   const project = new Project({
-    tsConfigFilePath: "tsconfig.json"
-  })
+    tsConfigFilePath: "tsconfig.json",
+  });
 
   // 1. Discover all source files
-  const sourceFiles = project.getSourceFiles("src/**/*.{ts,tsx}")
+  const sourceFiles = project.getSourceFiles("src/**/*.{ts,tsx}");
 
   // 2. Build import/export graph
-  const graph = buildDependencyGraph(sourceFiles)
+  const graph = buildDependencyGraph(sourceFiles);
 
   // 3. Detect entrypoints (pages, API routes)
-  const entrypoints = findEntrypoints(sourceFiles)
+  const entrypoints = findEntrypoints(sourceFiles);
 
   // 4. Generate codemaps
-  await generateFrontendMap(graph, entrypoints)
-  await generateBackendMap(graph, entrypoints)
-  await generateIntegrationsMap(graph)
+  await generateFrontendMap(graph, entrypoints);
+  await generateBackendMap(graph, entrypoints);
+  await generateIntegrationsMap(graph);
 
   // 5. Generate index
-  await generateIndex()
+  await generateIndex();
 }
 
 function buildDependencyGraph(files: SourceFile[]) {
@@ -350,24 +349,24 @@ function findEntrypoints(files: SourceFile[]) {
  * Usage: tsx scripts/docs/update.ts
  */
 
-import * as fs from "fs"
-import { execSync } from "child_process"
+import * as fs from "fs";
+import { execSync } from "child_process";
 
 async function updateDocs() {
   // 1. Read codemaps
-  const codemaps = readCodemaps()
+  const codemaps = readCodemaps();
 
   // 2. Extract JSDoc/TSDoc
-  const apiDocs = extractJSDoc("src/**/*.ts")
+  const apiDocs = extractJSDoc("src/**/*.ts");
 
   // 3. Update README.md
-  await updateReadme(codemaps, apiDocs)
+  await updateReadme(codemaps, apiDocs);
 
   // 4. Update guides
-  await updateGuides(codemaps)
+  await updateGuides(codemaps);
 
   // 5. Generate API reference
-  await generateAPIReference(apiDocs)
+  await generateAPIReference(apiDocs);
 }
 
 function extractJSDoc(pattern: string) {
