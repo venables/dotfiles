@@ -33,7 +33,8 @@ Located in `tools/.local/bin/`:
 The `cc` and `oc` aliases use `tmuxify`:
 
 - `cc` / `oc` - start claude/opencode in a tmux session
-- `cc feature-1` / `oc feature-1` - create worktree, start named tmux session, run in worktree
+- `cc feature-1` / `oc feature-1` - create worktree, start named tmux session,
+  run in worktree
 
 ## Principles
 
@@ -80,7 +81,7 @@ The `cc` and `oc` aliases use `tmuxify`:
    ```sh
    cd ~/.dotfiles
    stow \
-    agents \
+    ai \
     formatters \
     ghostty \
     git \
@@ -90,6 +91,7 @@ The `cc` and `oc` aliases use `tmuxify`:
     nvim \
     ssh \
     starship \
+    tmux \
     tools \
     zed \
     zsh
@@ -213,11 +215,13 @@ defaults write -g KeyRepeat -int 2
 defaults write -g ApplePressAndHoldEnabled -bool false
 ```
 
-### Show hidden files in Finder
+### Show folders first in finder
 
 ```sh
-defaults write -g AppleShowAllFiles -bool true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
 ```
+
+After these, run `killall Finder`
 
 ### Set up hot corners
 
