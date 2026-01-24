@@ -33,7 +33,8 @@ alias goc='git oc'
 
 # claude code
 if command -v claude &>/dev/null; then
-  alias cc="tmuxify claude"
+  alias cc="claude"
+  alias cct="tmuxify claude"
 fi
 
 # claude-squad
@@ -43,8 +44,15 @@ fi
 
 # opencode
 if command -v opencode &>/dev/null; then
-  alias oc="tmuxify opencode"
+  alias oc="opencode"
+  alias oct="tmuxify opencode"
 fi
+
+# amp
+if command -v map &>/dev/null; then
+  alias ampt="tmuxify amp"
+fi
+
 
 # editor (open nvim at current location by default
 n() { nvim "${@:-.}"; }
