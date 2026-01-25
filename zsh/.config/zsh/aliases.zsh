@@ -53,9 +53,9 @@ if command -v map &>/dev/null; then
   alias ampt="tmuxify amp"
 fi
 
-
-# editor (open nvim at current location by default
+# editor (open at current location by default)
 n() { nvim "${@:-.}"; }
+e() { zed "${@:-.}"; }
 
 # git worktree + claude combo (wt + claude)
 wtc() { wt "$@"; cc; }
