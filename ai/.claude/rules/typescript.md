@@ -1,9 +1,14 @@
 ---
 paths:
-  - "{src,lib}/**/*.{ts,tsx}"
+  - "**/*.{ts,tsx,js,jsx,astro}"
 ---
 
 # TypeScript/React Rules
+
+## Documentation
+
+- ALWAYS document methods using TSDoc format with one newline after the
+  description before the params
 
 ## TypeScript
 

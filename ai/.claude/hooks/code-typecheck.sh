@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-declare -A typecheckers=(
-  ["ts"]="tsc --noEmit"
-  ["tsx"]="tsc --noEmit"
-  # ["py"]="pyright"
-)
+tsc_extensions="ts tsx"
+# pyright_extensions="py"
 
 file_path=$(jq -r '.tool_input.file_path')
 extension="${file_path##*.}"
 
-# Run typechecker if one exists for this extension
-if [[ -n "${typecheckers[$extension]}" ]]; then
-  ${typecheckers[$extension]} "$file_path"
+if [[ " $tsc_extensions " == *" $extension "* ]]; then
+  tsc --noEmit "$file_path"
+# elif [[ " $pyright_extensions " == *" $extension "* ]]; then
+#   pyright "$file_path"
 fi

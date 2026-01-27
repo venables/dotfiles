@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 # Open editor for review before pushing
 # <https://github.com/affaan-m/everything-claude-code>
