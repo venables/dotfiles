@@ -81,5 +81,5 @@
   pr = "!gh pr"
   dash = "!gh dash"
 
-[includeIf "gitdir:~/dev/catena/"]
+[includeIf "gitdir:~/dev/catena/**"]
   path = ~/.config/git/config-catena

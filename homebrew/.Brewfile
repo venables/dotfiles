@@ -1,3 +1,5 @@
+tap "venables/tap"
+
 brew "bat"
 brew "btop"
 brew "claude-squad"

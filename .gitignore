@@ -1,2 +1,4 @@
-.zsh_history
+**/.zsh_history
+**/.zcompdump
+**/.zcompdump*
 config.local

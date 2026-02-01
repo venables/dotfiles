@@ -54,7 +54,7 @@ if command -v opencode &>/dev/null; then
 fi
 
 # amp
-if command -v map &>/dev/null; then
+if command -v amp &>/dev/null; then
   alias ampt="tmuxify amp"
 fi
 
