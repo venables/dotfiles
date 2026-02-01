@@ -42,6 +42,11 @@ if command -v claude-squad &>/dev/null; then
   alias cs="claude-squad"
 fi
 
+# claude-squad
+if command -v codex &>/dev/null; then
+  alias co="codex"
+fi
+
 # opencode
 if command -v opencode &>/dev/null; then
   alias oc="opencode"

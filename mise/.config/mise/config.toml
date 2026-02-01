@@ -13,3 +13,6 @@ rust = "stable"
 shfmt = "latest"
 stylua = "latest"
 awscli = { version = "latest", symlink_bins = "true" }
+
+# ai
+"npm:@openai/codex" = "latest"
