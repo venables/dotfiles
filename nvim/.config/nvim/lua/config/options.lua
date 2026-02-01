@@ -9,3 +9,14 @@ opt.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing (d
 
 -- Disable unused providers (suppresses healthcheck warnings)
 vim.g.loaded_perl_provider = 0
+
+-- Ensure dotenv files aren't treated as sh so bashls/shellcheck won't attach.
+vim.filetype.add({
+  filename = {
+    [".env"] = "dotenv",
+    [".env.local"] = "dotenv",
+  },
+  pattern = {
+    [".*%.env%..*"] = "dotenv",
+  },
+})
