@@ -9,6 +9,7 @@ shfmt = "latest"
 stylua = "latest"
 awscli = { version = "latest", symlink_bins = true }
 "npm:@openai/codex" = "latest"
+"npm:fixjson" = "latest"
 "npm:prettier" = "latest"
 "npm:oxlint" = "latest"
 "npm:oxlint-tsgolint" = "latest"
