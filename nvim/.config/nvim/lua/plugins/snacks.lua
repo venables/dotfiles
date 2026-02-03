@@ -41,7 +41,6 @@ return {
             ".vercel",
             "build",
             "coverage",
-            "dist",
             "venv",
           },
         },
