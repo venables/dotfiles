@@ -4,15 +4,12 @@ node = "latest"
 python = "latest"
 ruby = "latest"
 rust = "stable"
-
-# formatters
+uv = "latest"
+shfmt = "latest"
+stylua = "latest"
+awscli = { version = "latest", symlink_bins = true }
+"npm:@openai/codex" = "latest"
 "npm:prettier" = "latest"
 "npm:oxlint" = "latest"
 "npm:oxlint-tsgolint" = "latest"
 "npm:oxfmt" = "latest"
-shfmt = "latest"
-stylua = "latest"
-awscli = { version = "latest", symlink_bins = true }
-
-# ai
-"npm:@openai/codex" = "latest"

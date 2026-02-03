@@ -124,6 +124,12 @@ The `cc` and `oc` aliases use `tmuxify`:
    curl -fsSL https://opencode.ai/install | bash
    ```
 
+   OpenClaw
+
+   ```sh
+   curl -fsSL https://openclaw.ai/install.sh | bash
+   ```
+
    > NOTE: We install these directly (outside of homebrew) to better support
    > their auto-update features
 
