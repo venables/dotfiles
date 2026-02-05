@@ -166,7 +166,7 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 ```
 
 ```sh
-ssh-copy-id matt@<other-machine>
+ssh-copy-id -i ~/.ssh/id_ed25519.pub matt@host
 ```
 
 ### Github
