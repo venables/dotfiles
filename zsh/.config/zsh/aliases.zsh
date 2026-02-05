@@ -37,12 +37,7 @@ if command -v claude &>/dev/null; then
   alias cct="tmuxify claude"
 fi
 
-# claude-squad
-if command -v claude-squad &>/dev/null; then
-  alias cs="claude-squad"
-fi
-
-# claude-squad
+# codex
 if command -v codex &>/dev/null; then
   alias co="codex"
 fi
