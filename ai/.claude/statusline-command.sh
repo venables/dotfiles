@@ -1,57 +1,35 @@
 #!/bin/bash
-
 input=$(cat)
 
-# Extract values
-cwd=$(echo "$input" | jq -r '.workspace.current_dir')
-remaining=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
-transcript=$(echo "$input" | jq -r '.transcript_path')
-model_id=$(echo "$input" | jq -r '.model.id')
+MODEL=$(echo "$input" | jq -r '.model.display_name')
+DIR=$(echo "$input" | jq -r '.workspace.current_dir')
+COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
+PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
+DURATION_MS=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
 
-# Path with tilde
-path=$(echo "$cwd" | sed "s|$HOME|~|g")
+CYAN='\033[36m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+RED='\033[31m'
+RESET='\033[0m'
 
-# Short model name
-case "$model_id" in
-  *opus-4*) model="opus-4.5" ;;
-  *opus*) model="opus" ;;
-  *sonnet-4*) model="sonnet-4.5" ;;
-  *sonnet*) model="sonnet" ;;
-  *haiku*) model="haiku" ;;
-  *) model="$model_id" ;;
-esac
+# Pick bar color based on context usage
+if [ "$PCT" -ge 90 ]; then
+  BAR_COLOR="$RED"
+elif [ "$PCT" -ge 70 ]; then
+  BAR_COLOR="$YELLOW"
+else BAR_COLOR="$GREEN"; fi
 
-# Git info
-cd "$cwd" 2>/dev/null
-branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')
-dirty=''
-[ -n "$branch" ] && [ -n "$(git status --porcelain 2>/dev/null)" ] && dirty='*'
+FILLED=$((PCT / 10))
+EMPTY=$((10 - FILLED))
+BAR=$(printf "%${FILLED}s" | tr ' ' '█')$(printf "%${EMPTY}s" | tr ' ' '░')
 
-# Todo count from transcript
-todo_count=0
-[ -f "$transcript" ] && todo_count=$(grep -c '"type":"todo"' "$transcript" 2>/dev/null || echo 0)
+MINS=$((DURATION_MS / 60000))
+SECS=$(((DURATION_MS % 60000) / 1000))
 
-# Time
-time=$(date +%H:%M)
+BRANCH=""
+git rev-parse --git-dir >/dev/null 2>&1 && BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
 
-# Colors (RGB)
-B=$'\033[38;2;30;102;245m'   # Blue - path
-G=$'\033[38;2;64;160;43m'    # Green - branch
-Y=$'\033[38;2;223;142;29m'   # Yellow - dirty, time
-M=$'\033[38;2;136;57;239m'   # Magenta - context
-C=$'\033[38;2;23;146;153m'   # Cyan - todos
-T=$'\033[38;2;76;79;105m'    # Gray - model
-R=$'\033[0m'                 # Reset
-
-# Build output
-printf "${B}${path}${R}"
-[ -n "$branch" ] && printf ":${G}${branch}${Y}${dirty}${R}"
-if [ -n "$remaining" ] && [ "$remaining" != "null" ]; then
-  printf " ctx:${M}$((100 - remaining))%%${R}"
-else
-  printf " ctx:${M}0%%${R}"
-fi
-printf " ${T}${model}${R} ${Y}${time}${R}"
-[ "$todo_count" -gt 0 ] 2>/dev/null && printf " todos:${C}${todo_count}${R}"
-
-exit 0
+echo -e "${CYAN}[$MODEL]${RESET} 📁 ${DIR##*/}$BRANCH"
+COST_FMT=$(printf '$%.2f' "$COST")
+echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET} | ⏱️ ${MINS}m ${SECS}s"
