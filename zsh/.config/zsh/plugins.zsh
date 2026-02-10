@@ -18,3 +18,14 @@ if command -v brew &>/dev/null; then
     source "$BREW_PREFIX/share/wt/wt.sh"
   fi
 fi
+
+# openclaw
+if command -v openclaw &>/dev/null; then
+  source <(openclaw completion --shell zsh)
+fi
+
+# Entire CLI shell completion
+if command -v entire &>/dev/null; then
+  source <(entire completion zsh)
+fi
+
