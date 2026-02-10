@@ -53,6 +53,11 @@ if command -v amp &>/dev/null; then
   alias ampt="tmuxify amp"
 fi
 
+# openclaw
+if command -v openclaw &>/dev/null; then
+  alias claw="openclaw"
+fi
+
 # editor (open at current location by default)
 n() { nvim "${@:-.}"; }
 e() { zed "${@:-.}"; }
