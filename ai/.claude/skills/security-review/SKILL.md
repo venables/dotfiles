@@ -1,11 +1,15 @@
 ---
 name: security-review
-description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
+description:
+  Use this skill when adding authentication, handling user input, working with
+  secrets, creating API endpoints, or implementing payment/sensitive features.
+  Provides comprehensive security checklist and patterns.
 ---
 
 # Security Review Skill
 
-This skill ensures all code follows security best practices and identifies potential vulnerabilities.
+This skill ensures all code follows security best practices and identifies
+potential vulnerabilities.
 
 ## When to Activate
 
@@ -24,19 +28,19 @@ This skill ensures all code follows security best practices and identifies poten
 #### ❌ NEVER Do This
 
 ```typescript
-const apiKey = "sk-proj-xxxxx"; // Hardcoded secret
-const dbPassword = "password123"; // In source code
+const apiKey = "sk-proj-xxxxx" // Hardcoded secret
+const dbPassword = "password123" // In source code
 ```
 
 #### ✅ ALWAYS Do This
 
 ```typescript
-const apiKey = process.env.OPENAI_API_KEY;
-const dbUrl = process.env.DATABASE_URL;
+const apiKey = process.env.OPENAI_API_KEY
+const dbUrl = process.env.DATABASE_URL
 
 // Verify secrets exist
 if (!apiKey) {
-  throw new Error("OPENAI_API_KEY not configured");
+  throw new Error("OPENAI_API_KEY not configured")
 }
 ```
 
@@ -53,25 +57,25 @@ if (!apiKey) {
 #### Always Validate User Input
 
 ```typescript
-import { z } from "zod";
+import { z } from "zod"
 
 // Define validation schema
 const CreateUserSchema = z.object({
   email: z.string().email(),
   name: z.string().min(1).max(100),
-  age: z.number().int().min(0).max(150),
-});
+  age: z.number().int().min(0).max(150)
+})
 
 // Validate before processing
 export async function createUser(input: unknown) {
   try {
-    const validated = CreateUserSchema.parse(input);
-    return await db.users.create(validated);
+    const validated = CreateUserSchema.parse(input)
+    return await db.users.create(validated)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, errors: error.errors };
+      return { success: false, errors: error.errors }
     }
-    throw error;
+    throw error
   }
 }
 ```
@@ -81,25 +85,25 @@ export async function createUser(input: unknown) {
 ```typescript
 function validateFileUpload(file: File) {
   // Size check (5MB max)
-  const maxSize = 5 * 1024 * 1024;
+  const maxSize = 5 * 1024 * 1024
   if (file.size > maxSize) {
-    throw new Error("File too large (max 5MB)");
+    throw new Error("File too large (max 5MB)")
   }
 
   // Type check
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif"]
   if (!allowedTypes.includes(file.type)) {
-    throw new Error("Invalid file type");
+    throw new Error("Invalid file type")
   }
 
   // Extension check
-  const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
-  const extension = file.name.toLowerCase().match(/\.[^.]+$/)?.[0];
+  const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif"]
+  const extension = file.name.toLowerCase().match(/\.[^.]+$/)?.[0]
   if (!extension || !allowedExtensions.includes(extension)) {
-    throw new Error("Invalid file extension");
+    throw new Error("Invalid file extension")
   }
 
-  return true;
+  return true
 }
 ```
 
@@ -117,18 +121,18 @@ function validateFileUpload(file: File) {
 
 ```typescript
 // DANGEROUS - SQL Injection vulnerability
-const query = `SELECT * FROM users WHERE email = '${userEmail}'`;
-await db.query(query);
+const query = `SELECT * FROM users WHERE email = '${userEmail}'`
+await db.query(query)
 ```
 
 #### ✅ ALWAYS Use Parameterized Queries
 
 ```typescript
 // Safe - parameterized query
-const { data } = await supabase.from("users").select("*").eq("email", userEmail);
+const { data } = await supabase.from("users").select("*").eq("email", userEmail)
 
 // Or with raw SQL
-await db.query("SELECT * FROM users WHERE email = $1", [userEmail]);
+await db.query("SELECT * FROM users WHERE email = $1", [userEmail])
 ```
 
 #### Verification Steps
@@ -144,10 +148,13 @@ await db.query("SELECT * FROM users WHERE email = $1", [userEmail]);
 
 ```typescript
 // ❌ WRONG: localStorage (vulnerable to XSS)
-localStorage.setItem("token", token);
+localStorage.setItem("token", token)
 
 // ✅ CORRECT: httpOnly cookies
-res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`);
+res.setHeader(
+  "Set-Cookie",
+  `token=${token}; HttpOnly; Secure; SameSite=Strict; Max-Age=3600`
+)
 ```
 
 #### Authorization Checks
@@ -156,15 +163,15 @@ res.setHeader("Set-Cookie", `token=${token}; HttpOnly; Secure; SameSite=Strict; 
 export async function deleteUser(userId: string, requesterId: string) {
   // ALWAYS verify authorization first
   const requester = await db.users.findUnique({
-    where: { id: requesterId },
-  });
+    where: { id: requesterId }
+  })
 
   if (requester.role !== "admin") {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
   // Proceed with deletion
-  await db.users.delete({ where: { id: userId } });
+  await db.users.delete({ where: { id: userId } })
 }
 ```
 
@@ -226,9 +233,9 @@ const securityHeaders = [
       connect-src 'self' https://api.example.com;
     `
       .replace(/\s{2,}/g, " ")
-      .trim(),
-  },
-];
+      .trim()
+  }
+]
 ```
 
 #### Verification Steps
@@ -243,13 +250,13 @@ const securityHeaders = [
 #### CSRF Tokens
 
 ```typescript
-import { csrf } from "@/lib/csrf";
+import { csrf } from "@/lib/csrf"
 
 export async function POST(request: Request) {
-  const token = request.headers.get("X-CSRF-Token");
+  const token = request.headers.get("X-CSRF-Token")
 
   if (!csrf.verify(token)) {
-    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 })
   }
 
   // Process request
@@ -259,7 +266,10 @@ export async function POST(request: Request) {
 #### SameSite Cookies
 
 ```typescript
-res.setHeader("Set-Cookie", `session=${sessionId}; HttpOnly; Secure; SameSite=Strict`);
+res.setHeader(
+  "Set-Cookie",
+  `session=${sessionId}; HttpOnly; Secure; SameSite=Strict`
+)
 ```
 
 #### Verification Steps
@@ -273,16 +283,16 @@ res.setHeader("Set-Cookie", `session=${sessionId}; HttpOnly; Secure; SameSite=St
 #### API Rate Limiting
 
 ```typescript
-import rateLimit from "express-rate-limit";
+import rateLimit from "express-rate-limit"
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // 100 requests per window
-  message: "Too many requests",
-});
+  message: "Too many requests"
+})
 
 // Apply to routes
-app.use("/api/", limiter);
+app.use("/api/", limiter)
 ```
 
 #### Expensive Operations
@@ -292,10 +302,10 @@ app.use("/api/", limiter);
 const searchLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 10, // 10 requests per minute
-  message: "Too many search requests",
-});
+  message: "Too many search requests"
+})
 
-app.use("/api/search", searchLimiter);
+app.use("/api/search", searchLimiter)
 ```
 
 #### Verification Steps
@@ -311,12 +321,12 @@ app.use("/api/search", searchLimiter);
 
 ```typescript
 // ❌ WRONG: Logging sensitive data
-console.log("User login:", { email, password });
-console.log("Payment:", { cardNumber, cvv });
+console.log("User login:", { email, password })
+console.log("Payment:", { cardNumber, cvv })
 
 // ✅ CORRECT: Redact sensitive data
-console.log("User login:", { email, userId });
-console.log("Payment:", { last4: card.last4, userId });
+console.log("User login:", { email, userId })
+console.log("Payment:", { last4: card.last4, userId })
 ```
 
 #### Error Messages
@@ -352,18 +362,22 @@ catch (error) {
 #### Wallet Verification
 
 ```typescript
-import { verify } from "@solana/web3.js";
+import { verify } from "@solana/web3.js"
 
-async function verifyWalletOwnership(publicKey: string, signature: string, message: string) {
+async function verifyWalletOwnership(
+  publicKey: string,
+  signature: string,
+  message: string
+) {
   try {
     const isValid = verify(
       Buffer.from(message),
       Buffer.from(signature, "base64"),
-      Buffer.from(publicKey, "base64"),
-    );
-    return isValid;
+      Buffer.from(publicKey, "base64")
+    )
+    return isValid
   } catch (error) {
-    return false;
+    return false
   }
 }
 ```
@@ -374,21 +388,21 @@ async function verifyWalletOwnership(publicKey: string, signature: string, messa
 async function verifyTransaction(transaction: Transaction) {
   // Verify recipient
   if (transaction.to !== expectedRecipient) {
-    throw new Error("Invalid recipient");
+    throw new Error("Invalid recipient")
   }
 
   // Verify amount
   if (transaction.amount > maxAmount) {
-    throw new Error("Amount exceeds limit");
+    throw new Error("Amount exceeds limit")
   }
 
   // Verify user has sufficient balance
-  const balance = await getBalance(transaction.from);
+  const balance = await getBalance(transaction.from)
   if (balance < transaction.amount) {
-    throw new Error("Insufficient balance");
+    throw new Error("Insufficient balance")
   }
 
-  return true;
+  return true
 }
 ```
 
@@ -442,38 +456,38 @@ npm ci  # Instead of npm install
 ```typescript
 // Test authentication
 test("requires authentication", async () => {
-  const response = await fetch("/api/protected");
-  expect(response.status).toBe(401);
-});
+  const response = await fetch("/api/protected")
+  expect(response.status).toBe(401)
+})
 
 // Test authorization
 test("requires admin role", async () => {
   const response = await fetch("/api/admin", {
-    headers: { Authorization: `Bearer ${userToken}` },
-  });
-  expect(response.status).toBe(403);
-});
+    headers: { Authorization: `Bearer ${userToken}` }
+  })
+  expect(response.status).toBe(403)
+})
 
 // Test input validation
 test("rejects invalid input", async () => {
   const response = await fetch("/api/users", {
     method: "POST",
-    body: JSON.stringify({ email: "not-an-email" }),
-  });
-  expect(response.status).toBe(400);
-});
+    body: JSON.stringify({ email: "not-an-email" })
+  })
+  expect(response.status).toBe(400)
+})
 
 // Test rate limiting
 test("enforces rate limits", async () => {
   const requests = Array(101)
     .fill(null)
-    .map(() => fetch("/api/endpoint"));
+    .map(() => fetch("/api/endpoint"))
 
-  const responses = await Promise.all(requests);
-  const tooManyRequests = responses.filter((r) => r.status === 429);
+  const responses = await Promise.all(requests)
+  const tooManyRequests = responses.filter((r) => r.status === 429)
 
-  expect(tooManyRequests.length).toBeGreaterThan(0);
-});
+  expect(tooManyRequests.length).toBeGreaterThan(0)
+})
 ```
 
 ## Pre-Deployment Security Checklist
@@ -507,4 +521,5 @@ Before ANY production deployment:
 
 ---
 
-**Remember**: Security is not optional. One vulnerability can compromise the entire platform. When in doubt, err on the side of caution.
+**Remember**: Security is not optional. One vulnerability can compromise the
+entire platform. When in doubt, err on the side of caution.

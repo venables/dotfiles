@@ -7,16 +7,16 @@ ALWAYS create new objects, NEVER mutate:
 ```ts
 // WRONG: Mutation
 function updateUser(user, name) {
-  user.name = name; // MUTATION!
-  return user;
+  user.name = name // MUTATION!
+  return user
 }
 
 // CORRECT: Immutability
 function updateUser(user, name) {
   return {
     ...user,
-    name,
-  };
+    name
+  }
 }
 ```
 
@@ -35,11 +35,11 @@ ALWAYS handle errors comprehensively:
 
 ```ts
 try {
-  const result = await riskyOperation();
-  return result;
+  const result = await riskyOperation()
+  return result
 } catch (error) {
-  console.error("Operation failed:", error);
-  throw new Error("Detailed user-friendly message");
+  console.error("Operation failed:", error)
+  throw new Error("Detailed user-friendly message")
 }
 ```
 
@@ -48,14 +48,14 @@ try {
 ALWAYS validate user input:
 
 ```ts
-import { z } from "zod";
+import { z } from "zod"
 
 const schema = z.object({
   email: z.string().email(),
-  age: z.number().int().min(0).max(150),
-});
+  age: z.number().int().min(0).max(150)
+})
 
-const validated = schema.parse(input);
+const validated = schema.parse(input)
 ```
 
 ## Code Quality Checklist

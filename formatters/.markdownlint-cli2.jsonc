@@ -4,8 +4,8 @@
   // Disable line-length check for tables, code blocks
   "line-length": {
     "code_blocks": false,
-    "tables": false,
+    "tables": false
   },
   // Doesn't play nice with claude commands+skills and obsidian
-  "first-line-heading": false,
+  "first-line-heading": false
 }
