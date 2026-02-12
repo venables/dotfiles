@@ -7,7 +7,12 @@ fi
 zmodload zsh/complist
 autoload -Uz compinit
 
-compinit
+# Only rebuild completion dump once per day; otherwise use cache
+if [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # Completion Styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
