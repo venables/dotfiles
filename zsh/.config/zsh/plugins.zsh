@@ -19,13 +19,25 @@ if command -v brew &>/dev/null; then
   fi
 fi
 
+# Cached completions (regenerate with: regen-completions)
+_COMP_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+
 # openclaw
 if command -v openclaw &>/dev/null; then
-  source <(openclaw completion --shell zsh)
+  [[ -f "$_COMP_CACHE/openclaw.zsh" ]] && source "$_COMP_CACHE/openclaw.zsh"
 fi
 
-# Entire CLI shell completion
+# Entire CLI
 if command -v entire &>/dev/null; then
-  source <(entire completion zsh)
+  [[ -f "$_COMP_CACHE/entire.zsh" ]] && source "$_COMP_CACHE/entire.zsh"
 fi
+
+# Regenerate cached completions
+regen-completions() {
+  mkdir -p "$_COMP_CACHE"
+  echo "Regenerating completions..."
+  command -v openclaw &>/dev/null && openclaw completion --shell zsh > "$_COMP_CACHE/openclaw.zsh" && echo "  openclaw done"
+  command -v entire &>/dev/null && entire completion zsh > "$_COMP_CACHE/entire.zsh" && echo "  entire done"
+  echo "Done. Restart your shell to pick up changes."
+}
 
