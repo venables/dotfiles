@@ -48,5 +48,6 @@
     "code-review@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "learning-output-style@claude-plugins-official": true
-  }
+  },
+  "skipDangerousModePermissionPrompt": true
 }

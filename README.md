@@ -94,7 +94,13 @@
    curl -fsSL https://opencode.ai/install | bash
    ```
 
-   OpenClaw
+   [Droid](https://factory.ai/)
+
+   ```sh
+    curl -fsSL https://app.factory.ai/cli | sh
+   ```
+
+   [OpenClaw](https://openclaw.ai/)
 
    ```sh
    curl -fsSL https://openclaw.ai/install.sh | bash
