@@ -6,36 +6,6 @@
 ▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 ```
 
-## Key Tools & Commands
-
-| Command | Tool                                                     | Description                                           |
-| ------- | -------------------------------------------------------- | ----------------------------------------------------- |
-| `cat`   | [bat](https://github.com/sharkdp/bat)                    | `cat` with syntax highlighting.                       |
-| `cc`    | [claude code](https://github.com/anthropics/claude-code) | Claude Code CLI                                       |
-| `cd`    | [zoxide](https://github.com/ajeetdsouza/zoxide)          | Smarter `cd` that remembers where you go.             |
-| `g`     | [git](https://github.com/git/git)                        | Git wrapper with many aliases (see `aliases.zsh`).    |
-| `gg`    | [lazygit](https://github.com/jesseduffield/lazygit)      | Git TUI.                                              |
-| `ls`    | [eza](https://github.com/eza-community/eza)              | Modern `ls` with icons and colors.                    |
-| `n`     | [nvim](https://github.com/neovim/neovim)                 | Opens neovim in current directory if non specified    |
-| `oc`    | [opencode](https://github.com/sst/opencode)              | Opencode CLI                                          |
-| `tldr`  | [tldr](https://github.com/tldr-pages/tldr)               | Simplified man pages (e.g. `tldr tar`).               |
-| `y`     | [yazi](https://github.com/sxyazi/yazi)                   | Terminal file manager (vim-like). Exits to directory. |
-
-## Custom Scripts
-
-Located in `tools/.local/bin/`:
-
-| Script    | Usage                    | Description                                        |
-| --------- | ------------------------ | -------------------------------------------------- |
-| `wt`      | `wt <branch>`            | Git worktree helper. Creates `../<repo>-<branch>`. |
-| `tmuxify` | `tmuxify <cmd> [branch]` | Wraps any command with tmux + worktree workflow.   |
-
-The `cc` and `oc` aliases use `tmuxify`:
-
-- `cc` / `oc` - start claude/opencode in a tmux session
-- `cc feature-1` / `oc feature-1` - create worktree, start named tmux session,
-  run in worktree
-
 ## Principles
 
 - Initial setup can be manual

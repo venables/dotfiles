@@ -34,7 +34,6 @@ alias goc='git oc'
 # claude code
 if command -v claude &>/dev/null; then
   alias cc="claude --dangerously-skip-permissions"
-  alias cct="tmuxify claude"
 fi
 
 # codex
@@ -45,12 +44,6 @@ fi
 # opencode
 if command -v opencode &>/dev/null; then
   alias oc="opencode"
-  alias oct="tmuxify opencode"
-fi
-
-# amp
-if command -v amp &>/dev/null; then
-  alias ampt="tmuxify amp"
 fi
 
 # openclaw
