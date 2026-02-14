@@ -1,6 +1,6 @@
 [tools]
 bun = "latest"
-node = "latest"
+node = { version = "latest", postintall = "npm i -g fixjson@latest oxlint@latest oxlint-tsgolint@latest oxfmt@latest prettier@latest @mariozechner/pi-coding-agent@latest @openai/codex@latest openclaw@latest" }
 python = "latest"
 ruby = "latest"
 rust = "stable"
@@ -8,15 +8,3 @@ uv = "latest"
 shfmt = "latest"
 stylua = "latest"
 awscli = { version = "latest", symlink_bins = true }
-
-# tools
-"npm:fixjson" = "latest"
-"npm:oxlint" = "latest"
-"npm:oxlint-tsgolint" = "latest"
-"npm:oxfmt" = "latest"
-"npm:prettier" = "latest"
-
-# ai
-"npm:@mariozechner/pi-coding-agent" = "latest"
-"npm:@openai/codex" = "latest"
-"npm:openclaw" = "latest"
