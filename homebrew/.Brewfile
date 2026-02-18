@@ -1,5 +1,6 @@
 tap "venables/tap"
 tap "steipete/tap"
+tap "ossianhempel/tap"
 
 brew "bat"
 brew "btop"
@@ -40,6 +41,7 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
+brew "ossianhempel/tap/things3-cli"
 # brew "steipete/tap/bird" # taken down
 brew "steipete/tap/gogcli"
 brew "steipete/tap/imsg"
