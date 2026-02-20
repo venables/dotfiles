@@ -1,7 +1,3 @@
-tap "venables/tap"
-tap "steipete/tap"
-tap "ossianhempel/tap"
-
 brew "bat"
 brew "btop"
 brew "dust"
@@ -41,12 +37,6 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-syntax-highlighting"
 
-brew "ossianhempel/tap/things3-cli"
-# brew "steipete/tap/bird" # taken down
-brew "steipete/tap/gogcli"
-brew "steipete/tap/imsg"
-brew "venables/tap/wt"
-
 cask "1password@beta"
 cask "1password-cli@beta"
 cask "bitwarden"
@@ -55,6 +45,7 @@ cask "chatgpt"
 cask "claude"
 cask "cleanshot"
 cask "codex-app"
+cask "conductor"
 cask "discord"
 cask "figma@beta"
 cask "font-jetbrains-mono-nerd-font"
@@ -77,3 +68,14 @@ cask "superwhisper"
 cask "tailscale-app"
 cask "telegram"
 cask "zed"
+
+# Taps
+# tap "ossianhempel/tap"
+brew "ossianhempel/tap/things3-cli"
+
+# tap "steipete/tap"
+brew "steipete/tap/gogcli"
+brew "steipete/tap/imsg"
+
+# tap "venables/tap"
+brew "venables/tap/wt"
