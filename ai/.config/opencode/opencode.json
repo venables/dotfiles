@@ -2,5 +2,14 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "opencode/minimax-2.5-free",
   "autoupdate": true,
-  "plugin": ["@mohak34/opencode-notifier@latest"]
+  "plugin": [
+    "@mohak34/opencode-notifier@latest"
+  ],
+  "mcp": {
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+      "oauth": {}
+    }
+  }
 }
