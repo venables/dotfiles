@@ -34,6 +34,7 @@ alias goc='git oc'
 # claude code
 if command -v claude &>/dev/null; then
   alias cc="claude --dangerously-skip-permissions"
+  alias ccw="cc --worktree"
 fi
 
 # codex
