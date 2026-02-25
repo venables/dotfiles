@@ -109,6 +109,24 @@
    > NOTE: We install these directly (outside of homebrew) to better support
    > their auto-update features
 
+1. Install Global JS Packages
+
+   We split these into two commands. Use `npm` for auto-updating AI agents (to ensure their self-update mechanics work correctly in `~/.npm-global/bin`), and `bun` for static formatters and linters (`~/.bun/bin`) because it's significantly faster:
+
+   ```sh
+   npm install -g \
+     @mariozechner/pi-coding-agent@latest \
+     @openai/codex@latest \
+     openclaw@latest
+
+   bun install -g \
+     fixjson \
+     oxfmt \
+     oxlint-tsgolint \
+     oxlint \
+     prettier
+   ```
+
 ## Configuration
 
 ### Shell (zsh)

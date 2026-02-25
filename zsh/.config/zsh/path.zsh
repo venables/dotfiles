@@ -6,6 +6,8 @@ if [[ -z "${HOMEBREW_PREFIX:-}" ]] && command -v brew &>/dev/null; then
 fi
 
 path=(
+  "$HOME/.npm-global/bin"         # persistent global npm packages (for auto-updaters)
+  "$HOME/.bun/bin"                # persistent global bun packages
   "$HOME/.opencode/bin"           # opencode CLI
   "$HOME/.local/bin"              # user-local binaries
   "/Applications/Obsidian.app/Contents/MacOS" # obsidian
