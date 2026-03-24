@@ -20,3 +20,6 @@ vim.filetype.add({
     [".*%.env%..*"] = "dotenv",
   },
 })
+
+-- Add :W for save-without-format
+vim.api.nvim_create_user_command("W", "noautocmd w", {})

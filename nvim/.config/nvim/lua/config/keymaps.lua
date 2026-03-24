@@ -5,3 +5,4 @@
 vim.keymap.set("n", "<D-.>", vim.lsp.buf.code_action, { desc = "Code Action" })
 vim.keymap.set("n", "<D-/>", "gcc", { remap = true })
 vim.keymap.set("v", "<D-/>", "gc", { remap = true })
+vim.keymap.set("n", "<leader>W", "<cmd>noautocmd w<cr>")
