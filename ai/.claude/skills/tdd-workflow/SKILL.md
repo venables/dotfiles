@@ -134,7 +134,7 @@ npm run test:coverage
 
 ## Testing Patterns
 
-### Unit Test Pattern (Jest/Vitest)
+### Unit Test Pattern (Vitest/Bun Test)
 
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react'

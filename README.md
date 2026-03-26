@@ -111,7 +111,10 @@
 
 1. Install Global JS Packages
 
-   We split these into two commands. Use `npm` for auto-updating AI agents (to ensure their self-update mechanics work correctly in `~/.npm-global/bin`), and `bun` for static formatters and linters (`~/.bun/bin`) because it's significantly faster:
+   We split these into two commands. Use `npm` for auto-updating AI agents (to
+   ensure their self-update mechanics work correctly in `~/.npm-global/bin`),
+   and `bun` for static formatters and linters (`~/.bun/bin`) because it's
+   significantly faster:
 
    ```sh
    npm install -g \
@@ -180,6 +183,14 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github
 ```sh
 mkdir -p ~/.gnupg
 echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > ~/.gnupg/gpg-agent.conf
+```
+
+### PostgreSQL
+
+Create a superuser for the current macOS user:
+
+```sh
+createuser -s $(whoami)
 ```
 
 ### Neovim / Lazyvim
