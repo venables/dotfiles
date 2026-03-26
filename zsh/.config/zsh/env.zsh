@@ -5,6 +5,9 @@ export GPG_TTY=$(tty)
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+# npm
+export NPM_CONFIG_PREFIX="$HOME/.npm-global"
+
 # pager
 export PAGER="less"
 export MANPAGER="less"
