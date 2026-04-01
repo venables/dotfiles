@@ -111,22 +111,19 @@
 
 1. Install Global JS Packages
 
-   We split these into two commands. Use `npm` for auto-updating AI agents (to
-   ensure their self-update mechanics work correctly in `~/.npm-global/bin`),
-   and `bun` for static formatters and linters (`~/.bun/bin`) because it's
-   significantly faster:
+   > **Note:** npm global packages are installed to `~/.npm-global` (configured
+   > via `NPM_CONFIG_PREFIX` in `zsh/env.zsh`, with `~/.npm-global/bin` added to
+   > `PATH` in `zsh/path.zsh`).
 
    ```sh
    npm install -g \
      @mariozechner/pi-coding-agent@latest \
      @openai/codex@latest \
-     openclaw@latest
-
-   bun install -g \
      fixjson \
+     openclaw@latest \
      oxfmt \
-     oxlint-tsgolint \
      oxlint \
+     oxlint-tsgolint \
      prettier
    ```
 
