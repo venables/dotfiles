@@ -185,14 +185,6 @@ mkdir -p ~/.gnupg
 echo "pinentry-program /opt/homebrew/bin/pinentry-mac" > ~/.gnupg/gpg-agent.conf
 ```
 
-### PostgreSQL
-
-Create a superuser for the current macOS user:
-
-```sh
-createuser -s $(whoami)
-```
-
 ### Neovim / Lazyvim
 
 A couple additions once lazyvim is running:

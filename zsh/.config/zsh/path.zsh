@@ -11,7 +11,7 @@ path=(
   "$HOME/.opencode/bin"           # opencode CLI
   "$HOME/.local/bin"              # user-local binaries
   "/Applications/Obsidian.app/Contents/MacOS" # obsidian
-  "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/postgresql@18/bin" # psql command
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/libpq/bin" # psql command
   "$HOME/.local/share/solana/install/active_release/bin"  # solana toolchain
   "$HOME/.foundry/bin"            # foundry
   $path
