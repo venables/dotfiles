@@ -1,6 +1,0 @@
-source "$ZDOTDIR/path.zsh"
-source "$ZDOTDIR/env.zsh"
-source "$ZDOTDIR/tools.zsh"
-source "$ZDOTDIR/settings.zsh"
-source "$ZDOTDIR/aliases.zsh"
-source "$ZDOTDIR/plugins.zsh"
