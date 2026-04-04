@@ -8,6 +8,9 @@ export VISUAL="nvim"
 # npm
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 
+# telemetry
+export DISABLE_TELEMETRY=1
+
 # pager
 export PAGER="less"
 export MANPAGER="less"
