@@ -1,26 +1,4 @@
 # =============================================================================
-# PATH
-# =============================================================================
-
-typeset -U path  # unique entries only
-
-if [[ -z "${HOMEBREW_PREFIX:-}" ]] && command -v brew &>/dev/null; then
-  HOMEBREW_PREFIX="$(brew --prefix)"
-fi
-
-path=(
-  "$HOME/.npm-global/bin"         # global npm packages
-  "$HOME/.bun/bin"                # bun
-  "$HOME/.opencode/bin"           # opencode CLI
-  "$HOME/.local/bin"              # user-local binaries
-  "/Applications/Obsidian.app/Contents/MacOS" # obsidian
-  "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/libpq/bin" # psql command
-  "$HOME/.local/share/solana/install/active_release/bin"  # solana toolchain
-  "$HOME/.foundry/bin"            # foundry
-  $path
-)
-
-# =============================================================================
 # Environment
 # =============================================================================
 
@@ -58,6 +36,26 @@ setopt PUSHD_IGNORE_DUPS    # don't push duplicate dirs
 
 # Completion
 setopt AUTO_MENU            # show completion menu on tab
+
+# =============================================================================
+# PATH
+# =============================================================================
+
+typeset -U path  # unique entries only
+
+if [[ -z "${HOMEBREW_PREFIX:-}" ]] && command -v brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+fi
+
+path=(
+  "/Applications/Obsidian.app/Contents/MacOS" # obsidian
+  "$NPM_CONFIG_PREFIX/bin"        # global npm packages
+  "$HOME/.bun/bin"                # bun
+  "$HOME/.opencode/bin"           # opencode CLI
+  "$HOME/.local/bin"              # user-local binaries
+  "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/libpq/bin" # psql command
+  $path
+)
 
 # =============================================================================
 # Tools
@@ -172,68 +170,43 @@ alias gw='git worktree'
 alias gwl='git wl'
 alias gwa='git wa'
 alias gwr='git wr'
-
-# claide-code, opencode aliases
 alias gcl='git claude'
 alias goc='git oc'
 
-# claude code
-if command -v claude &>/dev/null; then
-  alias cc="claude --dangerously-skip-permissions"
-  alias ccw="cc --worktree"
-fi
+# ai tools
+alias cc='claude --dangerously-skip-permissions'
+alias ccw='cc --worktree'
+alias co='codex'
+alias oc='opencode'
+alias claw='openclaw'
 
-# codex
-if command -v codex &>/dev/null; then
-  alias co="codex"
-fi
-
-# opencode
-if command -v opencode &>/dev/null; then
-  alias oc="opencode"
-fi
-
-# openclaw
-if command -v openclaw &>/dev/null; then
-  alias claw="openclaw"
-fi
-
-# editor (open at current location by default)
+# editors
 n() { nvim "${@:-.}"; }
 e() { zed "${@:-.}"; }
 
 # git worktree + claude combo (wt + claude)
 wtc() { wt "$@"; cc; }
 
-# eza (`ls` replacement)
-if command -v eza &>/dev/null; then
-  alias ls='eza -a --group-directories-first --icons=auto'
-  alias ll='eza -lh --group-directories-first --icons=auto'
-  alias la='eza -lah --group-directories-first --icons=auto'
-  alias lt='eza --tree --level=2 --icons --git'
-  alias lta='eza --tree --level=2 --icons --git -a'
-fi
+# eza (ls replacement)
+alias ls='eza -a --group-directories-first --icons=auto'
+alias ll='eza -lh --group-directories-first --icons=auto'
+alias la='eza -lah --group-directories-first --icons=auto'
+alias lt='eza --tree --level=2 --icons --git'
+alias lta='eza --tree --level=2 --icons --git -a'
 
 # bat
-if command -v bat &>/dev/null; then
-  alias cat="bat --style=plain --paging=never"
-  alias less="bat --style=plain"
-fi
+alias cat='bat --style=plain --paging=never'
+alias less='bat --style=plain'
 
 # fzf
-if command -v fzf &>/dev/null && command -v bat &>/dev/null; then
-  alias f='fzf'
-  alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
-fi
+alias f='fzf'
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 
-if command -v zoxide &>/dev/null; then
-  alias cd="z"
-fi
+# zoxide
+alias cd='z'
 
 # glow (markdown viewer)
-if command -v glow &>/dev/null; then
-  alias md="glow -t"
-fi
+alias md='glow -t'
 
 # =============================================================================
 # Plugins
