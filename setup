@@ -55,6 +55,13 @@ ok "bundled"
 
 info "Stow symlinks"
 
+# Ensure target dirs exist before stowing so stow symlinks individual
+# children rather than folding the entire parent. Without this, tools
+# that write runtime state into their config dir (Claude Code, opencode,
+# skill-creator) would end up writing it into the dotfiles repo itself.
+mkdir -p "$HOME/.claude" "$HOME/.config/opencode" "$HOME/.agents" "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
 stow_packages=(
   agents
   formatters
