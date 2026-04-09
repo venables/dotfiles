@@ -56,7 +56,7 @@ ok "bundled"
 info "Stow symlinks"
 
 stow_packages=(
-  ai
+  agents
   formatters
   ghostty
   git
