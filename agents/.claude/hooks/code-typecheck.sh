@@ -8,9 +8,9 @@ extension="${file_path##*.}"
 
 if [[ " $tsc_extensions " == *" $extension "* ]]; then
   if [ -f "tsconfig.json" ]; then
-    tsc --noEmit --project .
+    oxlint --type-aware --type-check .
   else
-    tsc --noEmit "$file_path"
+    oxlint --type-aware --type-check "$file_path"
   fi
 # elif [[ " $pyright_extensions " == *" $extension "* ]]; then
 #   pyright "$file_path"
