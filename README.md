@@ -82,17 +82,18 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 ssh-copy-id -i ~/.ssh/id_ed25519.pub matt@host
 ```
 
-### Github
+#### Add to GitHub
 
-I use separate keys per service. Not significantly better, but old habits.
-
-```sh
-ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519_github -C "github"
-```
+Copy the public key to your clipboard:
 
 ```sh
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github
+cat ~/.ssh/id_ed25519.pub | pbcopy
 ```
+
+Then in GitHub under **Settings > SSH and GPG keys**, add the key twice:
+
+1. **New SSH key** — Key type: **Authentication Key**
+2. **New SSH key** — Key type: **Signing Key**
 
 ### Neovim / Lazyvim
 
