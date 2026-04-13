@@ -1,24 +1,18 @@
 # =============================================================================
-# Environment
+# .zshrc — sourced for interactive shells only
+# =============================================================================
+# PATH, EDITOR, and other env vars needed by scripts / SSH non-interactive
+# commands live in .zshenv. This file is strictly interactive concerns:
+# prompt, aliases, keybindings, completion, plugins.
 # =============================================================================
 
+# GPG signing pinentry needs to know the current tty (interactive only)
 export GPG_TTY=$(tty)
 
-# editor
-export EDITOR="nvim"
-export VISUAL="nvim"
-
-# npm
-export NPM_CONFIG_PREFIX="$HOME/.npm-global"
-
-# telemetry
-export DISABLE_TELEMETRY=1
-
-# pager
-export PAGER="less"
-export MANPAGER="less"
-
+# -----------------------------------------------------------------------------
 # History
+# -----------------------------------------------------------------------------
+
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
@@ -29,33 +23,14 @@ setopt HIST_REDUCE_BLANKS   # remove extra whitespace from commands
 setopt SHARE_HISTORY        # share history across all sessions
 setopt APPEND_HISTORY       # append to history file
 
-# Directory navigation
+# -----------------------------------------------------------------------------
+# Shell options
+# -----------------------------------------------------------------------------
+
 setopt AUTO_CD              # type directory name to cd into it
 setopt AUTO_PUSHD           # automatically push dirs to stack
 setopt PUSHD_IGNORE_DUPS    # don't push duplicate dirs
-
-# Completion
 setopt AUTO_MENU            # show completion menu on tab
-
-# =============================================================================
-# PATH
-# =============================================================================
-
-typeset -U path  # unique entries only
-
-if [[ -z "${HOMEBREW_PREFIX:-}" ]] && command -v brew &>/dev/null; then
-  HOMEBREW_PREFIX="$(brew --prefix)"
-fi
-
-path=(
-  "/Applications/Obsidian.app/Contents/MacOS" # obsidian
-  "$NPM_CONFIG_PREFIX/bin"        # global npm packages
-  "$HOME/.bun/bin"                # bun
-  "$HOME/.opencode/bin"           # opencode CLI
-  "$HOME/.local/bin"              # user-local binaries
-  "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/libpq/bin" # psql command
-  $path
-)
 
 # =============================================================================
 # Tools
