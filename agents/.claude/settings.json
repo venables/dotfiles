@@ -50,5 +50,6 @@
     "learning-output-style@claude-plugins-official": true,
     "slack@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "high"
 }

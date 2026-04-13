@@ -46,6 +46,15 @@
       "skillFolderHash": "",
       "installedAt": "2026-04-09T14:54:35.378Z",
       "updatedAt": "2026-04-09T14:54:35.378Z"
+    },
+    "optimize-agents-md": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/optimize-agents-md/SKILL.md",
+      "skillFolderHash": "cbe6bf732fa2ca3f10791ecd2aaa89f6f9591abc",
+      "installedAt": "2026-04-10T16:18:15.212Z",
+      "updatedAt": "2026-04-10T16:18:15.212Z"
     }
   },
   "dismissed": {
@@ -67,4 +76,3 @@
     "claude-code"
   ]
 }
-
