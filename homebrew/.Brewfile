@@ -72,7 +72,6 @@ cask "slack"
 cask "spotify"
 cask "tailscale-app"
 cask "telegram"
-cask "zed"
 
 # tap "venables/tap"
 brew "venables/tap/wt"

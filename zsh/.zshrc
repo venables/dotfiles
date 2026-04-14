@@ -157,7 +157,6 @@ alias claw='openclaw'
 
 # editors
 n() { nvim "${@:-.}"; }
-e() { zed "${@:-.}"; }
 
 # git worktree + claude combo (wt + claude)
 wtc() { wt "$@"; cc; }

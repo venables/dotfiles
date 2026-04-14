@@ -6,15 +6,6 @@
 ▀▀▀▀ ▀▀▀▀ ░░▀░░ ▀░░░ ▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 ```
 
-## Principles
-
-- Initial setup can be manual
-- Always conform to the
-  [XDG Base Directory Spec](https://specifications.freedesktop.org/basedir/latest/)
-  like `$XDG_CONFIG_HOME` (`~/.config`) where possible.
-- Keep local-specific configuration in `*.local` files that can be imported
-  (e.g. `~/.ssh/config.local`)
-
 ## Getting started
 
 1. Install Xcode and command line tools:
