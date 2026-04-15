@@ -10,14 +10,12 @@ opt.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing (d
 -- Disable unused providers (suppresses healthcheck warnings)
 vim.g.loaded_perl_provider = 0
 
--- Ensure dotenv files aren't treated as sh so bashls/shellcheck won't attach.
+-- LazyVim's util.dot extra maps .env.* to sh (lazyvim/plugins/extras/util/dot.lua).
+-- Use a different-but-equivalent pattern string so it doesn't clobber our entry
+-- in the pattern table, then outrank it with priority.
 vim.filetype.add({
-  filename = {
-    [".env"] = "dotenv",
-    [".env.local"] = "dotenv",
-  },
   pattern = {
-    [".*%.env%..*"] = "dotenv",
+    ["%.env%.[%-%w_.]+"] = { "env", { priority = 100 } },
   },
 })
 
