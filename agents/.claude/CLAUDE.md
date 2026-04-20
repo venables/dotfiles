@@ -17,3 +17,8 @@
 - TDD: Write tests before implementation, aim for 80%+ coverage
 - Use Plan Mode for complex, multi-step operations
 - Run security-review skill before commits touching auth, user input, or secrets
+
+## Commit style
+
+Every commit is a single logical change. Split rename + rewrite + tests into
+separate commits, each independently understandable and revertable.
