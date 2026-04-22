@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+  "app": {
+    "appearance": "dark",
+    "appIcon": "dark",
+    "newWorkspacePlacement": "afterCurrent",
+    "renameSelectsExistingName": true,
+    "reorderOnNotification": false,
+    "sendAnonymousTelemetry": false,
+    "warnBeforeQuit": false
+  },
+  "sidebarAppearance": {
+    "matchTerminalBackground": true
+  },
+  "browser": {
+    "defaultSearchEngine": "duckduckgo"
+  }
+}
