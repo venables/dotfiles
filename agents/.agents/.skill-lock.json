@@ -55,6 +55,15 @@
       "skillFolderHash": "cbe6bf732fa2ca3f10791ecd2aaa89f6f9591abc",
       "installedAt": "2026-04-10T16:18:15.212Z",
       "updatedAt": "2026-04-10T16:18:15.212Z"
+    },
+    "panel-review": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/panel-review/SKILL.md",
+      "skillFolderHash": "fa2bba83133e3196e5188e35d94af5ee8160756e",
+      "installedAt": "2026-05-04T13:07:48.970Z",
+      "updatedAt": "2026-05-04T13:07:48.970Z"
     }
   },
   "dismissed": {
@@ -67,6 +76,7 @@
     "codex",
     "cursor",
     "deepagents",
+    "dexto",
     "firebender",
     "gemini-cli",
     "github-copilot",
