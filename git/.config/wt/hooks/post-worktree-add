@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$WT_PATH"
+
+# Trust the new worktree's mise config
+if command -v mise >/dev/null 2>&1; then
+  mise trust
+fi
+
+if [[ -f pnpm-lock.yaml ]]; then
+  pnpm install --frozen-lockfile
+elif [[ -f bun.lock || -f bun.lockb ]]; then
+  bun install --frozen-lockfile
+elif [[ -f package-lock.json ]]; then
+  npm ci
+fi
