@@ -161,6 +161,9 @@ n() { nvim "${@:-.}"; }
 # git worktree + claude combo (wt + claude)
 wtc() { wt "$@"; cc; }
 
+# panel review via claude (review <arg> -> cc "panel review <arg>")
+review() { cc "panel review $*"; }
+
 # eza (ls replacement)
 alias ls='eza -a --group-directories-first --icons=auto'
 alias ll='eza -lh --group-directories-first --icons=auto'
