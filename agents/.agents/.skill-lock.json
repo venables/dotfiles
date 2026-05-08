@@ -48,22 +48,22 @@
       "updatedAt": "2026-04-09T14:54:35.378Z"
     },
     "optimize-agents-md": {
-      "source": "venables/skills",
+      "source": "catena-labs/skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/venables/skills.git",
+      "sourceUrl": "https://github.com/catena-labs/skills.git",
       "skillPath": "skills/optimize-agents-md/SKILL.md",
-      "skillFolderHash": "cbe6bf732fa2ca3f10791ecd2aaa89f6f9591abc",
+      "skillFolderHash": "92b70ca1fc99d4e7d13fe5ea17a91978fcd4bc22",
       "installedAt": "2026-04-10T16:18:15.212Z",
-      "updatedAt": "2026-05-02T00:48:59.604Z"
+      "updatedAt": "2026-05-08T19:04:58.980Z"
     },
     "panel-review": {
-      "source": "venables/skills",
+      "source": "catena-labs/skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/venables/skills.git",
+      "sourceUrl": "https://github.com/catena-labs/skills.git",
       "skillPath": "skills/panel-review/SKILL.md",
-      "skillFolderHash": "fa2bba83133e3196e5188e35d94af5ee8160756e",
+      "skillFolderHash": "51d8d45f3680b596b2120af263ea3bf6f1918d4a",
       "installedAt": "2026-05-02T00:48:59.606Z",
-      "updatedAt": "2026-05-04T13:07:48.970Z"
+      "updatedAt": "2026-05-08T19:04:58.981Z"
     },
     "shadcn": {
       "source": "shadcn/ui",

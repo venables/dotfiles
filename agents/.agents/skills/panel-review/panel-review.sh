@@ -29,7 +29,6 @@ OPENCODE_AGENT="${OPENCODE_AGENT:-plan}"
 # agent so panelists can edit and exec; override with OPENCODE_AGENT_DEEP if you have
 # a custom agent for this purpose.
 OPENCODE_AGENT_DEEP="${OPENCODE_AGENT_DEEP:-build}"
-GEMINI_MODEL="${GEMINI_MODEL:-}"
 
 usage() {
   cat <<EOF
@@ -44,7 +43,7 @@ Targets (pick one, default --uncommitted):
 
 Options:
   --focus TEXT            Optional focus / context for the reviewers
-  --panelist NAME         Add panelist (repeatable). Names: codex, claude, opencode, gemini.
+  --panelist NAME         Add panelist (repeatable). Names: codex, claude, opencode.
                           If not given, auto-detects every supported CLI on PATH.
   --out-dir DIR           Where to write captured outputs (default: mktemp).
   --timeout SECS          Per-panelist timeout (default: \$PANEL_REVIEW_TIMEOUT or 600).
@@ -58,7 +57,7 @@ Options:
   -h, --help              Show this help.
 
 Environment:
-  CODEX_MODEL, CLAUDE_MODEL, OPENCODE_MODEL, GEMINI_MODEL
+  CODEX_MODEL, CLAUDE_MODEL, OPENCODE_MODEL
                           Pass through a model name to that panelist.
   OPENCODE_AGENT          opencode agent to use (default: plan, read-only).
   PANEL_REVIEW_MAX_DIFF_BYTES
@@ -90,8 +89,8 @@ while [[ $# -gt 0 ]]; do
       # passed to git worktree add — an unsanitized name like '../foo' would
       # escape $OUT_DIR and leave a stale entry in .git/worktrees.
       case "$2" in
-        codex|claude|opencode|gemini) PANELISTS+=("$2") ;;
-        *) die "--panelist: unknown panelist '$2' (allowed: codex, claude, opencode, gemini)" ;;
+        codex|claude|opencode) PANELISTS+=("$2") ;;
+        *) die "--panelist: unknown panelist '$2' (allowed: codex, claude, opencode)" ;;
       esac
       shift 2 ;;
     --out-dir)     [[ $# -ge 2 ]] || die "--out-dir needs a path"; OUT_DIR="$2"; shift 2 ;;
@@ -118,11 +117,11 @@ fi
 
 # ----- Auto-detect panelists if none specified -----
 if [[ ${#PANELISTS[@]} -eq 0 ]]; then
-  for tool in codex claude opencode gemini; do
+  for tool in codex claude opencode; do
     command -v "$tool" >/dev/null 2>&1 && PANELISTS+=("$tool")
   done
 fi
-[[ ${#PANELISTS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for codex, claude, opencode, gemini)"
+[[ ${#PANELISTS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for codex, claude, opencode)"
 
 # ----- Output dir -----
 if [[ -z "$OUT_DIR" ]]; then
@@ -218,10 +217,37 @@ if (( CHECKOUT_MODE )); then
         [[ -s "$gh_err" ]] && msg+=$'\n  gh stderr: '"$(cat "$gh_err")"
         die "$msg"
       fi
-      # Extract the host from the PR's own URL (not hardcoded to github.com)
-      # so this works against GitHub Enterprise too.
+      # Mirror origin's URL shape (SSH vs HTTPS) so the fetch uses whatever
+      # auth this machine has already set up. Hardcoding HTTPS hangs on a
+      # credential prompt for users with SSH-only auth and no HTTPS credential
+      # helper. Falls back to HTTPS (host derived from pr_url so GitHub
+      # Enterprise works) when origin is missing or in an unrecognized shape.
       pr_host="$(echo "$pr_url" | sed -E 's|^(https?://[^/]+)/.*|\1|')"
-      pr_head_url="${pr_host}/${pr_head_nwo}.git"
+      pr_head_https_url="${pr_host}/${pr_head_nwo}.git"
+      origin_url="$(git remote get-url origin 2>/dev/null || true)"
+      case "$origin_url" in
+        ssh://*)
+          # ssh://[user@]host[:port]/owner/repo[.git]
+          ssh_authority="${origin_url#ssh://}"
+          ssh_authority="${ssh_authority%%/*}"
+          pr_head_url="ssh://${ssh_authority}/${pr_head_nwo}.git"
+          ;;
+        *://*)
+          # https/http/git/file URL — use HTTPS fallback.
+          pr_head_url="$pr_head_https_url"
+          ;;
+        *:*)
+          # SCP-like SSH: [user@]host:path. The bare `host:path` form (no
+          # user@) is common with ~/.ssh/config Host aliases like
+          # `github-work:owner/repo.git`, so we don't require `@`. The earlier
+          # *://* arm has already consumed every URL-form remote, so any colon
+          # left here is the SCP separator.
+          pr_head_url="${origin_url%%:*}:${pr_head_nwo}.git"
+          ;;
+        *)
+          pr_head_url="$pr_head_https_url"
+          ;;
+      esac
       git fetch --quiet "$pr_head_url" "$pr_head_sha" >&2 \
         || die "git fetch $pr_head_url $pr_head_sha failed"
       WORKTREE_REF="$pr_head_sha"
@@ -372,15 +398,6 @@ build_argv() {
       (( CHECKOUT_MODE )) && argv+=(--dangerously-skip-permissions)
       [[ -n "$OPENCODE_MODEL" ]] && argv+=(--model "$OPENCODE_MODEL")
       argv+=(-- "$PROMPT_CONTENT")
-      ;;
-    gemini)
-      if (( CHECKOUT_MODE )); then
-        argv=(gemini --approval-mode yolo)
-      else
-        argv=(gemini --approval-mode plan)
-      fi
-      [[ -n "$GEMINI_MODEL" ]] && argv+=(--model "$GEMINI_MODEL")
-      argv+=(-p "$PROMPT_CONTENT")
       ;;
     *)
       argv=()

@@ -2,7 +2,7 @@
 name: panel-review
 description: >
   Run a parallel code review across multiple local CLI coding agents (codex, claude,
-  opencode, gemini) and synthesize their findings. Use this skill whenever the user
+  opencode) and synthesize their findings. Use this skill whenever the user
   asks for a "panel review" / "panel-review", "second opinions on this change",
   "multi-agent review", "ensemble review", a "deep panel review" / "really dig into
   this PR" / "run the tests on this PR" (the deep mode that runs tests and greps
@@ -39,8 +39,8 @@ When _not_ to use:
    - "vs main" / "against develop" without a PR number → `--base <branch>`.
    - Specific SHA → `--commit <sha>`.
    - Otherwise → `--uncommitted`. Ask only if the intent is genuinely ambiguous.
-2. **Pick panelists.** Default: every supported CLI on `PATH` (codex, claude, opencode,
-   gemini). The user may name a subset.
+2. **Pick panelists.** Default: every supported CLI on `PATH` (codex, claude,
+   opencode). The user may name a subset.
 3. **Capture optional focus.** If the user gave context ("look closely at the auth
    changes"), pass `--focus`.
 4. **Decide if this needs deep mode.** Default is read-only fan-out — fast and safe.
@@ -142,7 +142,7 @@ Targets (pick one, default `--uncommitted`):
 Options:
 
 - `--focus TEXT` — extra context for the reviewers
-- `--panelist NAME` — repeatable; one of `codex`, `claude`, `opencode`, `gemini`
+- `--panelist NAME` — repeatable; one of `codex`, `claude`, `opencode`
 - `--out-dir DIR` — where to capture outputs (default: `mktemp -d`)
 - `--timeout SECS` — per-panelist timeout (default 600)
 - `--checkout` — deep mode: materialize the target ref into a throwaway git worktree
@@ -181,7 +181,6 @@ Pass through model selection without code changes:
 - `OPENCODE_MODEL` — e.g. `qwen/qwen-3.6` (run `opencode models` to list)
 - `OPENCODE_AGENT` — opencode agent in default (read-only) mode (default `plan`)
 - `OPENCODE_AGENT_DEEP` — opencode agent in `--checkout` mode (default `build`)
-- `GEMINI_MODEL` — e.g. `gemini-2.5-pro`
 
 Other knobs:
 
@@ -220,7 +219,6 @@ Other knobs:
   - codex: `--sandbox workspace-write`
   - claude: `--permission-mode bypassPermissions`
   - opencode: `--agent build --dangerously-skip-permissions`
-  - gemini: `--approval-mode yolo`
 - A `trap … EXIT` registered _before_ the worktree-creation loop iterates
   `WORKTREES` and runs `git worktree remove --force` on each. Cleans up however
   many worktrees were added before any failure or signal. Captured
