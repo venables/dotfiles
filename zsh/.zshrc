@@ -6,6 +6,11 @@
 # prompt, aliases, keybindings, completion, plugins.
 # =============================================================================
 
+# Bail out for non-interactive shells. Some tools (e.g. Claude Code) spawn
+# zsh subprocesses that source .zshrc anyway, which triggers spurious warnings
+# from hook-based tools like zoxide's doctor check.
+[[ $- == *i* ]] || return
+
 # GPG signing pinentry needs to know the current tty (interactive only)
 export GPG_TTY=$(tty)
 
