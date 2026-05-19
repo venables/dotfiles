@@ -48,7 +48,8 @@
     "security-guidance@claude-plugins-official": true,
     "slack@claude-plugins-official": true,
     "codex@openai-codex": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "posthog@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {

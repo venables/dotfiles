@@ -4,11 +4,14 @@ description: >
   Run a parallel code review across multiple local CLI coding agents (codex, claude,
   opencode) and synthesize their findings. Use this skill whenever the user
   asks for a "panel review" / "panel-review", "second opinions on this change",
-  "multi-agent review", "ensemble review", a "deep panel review" / "really dig into
-  this PR" / "run the tests on this PR" (the deep mode that runs tests and greps
-  callers in a real worktree checkout), asks to "have multiple agents/LLMs review
-  this", "cross-check this with codex/claude/etc", "fan out a code review", or any
-  similar phrasing asking for independent reviews from outside this conversation.
+  "multi-agent review", "ensemble review", a "deep panel review" / "deep review" /
+  "deep review the findings" / "dig deep into the findings" / "verify each finding"
+  (opt-in deep mode where the coordinator independently verifies every finding
+  against the code, drafts a concrete fix, and explains how the fix resolves the
+  issue — see the "Deep mode" section in SKILL.md for the procedure and output
+  shape), asks to "have multiple agents/LLMs review this", "cross-check this with
+  codex/claude/etc", "fan out a code review", or any similar phrasing asking for
+  independent reviews from outside this conversation.
   Each panelist runs in a fresh non-interactive subprocess with no shared state —
   that is the point. Do NOT use when the user just wants the current session to
   review code itself; use the regular code-reviewer agent for that.
@@ -33,24 +36,32 @@ When _not_ to use:
 
 ## Steps
 
-1. **Pick a target.** Default to `--uncommitted`. Map the user's phrasing to a flag:
+1. **Pick a target.** Map the user's phrasing to a flag:
    - "PR 27" / "pr #27" / "/panel-review pr 27" / a `github.com/<owner>/<repo>/pull/N`
      URL → `--pr <N or URL>` (requires the `gh` CLI).
    - "vs main" / "against develop" without a PR number → `--base <branch>`.
    - Specific SHA → `--commit <sha>`.
-   - Otherwise → `--uncommitted`. Ask only if the intent is genuinely ambiguous.
+   - "uncommitted", "my staged changes", "my dirty work" → `--uncommitted` / `--staged`.
+   - **Otherwise: pass no target flag at all.** The script auto-detects via `gh pr view`
+     whether the current branch has an open PR. If it does and the working tree is
+     clean, it switches to `--pr <N>` automatically (logged to stderr). If the working
+     tree is dirty, it stays on `--uncommitted` but logs that the PR exists with the
+     `--pr <N>` override hint. This is the right default for a branch that has a PR
+     because reviewing against your local `main` (which may be stale) flags commits
+     that are not actually in the PR.
+   - Ask only if the intent is genuinely ambiguous.
 2. **Pick panelists.** Default: every supported CLI on `PATH` (codex, claude,
    opencode). The user may name a subset.
 3. **Capture optional focus.** If the user gave context ("look closely at the auth
    changes"), pass `--focus`.
-4. **Decide if this needs deep mode.** Default is read-only fan-out — fast and safe.
-   Pass `--checkout` if the user wants panelists to actually run tests, grep callers
-   in the PR's checkout, and chase downstream effects (asks like "really dig in",
-   "run the tests", "deep review", "check what this breaks downstream"). `--checkout`
-   only works with `--pr` / `--base` / `--commit`, not `--uncommitted`/`--staged`,
-   and it gives panelists write/exec access in a throwaway worktree — strictly less
-   safe than the default. Surface that tradeoff briefly to the user before opting
-   in if they didn't ask for it explicitly.
+4. **Mode is automatic — there is no `--checkout` decision.** PR / `--base` /
+   `--commit` reviews always run worktree-isolated with write/exec permissions
+   (one throwaway worktree per panelist, pinned to the target ref). Panelists
+   can read code, grep callers, and run tests / build / lint commands. Network
+   and GitHub-write actions are forbidden by the prompt. `--uncommitted` /
+   `--staged` reviews stay local-only with read-only / plan permissions — no
+   worktree, no exec. The `--checkout` flag is accepted for backward compat
+   but is now a deprecated no-op; do not pass it.
 5. **Run the script** (path: `skills/panel-review/panel-review.sh`). You **MUST**
    launch it as a **background Bash** (`Bash` tool with `run_in_background: true`)
    and poll progress with `BashOutput` on the returned `bash_id` every **10
@@ -96,17 +107,19 @@ When _not_ to use:
      harnesses expose this as `TaskCreate` / `TaskUpdate` instead — use whichever
      todo-list tool your environment provides.)
    - Each `BashOutput` poll: scan stderr for `panel-review: <name> started`
-     and `panel-review: <name> done (exit N)`. On a `started`, set that
-     panelist's todo to `in_progress` (re-call `TodoWrite` with the updated list).
-     On a `done`, set it to `completed`, post a single-line user-visible
-     status (`✓ <name> done — N findings, top severity <SEV>` or `✓ <name> —
-NO_FINDINGS` / `✗ <name> failed (exit N)`), **and immediately post that
-     panelist's full `## <name> (exit N)` section to chat as soon as it
-     appears in stdout**. Do not wait until every panelist is done — surfacing
-     each section the moment it lands gives the user actionable findings 5–10
-     minutes before synthesis is possible. The synthesis step still adds value
-     by deduping/ranking across panelists; it is not a substitute for the
-     individual sections.
+     and `panel-review: <name> (<model>) done (exit N)`. On a `started`, set
+     that panelist's todo to `in_progress` (re-call `TodoWrite` with the
+     updated list). On a `done`, set it to `completed`, post a single-line
+     user-visible status that **includes the model** the panelist self-reported
+     (`✓ <name> (<model>) done — N findings, top severity <SEV>` or
+     `✓ <name> (<model>) — NO_FINDINGS` / `✗ <name> (<model>) failed (exit N)`),
+     **and immediately post that panelist's full
+     `## <name> / <model> (exit N)` section to chat as soon as it appears in
+     stdout**. Do not wait until every panelist is done — surfacing each section
+     the moment it lands gives the user actionable findings 5–10 minutes before
+     synthesis is possible. The synthesis step still adds value by deduping /
+     ranking across panelists; it is not a substitute for the individual
+     sections.
    - After the last `done` heartbeat, set `Synthesize findings` to `in_progress`,
      proceed to steps 7–8, then mark it `completed`.
 7. **Read the script's combined output** — it prints one section per panelist with their
@@ -114,134 +127,337 @@ NO_FINDINGS` / `✗ <name> failed (exit N)`), **and immediately post that
    _all_ panelists to finish before synthesizing; partial output is fine to _show_ the
    user during the wait, but consensus / disagreement analysis needs every panelist's
    verdict.
-8. **Synthesize the findings** in your reply to the user:
-   - **Consensus** — issues raised by 2+ panelists, deduplicated. List file:line + the
-     core problem and a suggested fix.
-   - **Unique findings** — per panelist, only the findings no one else mentioned that
-     still pass the "would a competent reviewer ask for this change" bar.
-   - **Action list** — must-fix → should-fix → optional polish.
-   - **Disagreements** — if panelists contradict each other, surface that explicitly
-     rather than picking a side.
-9. **Don't paraphrase or invent.** Surface what the panelists actually said. If a
-   panelist returned `NO_FINDINGS`, note it; don't drop the panelist from the report.
+8. **Synthesize the findings** in your reply to the user. The synthesized summary is
+   the primary deliverable — most readers will not scroll up to the per-panelist
+   sections, so put the substance here.
 
-## Usage
+   **If the user asked for a deep review** (see the **Deep mode** section after
+   step 10), do the per-finding verification + fix-explanation pass _before_
+   emitting the synthesis below; every finding entry expands from two lines to
+   four. The section structure (Overview, Risk, Goal check, Approach check,
+   Consensus, Unique, Disagreements, Action list) stays the same.
 
-```bash
-bash skills/panel-review/panel-review.sh [target] [options]
+   **Always carry the panelist's self-reported model into the summary.** Each
+   panelist starts its output with a `Model: <id>` line; the script also exposes
+   it in the `## <name> / <model> (exit N)` per-panelist section heading. Use
+   the model name everywhere you would otherwise just say the panelist's name
+   (e.g. `Raised by: codex (gpt-5.5)`, `### claude (claude-opus-4.7)`). If a
+   panelist reported `Model: unknown`, surface that as `(unknown)` rather than
+   silently omitting the model.
+
+   **Tappable links to PR file:line.** When the target is a PR (the script's
+   combined-output header shows `Target: PR #N` and emits `- PR URL: <url>`),
+   wrap every `file:line` reference in the synthesized summary as a markdown
+   link pointing at the PR file view, so the user can tap straight to the
+   exact line on GitHub. Use the helper:
+
+   ```
+   bash skills/panel-review/pr-line-url.sh "$pr_url" "<file>" "<line-or-range>"
+   ```
+
+   Apply this in **Consensus findings**, **Unique findings**, **Disagreements**,
+   and the **Action list** — every place a `file:line` appears in the synthesis.
+   Leave per-panelist sections (the raw `## <name> / <model>` blocks) untouched
+   so the panelist's verbatim output is preserved. For non-PR targets, skip the
+   wrapping — leave bare `file:line` text since users can typically `cmd-click`
+   in their terminal to open it locally.
+
+   Example transformation. Panelist output:
+
+   ```
+   - [HIGH] auth/session.go:88 — TOCTOU between token check and claim load.
+     Fix: take the cache lock before validating the signature.
+   ```
+
+   Synthesized consensus entry:
+
+   ```
+   - [HIGH] [auth/session.go:88](https://github.com/owner/repo/pull/27/files#diff-...R88) — TOCTOU between token check and claim load.
+     Fix: take the cache lock before validating the signature.
+     Raised by: codex (gpt-5.5), claude (claude-opus-4.7)
+   ```
+
+   **Every finding in every section below MUST include `file:line` and a `Fix:` line.**
+   Drop any panelist finding that lacks a concrete location or a suggested fix — those
+   are too speculative to surface. If the issue itself is real, infer the location
+   from the diff/PR yourself; if you cannot, leave it out.
+
+   Emit the synthesis using these section headings, in this exact order:
+   - `### Overview`
+   - `### Risk`
+   - `### Goal check`
+   - `### Approach check`
+   - `### Consensus findings`
+   - `### Unique findings`
+   - `### Disagreements`
+   - `### Action list`
+
+   ### Overview
+
+   Two to four sentences for a human who has not seen the diff. State factually what
+   files / areas changed, the kind of change (refactor, bug fix, new feature, config,
+   dep bump, infra, …), and rough scope (lines added/removed, files touched). For PR
+   mode pull this from `gh pr view --json files` and the diff; for non-PR targets
+   infer from the diff. Do **not** editorialize — evaluation lives in Risk and
+   Findings.
+
+   ### Risk
+
+   One of `LOW` / `MEDIUM` / `HIGH` / `CRITICAL`, then a one-sentence justification
+   that points at observable signals (consensus findings, area touched, scope), not
+   vibes. Rubric:
+   - **LOW** — docs / tests / formatting / non-load-bearing refactor. No consensus
+     findings. No HIGH/CRITICAL unique findings. All panelists agreed on the goal.
+     No auth / payments / migrations / cryptography touched.
+   - **MEDIUM** — touches business logic or non-trivial code paths. Findings exist
+     but are fixable. No CRITICAL findings. Goal was clear or only mildly divergent
+     across panelists.
+   - **HIGH** — any of: a verified HIGH finding raised by 2+ panelists; a verified
+     `Approach (questionable):` flag (per the Approach check section — the change is
+     fixing the wrong layer, so even a "correct" implementation here is buying
+     short-term relief at the cost of future bugs); the change touches auth, session
+     handling, payments, schema migrations, crypto, or production infra; panelists
+     disagreed substantially on what the change does; the diff is unusually large
+     (>500 lines) AND lacks a clear goal. CRITICAL findings escalate one bucket up —
+     see CRITICAL.
+   - **CRITICAL** — verified bug in the change that would break production on merge,
+     OR a known data-loss / security-bypass / credential-leak path introduced. Any
+     verified CRITICAL finding (per step 9) escalates the whole change to this
+     bucket regardless of the area touched.
+
+   Example: `Risk: CRITICAL — codex flagged a verified timing-attack
+vulnerability in session-token validation at auth/session.go:88.`
+
+   ### Goal check
+
+   Each panelist starts its output with a `Goal:` line tagged `(clear)`,
+   `(clear, matches description)`, `(clear, contradicts description)`, or `(unclear)`.
+   Use those tags to decide what to print here:
+   - **All panelists agreed on a clear goal** — state the goal in one sentence and
+     move on. Example: `Goal: extract session-token validation into a reusable
+helper. Codex, claude, opencode all agree.`
+   - **Mixed clear / unclear** — surface the divergence. Quote what the unclear
+     panelist(s) said was ambiguous. The change being non-self-explanatory is itself
+     a HIGH-severity finding; add it to the action list.
+   - **Panelists described different goals** — the change is likely doing several
+     things at once or is genuinely confusing. Quote each panelist's goal verbatim
+     so the user can decide whether to split the PR.
+   - **Any panelist returned `Goal (clear, contradicts description):`** — quote what
+     they said the actual goal is vs. what the description claims. MEDIUM/HIGH worth
+     raising even if no one else flagged it.
+
+   **Misinterpretation check (mandatory).** Beyond collating the `Goal:` tags,
+   independently verify that each panelist's stated goal is actually consistent
+   with what the diff does. A panelist can confidently tag itself `Goal (clear)`
+   while having misread the change — that produces confidently-wrong findings
+   further down. For each panelist:
+   1. Read the diff yourself (or the PR via `gh pr view --json files,title,body`
+      and `gh pr diff <ref>`) to form an independent understanding of intent.
+   2. Compare your read against the panelist's `Goal:` line.
+   3. If they disagree, that panelist **misinterpreted the change**. Surface
+      it as a top-level note under Goal check:
+      `- codex (gpt-5.5) appears to have misinterpreted the change. It said "<goal>" but the diff actually <what it really does>. Treat its findings below with skepticism — verify each one against the code before acting on it.`
+   4. Apply step 9's verification more aggressively to that panelist's
+      findings: drop any whose substance depends on the misread intent; keep
+      only findings that still hold independent of the panelist's mistaken
+      framing.
+
+   Do not assume agreement among panelists implies correctness — two panelists
+   can share a misread (especially if the diff is unusual or the description
+   is misleading). When in doubt, your own read of the diff is the tiebreaker.
+
+   ### Approach check
+
+   Each panelist outputs an `Approach:` line immediately after `Goal:`, tagged
+   `(sound)` or `(questionable)`. This block asks whether the change is being
+   made at the right layer — a UI fix for a server bug, a client validator for
+   a missing DB constraint, etc. Decide what to print here based on the tags:
+   - **All panelists `Approach (sound):`** — one line: `Approach: all panelists agree the change targets the right layer.` Move on.
+   - **One or more `Approach (questionable):` with all three evidence components present** (root cause named, root-cause fix location specified, reason the current change is symptomatic). Quote what they said in this shape:
+
+     ```
+     - questionable (raised by: codex (gpt-5.5)): the diff adds client-side validation in `web/src/forms/order.tsx:42`, but the root cause is that the `orders` table allows duplicate `(user_id, idempotency_key)` rows. Real fix lives in a migration on `orders`. This is the third caller to re-implement the same validation — grep shows two prior copies in `web/src/forms/`.
+     ```
+
+     Promote this into the **Action list** as a `must-fix` item even though it lacks a single `file:line` of its own — reference the named root-cause location instead. Wrong-layer fixes are expensive to undo. Also escalate Risk one bucket (see the Risk rubric below).
+
+   - **Panelists disagree (one sound, another questionable)** — surface both, but the questionable side wins by default if its three evidence components hold up under your own verification (apply step 9). If the evidence doesn't hold, drop the questionable claim and note the falsification under **Disagreements**.
+   - **`Approach (questionable):` without all three evidence components** — drop it. The panelist did not meet the prompt's evidence bar; do not silently relax it on their behalf.
+
+   **Verify before promoting (mandatory).** Treat a `questionable` flag like any unique CRITICAL/HIGH claim — open the named root-cause location, confirm the bug actually recurs there or that the constraint is actually missing, and only then surface it. A wrong `Approach (questionable):` is worse than a missed one because it derails the entire review toward a phantom redesign.
+
+   ### Consensus findings
+
+   Issues raised by 2+ panelists, deduplicated. Reference each panelist by name
+   AND the model it self-reported on its `Model:` line, so the user can see
+   which combinations agreed:
+
+   ```
+   - [SEVERITY] path/to/file.ext:LINE — one-sentence issue
+     Fix: one-sentence suggested change.
+     Raised by: codex (gpt-5.5), claude (claude-opus-4.7)
+   ```
+
+   ### Unique findings
+
+   Group by panelist. Use `### <name> (<model>)` as the per-panelist heading so
+   the model is visible alongside the findings. Only include findings no one
+   else mentioned that still pass the "would a competent reviewer ask for this
+   change" bar. Same shape (omit `Raised by:`, it's implicit in the grouping).
+   Apply step 9's verification before promoting a unique CRITICAL or HIGH
+   finding into the summary.
+
+   ### Disagreements
+
+   If panelists contradict each other on a finding, surface it explicitly with
+   `file:line` for the disputed code. Do not pick a side; lay out both. Use step 9
+   verification if you can resolve the disagreement yourself.
+
+   ### Action list
+
+   `must-fix` (CRITICAL/HIGH) → `should-fix` (MEDIUM) → `polish` (LOW). One line per
+   item, each referencing `file:line` so the user can jump straight to it.
+
+   A substantiated `Approach (questionable):` flag (see Approach check) becomes a
+   `must-fix` entry even though it does not have a single `file:line` of its own —
+   use the named root-cause location instead, e.g.
+   `- must-fix: rework as a migration on \`orders\` table — see Approach check.`   Put it at the top of`must-fix`: if the approach is wrong, the per-line findings
+   below may not survive the rework.
+
+9. **Verify questionable findings before surfacing them.** A panelist's finding is
+   questionable when any of these holds:
+   - It is unique to one panelist AND its severity is CRITICAL/HIGH (high-impact claim
+     with no second opinion).
+   - The `Fix:` line does not obviously address the stated issue.
+   - The line number is suspicious (referenced line is unchanged in the diff, or out
+     of range for the file).
+   - Two panelists disagree on whether the same code is buggy.
+   - The panelist's reasoning depends on context outside the diff (caller behavior,
+     framework guarantees, downstream consumers) that they did not actually verify.
+
+   For each questionable finding, open the actual diff/file (use `gh pr diff`,
+   `gh api .../files`, or `Read` against the local checkout) and confirm the bug
+   exists as described before surfacing it. If verification disproves the finding,
+   drop it and note the correction in the **Disagreements** section. If verification
+   sharpens the finding (e.g., you find the right line number), promote the corrected
+   version into the summary. Never repeat a panelist claim into the summary that you
+   could have falsified in 30 seconds with a Read tool call.
+
+10. **Don't paraphrase or invent.** Surface what the panelists actually said. If a
+    panelist returned `NO_FINDINGS`, note it; don't drop the panelist from the report.
+    You may correct a panelist's line number if it is clearly off (e.g., they cited a
+    pre-image line and the file is now post-image), but never invent a line number to
+    satisfy the format. The verification step in step 9 is the _only_ license to
+    rewrite a finding's substance — and only when you have actually checked the code.
+
+## Deep mode
+
+**Trigger.** User asked for a "deep panel review", "deep review", "deep review the
+findings", "dig deep into the findings", "verify each finding", "explain each finding",
+or similar. If the request just says "panel review" with no "deep" / "verify" / "dig
+in" qualifier, stay in standard mode.
+
+**Why opt-in.** Deep mode is token-expensive — every finding gets its own Read/grep
+round-trip and a hand-written explanation. The standard synthesis from step 8 is the
+right default for routine reviews.
+
+**Note on the term.** "Deep" used to be a trigger for worktree-mode (panelists running
+tests, grepping callers). That mode is now automatic for committed targets and no
+longer needs a trigger. The phrase is repurposed: it now opts into the per-finding
+verification + explanation pass below. There is no script-side flag —
+`panel-review.sh` is unchanged; deep mode is purely a coordinator-side post-processing
+step.
+
+**Procedure.** After step 7 (panelists finished, sections streamed) and _before_
+emitting step 8's synthesis, walk every finding from every panelist — CRITICAL through
+LOW, consensus and unique alike — and do the following per finding. Apply the same
+three-step pass to every `Approach (questionable):` flag too: verify the three
+evidence components against the code, draft the actual cross-layer fix (often a
+migration / schema / API contract change, not a line edit), and explain how it
+resolves the symptom seen in the diff. If the user explicitly scoped the request
+("deep review the auth findings", "verify only the criticals"), apply the scope;
+otherwise default to all findings _and_ all `Approach (questionable):` flags.
+
+1. **Verify against the code.** Apply step 9's verification process to _every_ finding,
+   not just the questionable ones. Open the file at the cited `file:line`, read the
+   surrounding 10–20 lines, and confirm the bug exists as described. For PR targets,
+   use `gh pr diff`, `gh api .../files`, or Read against the per-panelist worktree
+   under `/tmp/panel-review-XXXXXX/worktree-<panelist>/`. If verification disproves the
+   finding, drop it from the synthesis and note the falsification under
+   **Disagreements** with a one-liner. If verification sharpens it (better line,
+   narrower scope, different mechanism), use the corrected version.
+
+2. **Draft a concrete fix.** Don't repeat the panelist's `Fix:` line verbatim if it's
+   vague — write the actual change you'd make. A 3–10 line code snippet (before/after
+   diff if helpful) beats prose for non-trivial fixes. Anchor the fix at a `file:line`
+   so the user can jump to it.
+
+3. **Explain how the fix resolves the issue.** One or two sentences in plain language:
+   what cause-effect chain does the fix interrupt, or what invariant does it restore?
+   This is what converts a list of findings into a decision a reviewer can act on —
+   name the mechanism explicitly so the user doesn't have to re-derive it from the
+   code.
+
+**Declare deep mode at the top of the synthesis (mandatory).** Right after the
+per-panelist sections and _before_ the `### Overview` heading, emit a single line so
+the user can verify deep mode actually ran without reading every entry:
+
+```md
+**Deep mode:** ON — verified N findings across M panelists; dropped K as falsified, surfaced V.
 ```
 
-Targets (pick one, default `--uncommitted`):
+The numbers must be real (count them as you go). If you skipped verification on any
+finding because the user scoped the request, say so:
+`**Deep mode:** ON (scope: criticals only) — verified 3 / surfaced 3 / dropped 0; 4 LOW findings carried over from panelists without verification.`
+This declaration is the single source of truth for "did deep mode run" — if it isn't
+present, the synthesis was standard mode regardless of trigger phrasing.
 
-- `--uncommitted` — staged + unstaged changes
-- `--staged` — staged only
-- `--base BRANCH` — `BRANCH...HEAD`
-- `--commit SHA` — a single commit
-- `--pr NUMBER` — a GitHub PR (also accepts a full PR URL); requires `gh` CLI
+**Output shape.** Each finding entry in **Consensus findings**, **Unique findings**,
+and **Disagreements** expands from two lines to four:
 
-Options:
-
-- `--focus TEXT` — extra context for the reviewers
-- `--panelist NAME` — repeatable; one of `codex`, `claude`, `opencode`
-- `--out-dir DIR` — where to capture outputs (default: `mktemp -d`)
-- `--timeout SECS` — per-panelist timeout (default 600)
-- `--checkout` — deep mode: materialize the target ref into a throwaway git worktree
-  and run panelists from inside it with write/exec permissions. Required for
-  `--pr` / `--base` / `--commit` only. Strictly less safe than the default.
-
-Examples:
-
-```bash
-# All available panelists, uncommitted changes
-bash skills/panel-review/panel-review.sh
-
-# Codex + Claude only, against main
-bash skills/panel-review/panel-review.sh --base main --panelist codex --panelist claude
-
-# With focus
-bash skills/panel-review/panel-review.sh --uncommitted --focus "session-token handling"
-
-# A GitHub PR
-bash skills/panel-review/panel-review.sh --pr 27
-bash skills/panel-review/panel-review.sh --pr https://github.com/owner/repo/pull/27
-
-# Deep mode: panelists run tests + grep callers inside a real PR checkout.
-# Each panelist gets write/exec access to a throwaway worktree; the worktree
-# is git-worktree-removed on exit.
-bash skills/panel-review/panel-review.sh --pr 27 --checkout
-bash skills/panel-review/panel-review.sh --base main --checkout --panelist codex
+```md
+- [SEVERITY] [file:line](url) — one-sentence issue
+  Verification: how I confirmed (e.g. "read auth/session.go:80–96 — the
+  signature check at line 84 reads tok.claims before the cache load at line
+  88 acquires the mutex; a second goroutine can swap claims in the window").
+  Cite evidence; do not assert.
+  Proposed fix: concrete change, with a code snippet for non-trivial cases,
+  anchored at file:line.
+  Why this fixes it: one or two sentences on the mechanism (e.g. "serializing
+  check + load behind the same mutex closes the TOCTOU window — no goroutine
+  can mutate claims between validation and use").
+  Raised by: codex (gpt-5.5), claude (claude-opus-4.7)
 ```
 
-## Per-panelist tuning (env vars)
+The **Action list** stays compact — one line per item — and references the expanded
+entries above.
 
-Pass through model selection without code changes:
+**If many findings drop during verification**, surface that in **Risk** — panelist
+signal-to-noise is part of the picture and worth telling the user about ("3 of 7 codex
+findings falsified on read-through; treat the remaining 2 as the real signal").
 
-- `CODEX_MODEL` — e.g. `gpt-5`
-- `CLAUDE_MODEL` — e.g. `opus`, `sonnet`, full id like `claude-sonnet-4-6`
-- `OPENCODE_MODEL` — e.g. `qwen/qwen-3.6` (run `opencode models` to list)
-- `OPENCODE_AGENT` — opencode agent in default (read-only) mode (default `plan`)
-- `OPENCODE_AGENT_DEEP` — opencode agent in `--checkout` mode (default `build`)
+## Reference
 
-Other knobs:
+CLI flags, env vars, and examples: run `bash skills/panel-review/panel-review.sh --help`.
 
-- `PANEL_REVIEW_TIMEOUT` — seconds per panelist (default 600)
-- `PANEL_REVIEW_MAX_DIFF_BYTES` — abort if the inline diff exceeds this (default 200000,
-  ~200KB). Big rename / refactor PRs blow past this; just bump it
-  (e.g. `PANEL_REVIEW_MAX_DIFF_BYTES=1000000`) when prompted. Each panelist embeds the
-  full diff in its prompt, so the cap exists to protect context windows and cost — not
-  to gate "real" reviews.
+The script handles two cases internally:
 
-## How it works
+- **Local targets** (`--uncommitted` / `--staged`): builds the diff with `git`,
+  embeds it in the prompt, runs panelists read-only against the working tree.
+- **Committed targets** (`--pr` / `--base` / `--commit`): one throwaway git
+  worktree per panelist pinned to the target ref, panelists run with
+  workspace-write / bypass permissions so they can grep callers, run tests,
+  and install dev deps. PR targets additionally use an instruction-style prompt
+  where panelists fetch the diff and existing review comments via `gh`
+  themselves (live remote state — no stale-base drift, no diff-size cap).
 
-- Builds a unified diff from the chosen target with `git`.
-- Composes one prompt by prepending `prompts/review.md` (or `prompts/review-deep.md`
-  in `--checkout` mode) to the diff (and optional focus).
-- Spawns each panelist as a background subprocess with read-only / plan-mode flags so
-  the reviewer can read repo files but cannot modify anything (default mode).
-- Streams each panelist's section to stdout the moment that panelist completes, and
-  emits unbuffered stderr heartbeats (`started` / `done`) so a coordinator polling
-  `BashOutput` sees real-time progress instead of one big dump at the end.
+Other behavior worth knowing:
 
-### Deep mode (`--checkout`)
-
-- Resolves a single commit SHA the worktrees will all pin to:
-  - `--pr N` (or URL) — `gh pr view "$pr_ref"` returns the PR's URL, head SHA,
-    and head `nameWithOwner`. Constructs the head clone URL using the PR URL's
-    own host (so GitHub Enterprise works), then `git fetch` once from that URL
-    by SHA. One network round-trip; subsequent worktrees are local-only.
-  - `--base BRANCH` — `git rev-parse HEAD`.
-  - `--commit SHA` — uses the SHA directly.
-- Materializes one detached worktree per panelist at `$OUT_DIR/worktree-<name>`.
-  Each worktree is independent — test runners can write to their own
-  `node_modules/`, `target/`, `.next/` without racing siblings (CI-matrix style).
-- Each panelist's CWD is its own worktree. Per-panelist permission flags swap to
-  their most permissive non-interactive equivalents:
-  - codex: `--sandbox workspace-write`
-  - claude: `--permission-mode bypassPermissions`
-  - opencode: `--agent build --dangerously-skip-permissions`
-- A `trap … EXIT` registered _before_ the worktree-creation loop iterates
-  `WORKTREES` and runs `git worktree remove --force` on each. Cleans up however
-  many worktrees were added before any failure or signal. Captured
-  stdout/stderr/diff/prompt files in the parent `OUT_DIR` are kept for postmortem.
-- The deep-mode prompt explicitly forbids destructive network actions (push,
-  PR/issue writes, package publishes) since the sandbox flags no longer enforce
-  that. This is a softer guard than read-only mode — treat panelists as untrusted
-  code execution against your dev box.
-
-## Notes
-
-- Each panelist is a fresh process — that's the "no prior context" guarantee. They will
-  still pick up the project's `AGENTS.md`/`CLAUDE.md`, which is intentional: those
-  encode project conventions worth respecting in a review.
-- The prompt explicitly forbids GitHub/Slack/Linear writes. In default mode,
-  panelists are run in read-only / plan mode at the CLI level as a second line of
-  defense; in `--checkout` mode, that second line is gone and the prompt is the
-  only guard against destructive actions.
-- `--checkout` panelists share the parent repo's `.git` object database via
-  `git worktree`. A stray `git push` from a panelist would publish from your
-  worktree, even though the worktree itself is throwaway. The deep-mode prompt
-  explicitly forbids this; treat the prompt as a firewall, not a sandbox.
-- If a panelist times out or errors, the script keeps the others' output and exits 2.
-  Surface the failure in your synthesized report rather than silently dropping it.
-- The combined output references a tempdir like `/tmp/panel-review-XXXXXX/` — re-read
-  any panelist's raw output from there if you need more detail than the inline excerpt.
+- If a panelist times out or fails, the script keeps the others' output and
+  exits 2. Surface the failure in the synthesized report rather than dropping
+  the panelist.
+- The combined output references a tempdir (`/tmp/panel-review-XXXXXX/`) — read
+  any panelist's full stdout/stderr from there if the inline excerpt is not
+  enough.
+- Panelists pick up the project's `AGENTS.md` / `CLAUDE.md` — intentional, but
+  worth knowing if those files would bias the review.
