@@ -6,7 +6,7 @@
     "appIcon": "dark",
     "newWorkspacePlacement": "afterCurrent",
     "renameSelectsExistingName": true,
-    "reorderOnNotification": false,
+    "reorderOnNotification": true,
     "sendAnonymousTelemetry": false,
     "warnBeforeQuit": false
   },
