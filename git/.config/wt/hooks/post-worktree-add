@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Resolve this hook's directory (where clone_dir.rs lives) before we cd away.
+hook_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
 cd "$WT_PATH"
 
 # Trust the new worktree's mise config
@@ -8,28 +11,33 @@ if command -v mise >/dev/null 2>&1; then
   mise trust
 fi
 
-# Reflink every node_modules (root + each workspace package) from the worktree we
-# branched off (WT_REPO_ROOT) when its lockfile matches ours, skipping the install.
-# Returns 1 to fall back to install.
-clone_node_modules() {
-  local src="${WT_REPO_ROOT:-}" lockfile="$1" d
-  [[ -e node_modules ]] && return 1
-  [[ -n "$src" ]] || return 1
-  [[ "$src" -ef "$PWD" ]] && return 1
-  [[ -d "$src/node_modules" ]] || return 1
-  cmp -s "$src/$lockfile" "$lockfile" || return 1
-  while IFS= read -r d; do
-    d=${d#./}
-    mkdir -p "$(dirname "$d")"
-    cp -cR "$src/$d" "$d" 2>/dev/null || { rm -rf "$d"; return 1; }
-  done < <(cd "$src" && find . -type d -name node_modules -prune -print)
+# clone_dir <src> <dst>: copy a directory tree with APFS copy-on-write.
+#
+# A tiny Rust helper (clone_dir.rs, next to this hook) calls clonefile(2), which
+# clones the whole hierarchy in one syscall -- ~10x faster than `cp -cR`, which
+# clones file-by-file. It is built once and cached (rebuilt when the source
+# changes); if rustc or the build is unavailable we fall back to cp -cR.
+clone_src="$hook_dir/clone_dir.rs"
+clone_bin="${XDG_CACHE_HOME:-$HOME/.cache}/wt/clone_dir"
+
+build_clone_bin() {
+  [[ -x "$clone_bin" && "$clone_bin" -nt "$clone_src" ]] && return 0
+  [[ -f "$clone_src" ]] && command -v rustc >/dev/null 2>&1 || return 1
+  mkdir -p "${clone_bin%/*}"
+  rustc -O "$clone_src" -o "$clone_bin" 2>/dev/null
 }
 
-if [[ -f pnpm-lock.yaml ]]; then
-  clone_node_modules pnpm-lock.yaml || pnpm install --frozen-lockfile --prefer-offline
-elif [[ -f bun.lock || -f bun.lockb ]]; then
-  lock=bun.lockb; [[ -f bun.lock ]] && lock=bun.lock
-  clone_node_modules "$lock" || bun install --frozen-lockfile --prefer-offline
-elif [[ -f package-lock.json ]]; then
-  clone_node_modules package-lock.json || npm ci --prefer-offline
+clone_dir() {
+  if build_clone_bin && "$clone_bin" "$1" "$2"; then
+    return 0
+  fi
+  cp -cR "$1" "$2" 2>/dev/null
+}
+
+# Copy the root node_modules from the worktree we branched off (WT_REPO_ROOT)
+# via APFS copy-on-write. No lockfile check: if deps changed on this branch,
+# run an install yourself.
+src="${WT_REPO_ROOT:-}"
+if [[ -n "$src" && ! "$src" -ef "$PWD" && -d "$src/node_modules" && ! -e node_modules ]]; then
+  clone_dir "$src/node_modules" node_modules || rm -rf node_modules
 fi
