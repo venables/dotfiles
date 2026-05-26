@@ -8,10 +8,28 @@ if command -v mise >/dev/null 2>&1; then
   mise trust
 fi
 
+# Reflink every node_modules (root + each workspace package) from the worktree we
+# branched off (WT_REPO_ROOT) when its lockfile matches ours, skipping the install.
+# Returns 1 to fall back to install.
+clone_node_modules() {
+  local src="${WT_REPO_ROOT:-}" lockfile="$1" d
+  [[ -e node_modules ]] && return 1
+  [[ -n "$src" ]] || return 1
+  [[ "$src" -ef "$PWD" ]] && return 1
+  [[ -d "$src/node_modules" ]] || return 1
+  cmp -s "$src/$lockfile" "$lockfile" || return 1
+  while IFS= read -r d; do
+    d=${d#./}
+    mkdir -p "$(dirname "$d")"
+    cp -cR "$src/$d" "$d" 2>/dev/null || { rm -rf "$d"; return 1; }
+  done < <(cd "$src" && find . -type d -name node_modules -prune -print)
+}
+
 if [[ -f pnpm-lock.yaml ]]; then
-  pnpm install --frozen-lockfile
+  clone_node_modules pnpm-lock.yaml || pnpm install --frozen-lockfile --prefer-offline
 elif [[ -f bun.lock || -f bun.lockb ]]; then
-  bun install --frozen-lockfile
+  lock=bun.lockb; [[ -f bun.lock ]] && lock=bun.lock
+  clone_node_modules "$lock" || bun install --frozen-lockfile --prefer-offline
 elif [[ -f package-lock.json ]]; then
-  npm ci
+  clone_node_modules package-lock.json || npm ci --prefer-offline
 fi
