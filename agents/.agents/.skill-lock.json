@@ -93,6 +93,33 @@
       "pluginName": "example-skills",
       "installedAt": "2026-05-06T18:17:10.262Z",
       "updatedAt": "2026-05-06T18:17:10.262Z"
+    },
+    "triage-pr-comments": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/triage-pr-comments/SKILL.md",
+      "skillFolderHash": "42423c3151ff66d5ce7218437f409028ede291c0",
+      "installedAt": "2026-05-20T01:35:38.166Z",
+      "updatedAt": "2026-05-28T22:22:50.628Z"
+    },
+    "post-panel-review-comments": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/post-panel-review-comments/SKILL.md",
+      "skillFolderHash": "15b505ede2239fdb5f9e6f03c8722dee2c8d84cb",
+      "installedAt": "2026-06-09T19:38:18.718Z",
+      "updatedAt": "2026-06-09T19:38:18.718Z"
+    },
+    "pr-comment-handler": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/pr-comment-handler/SKILL.md",
+      "skillFolderHash": "19f51f435256ffd81ec36def8d5775c8dadbb718",
+      "installedAt": "2026-06-09T19:38:18.721Z",
+      "updatedAt": "2026-06-09T19:38:18.721Z"
     }
   },
   "dismissed": {
@@ -101,17 +128,17 @@
   "lastSelectedAgents": [
     "amp",
     "antigravity",
+    "antigravity-cli",
     "cline",
     "codex",
     "cursor",
     "deepagents",
-    "dexto",
-    "firebender",
     "gemini-cli",
     "github-copilot",
-    "kimi-cli",
+    "kimi-code-cli",
     "opencode",
     "warp",
+    "zed",
     "claude-code"
   ]
 }
