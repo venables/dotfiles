@@ -48,22 +48,22 @@
       "updatedAt": "2026-04-09T14:54:35.378Z"
     },
     "optimize-agents-md": {
-      "source": "catena-labs/skills",
+      "source": "catena-labs/dev-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/catena-labs/skills.git",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
       "skillPath": "skills/optimize-agents-md/SKILL.md",
-      "skillFolderHash": "92b70ca1fc99d4e7d13fe5ea17a91978fcd4bc22",
+      "skillFolderHash": "f219b2d94819ab13315c4bf3a9e3b460e9b23835",
       "installedAt": "2026-04-10T16:18:15.212Z",
-      "updatedAt": "2026-05-11T17:38:19.575Z"
+      "updatedAt": "2026-05-28T22:22:50.626Z"
     },
     "panel-review": {
-      "source": "catena-labs/skills",
+      "source": "catena-labs/dev-skills",
       "sourceType": "github",
-      "sourceUrl": "https://github.com/catena-labs/skills.git",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
       "skillPath": "skills/panel-review/SKILL.md",
-      "skillFolderHash": "31238e0d9cccc452be997975191509b1d38b73b6",
+      "skillFolderHash": "831fbbb56531b5b50958f68efcb3a346d9cc76cc",
       "installedAt": "2026-05-02T00:48:59.606Z",
-      "updatedAt": "2026-05-11T17:38:19.577Z"
+      "updatedAt": "2026-05-28T22:22:50.628Z"
     },
     "shadcn": {
       "source": "shadcn/ui",

@@ -5,7 +5,7 @@ Create, audit, and prune `AGENTS.md` / `CLAUDE.md` so every AI coding tool (Clau
 ## Install
 
 ```
-npx skills add catena-labs/skills --skill optimize-agents-md
+npx skills add catena-labs/dev-skills --skill optimize-agents-md
 ```
 
 ## How to use it
