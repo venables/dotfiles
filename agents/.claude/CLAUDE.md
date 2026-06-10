@@ -6,6 +6,11 @@
 - PREFER immutability -- never mutate objects or arrays
 - PREFER many small files over few large files
 
+## Code Comments
+
+- AVOID adding inline comments to code unless strictly necessary.
+- If you add comments, use block comments for multi-line comments.
+
 ## Git
 
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`,
