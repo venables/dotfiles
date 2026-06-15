@@ -50,7 +50,8 @@
     "codex@openai-codex": true,
     "figma@claude-plugins-official": true,
     "posthog@claude-plugins-official": true,
-    "lapdog@lapdog": true
+    "lapdog@lapdog": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
