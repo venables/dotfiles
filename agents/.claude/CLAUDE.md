@@ -17,6 +17,11 @@
   `chore:`, `perf:`, `ci:`
 - Small, frequent, focused commits
 
+## Linear
+
+- When filing a Linear ticket, do NOT set any priority unless the user
+  explicitly specifies one.
+
 ## Workflow
 
 - TDD: Write tests before implementation, aim for 80%+ coverage
