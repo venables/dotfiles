@@ -46,6 +46,7 @@ fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 info "Homebrew packages"
+brew trust venables/tap
 brew bundle --file="$DOTFILES/homebrew/.Brewfile"
 ok "bundled"
 
