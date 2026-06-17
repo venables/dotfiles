@@ -1,19 +1,21 @@
+-- Use the `main` branch: the `master` branch is EOL and ships markdown
+-- queries that crash Neovim 0.12's bundled treesitter ("range nil value").
 return {
   "nvim-treesitter/nvim-treesitter",
-  branch = "master",
+  branch = "main",
+  lazy = false, -- treesitter does not support lazy-loading
   build = ":TSUpdate",
-  event = { "BufReadPost", "BufNewFile" },
-  opts = {
-    highlight = { enable = true },
-    indent = { enable = true },
-    ensure_installed = {
+  config = function()
+    -- jsonc has no dedicated parser; reuse the json parser for it.
+    vim.treesitter.language.register("json", "jsonc")
+
+    pcall(require("nvim-treesitter").install, {
       "bash",
       "css",
       "dockerfile",
       "html",
       "javascript",
       "json",
-      "jsonc",
       "lua",
       "luadoc",
       "markdown",
@@ -26,9 +28,14 @@ return {
       "vim",
       "vimdoc",
       "yaml",
-    },
-  },
-  config = function(_, opts)
-    require("nvim-treesitter.configs").setup(opts)
+    })
+
+    -- Enable highlighting for any filetype that has a parser installed.
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("treesitter_highlight", { clear = true }),
+      callback = function()
+        pcall(vim.treesitter.start)
+      end,
+    })
   end,
 }
