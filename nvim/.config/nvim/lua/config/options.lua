@@ -2,6 +2,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Terminal is configured with a Nerd Font (see ghostty config)
+vim.g.have_nerd_font = true
+
 local opt = vim.opt
 
 -- UI

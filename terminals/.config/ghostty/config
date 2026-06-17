@@ -3,6 +3,9 @@
 
 theme = Tokyonight
 
+# Nerd Font for icons/glyphs (neo-tree, devicons, etc.)
+font-family = "JetBrainsMono Nerd Font"
+
 auto-update-channel = tip
 
 # prefs
