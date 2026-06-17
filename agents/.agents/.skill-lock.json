@@ -52,18 +52,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
       "skillPath": "skills/optimize-agents-md/SKILL.md",
-      "skillFolderHash": "f219b2d94819ab13315c4bf3a9e3b460e9b23835",
+      "skillFolderHash": "30c715a6041b6ad781a4c111226279e859e12e2b",
       "installedAt": "2026-04-10T16:18:15.212Z",
-      "updatedAt": "2026-05-28T22:22:50.626Z"
+      "updatedAt": "2026-06-17T21:35:44.262Z"
     },
     "panel-review": {
       "source": "catena-labs/dev-skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
       "skillPath": "skills/panel-review/SKILL.md",
-      "skillFolderHash": "831fbbb56531b5b50958f68efcb3a346d9cc76cc",
+      "skillFolderHash": "b0881da90ba6864d4ae07fb8bddcd491d43b56c2",
       "installedAt": "2026-05-02T00:48:59.606Z",
-      "updatedAt": "2026-05-28T22:22:50.628Z"
+      "updatedAt": "2026-06-17T21:35:44.264Z"
     },
     "shadcn": {
       "source": "shadcn/ui",
@@ -99,18 +99,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
       "skillPath": "skills/triage-pr-comments/SKILL.md",
-      "skillFolderHash": "42423c3151ff66d5ce7218437f409028ede291c0",
+      "skillFolderHash": "172b18b561c368f7815a57a5ab1413cf932c2153",
       "installedAt": "2026-05-20T01:35:38.166Z",
-      "updatedAt": "2026-05-28T22:22:50.628Z"
+      "updatedAt": "2026-06-17T21:35:44.263Z"
     },
     "post-panel-review-comments": {
       "source": "venables/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/venables/skills.git",
       "skillPath": "skills/post-panel-review-comments/SKILL.md",
-      "skillFolderHash": "15b505ede2239fdb5f9e6f03c8722dee2c8d84cb",
+      "skillFolderHash": "f7ec06098e4dc19a0ad31cd93c4479745a7277e8",
       "installedAt": "2026-06-09T19:38:18.718Z",
-      "updatedAt": "2026-06-09T19:38:18.718Z"
+      "updatedAt": "2026-06-17T21:32:33.164Z"
     },
     "pr-comment-handler": {
       "source": "venables/skills",
@@ -129,6 +129,69 @@
       "skillFolderHash": "0f346be8222b1afd7b95b2692953f520a11b82ae",
       "installedAt": "2026-06-10T16:05:40.224Z",
       "updatedAt": "2026-06-10T16:05:40.224Z"
+    },
+    "approve-pr": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/approve-pr/SKILL.md",
+      "skillFolderHash": "a36dc83457d4065cbb21592502562552e8e95441",
+      "installedAt": "2026-06-17T21:32:33.161Z",
+      "updatedAt": "2026-06-17T21:32:33.161Z"
+    },
+    "panel-review-loop": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/panel-review-loop/SKILL.md",
+      "skillFolderHash": "d5d5a26f4f7d6a95c6c61198f48f95a85b1ea824",
+      "installedAt": "2026-06-17T21:32:33.163Z",
+      "updatedAt": "2026-06-17T21:32:33.163Z"
+    },
+    "babysit-prs": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/babysit-prs/SKILL.md",
+      "skillFolderHash": "c4bfec1e206d7afba52ff49f47dbf6d68fd2634d",
+      "installedAt": "2026-06-17T21:35:44.260Z",
+      "updatedAt": "2026-06-17T21:35:44.260Z"
+    },
+    "commandments": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/commandments/SKILL.md",
+      "skillFolderHash": "4c4c6a1e83e0290346eb1e25a81c83096307098d",
+      "installedAt": "2026-06-17T21:35:44.262Z",
+      "updatedAt": "2026-06-17T21:35:44.262Z"
+    },
+    "panel-plan": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/panel-plan/SKILL.md",
+      "skillFolderHash": "7ac4920d00a511da28a24a7f29146a74e52d51ee",
+      "installedAt": "2026-06-17T21:35:44.262Z",
+      "updatedAt": "2026-06-17T21:35:44.262Z"
+    },
+    "panel-plan-loop": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/panel-plan-loop/SKILL.md",
+      "skillFolderHash": "23c3928250362c55712ef937656434a6bd687828",
+      "installedAt": "2026-06-17T21:35:44.263Z",
+      "updatedAt": "2026-06-17T21:35:44.263Z"
+    },
+    "walkmethrough": {
+      "source": "catena-labs/dev-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/catena-labs/dev-skills.git",
+      "skillPath": "skills/walkmethrough/SKILL.md",
+      "skillFolderHash": "4c96aded6f4668ba38e9e18902576821701a0998",
+      "installedAt": "2026-06-17T21:35:44.263Z",
+      "updatedAt": "2026-06-17T21:35:44.263Z"
     }
   },
   "dismissed": {

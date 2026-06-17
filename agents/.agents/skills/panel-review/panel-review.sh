@@ -37,6 +37,28 @@ INSTRUCTION_MODE=0             # 1 when target is a PR; panelists fetch via gh t
 CODEX_MODEL="${CODEX_MODEL:-}"
 CLAUDE_MODEL="${CLAUDE_MODEL:-}"
 OPENCODE_MODEL="${OPENCODE_MODEL:-}"
+
+# ----- Per-panelist binary overrides (env) -----
+# Override the executable invoked for a panelist without renaming the panelist
+# itself. The panelist NAME (codex/claude/opencode) is still used everywhere as a
+# map key — auto-detection, worktree dirs (worktree-$p), output files ($p.out),
+# section headers — so we only swap what gets exec'd, not the identity. Accepts a
+# bare name resolved on PATH (e.g. "claude-custom") or an absolute path (e.g.
+# "/opt/foo/codex"); `command -v` handles both.
+CODEX_BIN="${CODEX_BIN:-codex}"
+CLAUDE_BIN="${CLAUDE_BIN:-claude}"
+OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
+
+# Map a panelist name to its (possibly overridden) binary. Unknown names fall
+# back to the name itself so callers stay robust if the set ever grows.
+panelist_bin() {
+  case "$1" in
+    codex)    echo "$CODEX_BIN" ;;
+    claude)   echo "$CLAUDE_BIN" ;;
+    opencode) echo "$OPENCODE_BIN" ;;
+    *)        echo "$1" ;;
+  esac
+}
 OPENCODE_AGENT="${OPENCODE_AGENT:-plan}"
 # Opencode has no read-only/write toggle equivalent to codex's --sandbox; the choice
 # of agent decides what tools are available. pr/base/commit reviews run worktree-
@@ -84,6 +106,11 @@ Behavior by target:
 Environment:
   CODEX_MODEL, CLAUDE_MODEL, OPENCODE_MODEL
                           Pass through a model name to that panelist.
+  CODEX_BIN, CLAUDE_BIN, OPENCODE_BIN
+                          Override the executable invoked for that panelist
+                          (default: codex / claude / opencode). Accepts a bare
+                          name resolved on PATH or an absolute path. The panelist
+                          name is unchanged in output sections and worktree dirs.
   OPENCODE_AGENT          opencode agent for --uncommitted/--staged (default: plan,
                           read-only).
   OPENCODE_AGENT_DEEP     opencode agent for --pr/--base/--commit (default: build,
@@ -226,12 +253,14 @@ if (( INSTRUCTION_MODE )); then
 fi
 
 # ----- Auto-detect panelists if none specified -----
+# Probe the resolved binary (honoring CODEX_BIN/CLAUDE_BIN/OPENCODE_BIN) so a
+# panelist backed by a custom executable is still auto-detected.
 if [[ ${#PANELISTS[@]} -eq 0 ]]; then
   for tool in codex claude opencode; do
-    command -v "$tool" >/dev/null 2>&1 && PANELISTS+=("$tool")
+    command -v "$(panelist_bin "$tool")" >/dev/null 2>&1 && PANELISTS+=("$tool")
   done
 fi
-[[ ${#PANELISTS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for codex, claude, opencode)"
+[[ ${#PANELISTS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for $CODEX_BIN, $CLAUDE_BIN, $OPENCODE_BIN)"
 
 # ----- Output dir -----
 if [[ -z "$OUT_DIR" ]]; then
@@ -618,12 +647,14 @@ run_panelist() {
 #               the prompt only — no sandbox-level guarantee.
 build_argv() {
   local name="$1"
+  local bin
+  bin="$(panelist_bin "$name")"
   case "$name" in
     codex)
       if (( CHECKOUT_MODE )); then
-        argv=(codex exec --skip-git-repo-check --sandbox workspace-write --color=never)
+        argv=("$bin" exec --skip-git-repo-check --sandbox workspace-write --color=never)
       else
-        argv=(codex exec --skip-git-repo-check --sandbox read-only --color=never)
+        argv=("$bin" exec --skip-git-repo-check --sandbox read-only --color=never)
       fi
       [[ -n "$CODEX_MODEL" ]] && argv+=(-m "$CODEX_MODEL")
       argv+=(-- "$PROMPT_CONTENT")
@@ -633,9 +664,9 @@ build_argv() {
         # plan mode blocks Bash; gh / tests / grep need shell access, so we
         # relax to bypassPermissions inside the worktree and rely on the
         # prompt's hard constraints to forbid state-changing actions.
-        argv=(claude -p --permission-mode bypassPermissions --output-format text --no-session-persistence)
+        argv=("$bin" -p --permission-mode bypassPermissions --output-format text --no-session-persistence)
       else
-        argv=(claude -p --permission-mode plan --output-format text --no-session-persistence)
+        argv=("$bin" -p --permission-mode plan --output-format text --no-session-persistence)
       fi
       [[ -n "$CLAUDE_MODEL" ]] && argv+=(--model "$CLAUDE_MODEL")
       argv+=(-- "$PROMPT_CONTENT")
@@ -645,7 +676,7 @@ build_argv() {
       # and would make opencode dump its --help and exit 1.
       local agent="$OPENCODE_AGENT"
       (( CHECKOUT_MODE )) && agent="$OPENCODE_AGENT_DEEP"
-      argv=(opencode run --agent "$agent")
+      argv=("$bin" run --agent "$agent")
       (( CHECKOUT_MODE )) && argv+=(--dangerously-skip-permissions)
       [[ -n "$OPENCODE_MODEL" ]] && argv+=(--model "$OPENCODE_MODEL")
       argv+=(-- "$PROMPT_CONTENT")
@@ -667,10 +698,11 @@ for p in "${PANELISTS[@]}"; do
   err="$OUT_DIR/$p.err"
   rc="$OUT_DIR/$p.rc"
 
-  if ! command -v "$p" >/dev/null 2>&1; then
-    echo "panel-review: '$p' not on PATH — skipping" >&2
+  p_bin="$(panelist_bin "$p")"
+  if ! command -v "$p_bin" >/dev/null 2>&1; then
+    echo "panel-review: '$p' binary '$p_bin' not on PATH — skipping" >&2
     : >"$out"
-    echo "panelist '$p' not found on PATH" >"$err"
+    echo "panelist '$p' binary '$p_bin' not found on PATH" >"$err"
     echo "127" >"$rc"
     continue
   fi

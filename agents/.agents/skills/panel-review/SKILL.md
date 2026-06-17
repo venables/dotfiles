@@ -189,7 +189,7 @@ When _not_ to use:
    link pointing at the PR file view, so the user can tap straight to the exact
    line on GitHub. Use the helper:
 
-   ```
+   ```bash
    bash skills/panel-review/pr-line-url.sh "$pr_url" "<file>" "<line-or-range>"
    ```
 
@@ -203,17 +203,19 @@ When _not_ to use:
 
    Example transformation. Panelist output:
 
-   ```
-   - [HIGH] auth/session.go:88 — TOCTOU between token check and claim load.
-     Fix: take the cache lock before validating the signature.
+   ```md
+   - [HIGH] auth/session.go:88 — TOCTOU between token check and claim load. Fix:
+     take the cache lock before validating the signature.
    ```
 
    Synthesized entry:
 
-   ```
-   - [HIGH] [auth/session.go:88](https://github.com/owner/repo/pull/27/files#diff-...R88) — TOCTOU between token check and claim load.
-     Fix: take the cache lock before validating the signature.
-     Flagged by 2: codex (gpt-5.5), claude (claude-opus-4.7)
+   ```md
+   - [HIGH]
+     [auth/session.go:88](https://github.com/owner/repo/pull/27/files#diff-...R88)
+     — TOCTOU between token check and claim load. Fix: take the cache lock
+     before validating the signature. Flagged by 2: codex (gpt-5.5), claude
+     (claude-opus-4.7)
    ```
 
    **Every finding MUST include `file:line` (or a named root-cause location for
@@ -272,8 +274,9 @@ When _not_ to use:
    no "all panelists agree" suffix. The absence of a goal-check section below is
    the implicit signal that everyone agreed. Example:
 
-   ```
-   Stand up the @bank/evm package as the foundation for future send-saga work — viem-backed primitives for the EVM transaction lifecycle.
+   ```md
+   Stand up the @bank/evm package as the foundation for future send-saga work —
+   viem-backed primitives for the EVM transaction lifecycle.
    ```
 
    If the goal is contested (any case that would trigger a goal-check section
@@ -343,8 +346,11 @@ When _not_ to use:
    2. Compare your read against the panelist's `Goal:` line.
    3. If they disagree, emit a callout between `### Risk` and the next section:
 
-      ```
-      **Misinterpretation detected:** codex (gpt-5) appears to have misinterpreted the change. It said "<goal>" but the diff actually <what it really does>. Treat its findings below with skepticism — verify each one against the code before acting on it.
+      ```md
+      **Misinterpretation detected:** codex (gpt-5) appears to have
+      misinterpreted the change. It said "<goal>" but the diff actually
+      <what it really does>. Treat its findings below with skepticism — verify
+      each one against the code before acting on it.
       ```
 
    4. Apply step 9's verification more aggressively to that panelist's findings:
@@ -388,8 +394,13 @@ When _not_ to use:
      current change is symptomatic), and you verified them against the code.
      Quote the substantiated claim:
 
-     ```
-     - questionable (raised by: codex (gpt-5.5)): the diff adds client-side validation in `web/src/forms/order.tsx:42`, but the root cause is that the `orders` table allows duplicate `(user_id, idempotency_key)` rows. Real fix lives in a migration on `orders`. This is the third caller to re-implement the same validation — grep shows two prior copies in `web/src/forms/`.
+     ```md
+     - questionable (raised by: codex (gpt-5.5)): the diff adds client-side
+       validation in `web/src/forms/order.tsx:42`, but the root cause is that
+       the `orders` table allows duplicate `(user_id, idempotency_key)` rows.
+       Real fix lives in a migration on `orders`. This is the third caller to
+       re-implement the same validation — grep shows two prior copies in
+       `web/src/forms/`.
      ```
 
      Also promote this finding into `### must-fix` as a HIGH-severity entry (use
@@ -423,35 +434,37 @@ When _not_ to use:
 
    **Per-finding shape (CRITICAL / HIGH / MEDIUM):**
 
-   ```
-   - [SEVERITY] file:line — one-sentence issue.
-     Fix: one-sentence suggested change.
-     Flagged by: codex (gpt-5.5)
+   ```md
+   - [SEVERITY] file:line — one-sentence issue. Fix: one-sentence suggested
+     change. Flagged by: codex (gpt-5.5)
    ```
 
    When 2+ panelists raised the same finding, list every panelist on the
    `Flagged by:` line and prefix with the count. The count is the implicit
    consensus signal — no separate "CONSENSUS" badge, no separate section:
 
-   ```
-   - [MEDIUM] packages/evm/src/receipts.ts:130 + packages/evm/src/errors.ts:364 — `RETRYABLE_RPC_CODES` duplicated verbatim across two files.
-     Fix: export from errors.ts and import in receipts.ts.
-     Flagged by 2: claude (claude-opus-4.7), opencode (qwen3.6-plus)
+   ```md
+   - [MEDIUM] packages/evm/src/receipts.ts:130 + packages/evm/src/errors.ts:364
+     — `RETRYABLE_RPC_CODES` duplicated verbatim across two files. Fix: export
+     from errors.ts and import in receipts.ts. Flagged by 2: claude
+     (claude-opus-4.7), opencode (qwen3.6-plus)
    ```
 
    When panelists assigned different severities to the same finding, use the
    higher and add a short note inline on the `Flagged by:` line:
 
-   ```
-   Flagged by 2: claude (claude-opus-4.7) [LOW], opencode (qwen3.6-plus) [MEDIUM] — using higher.
+   ```md
+   Flagged by 2: claude (claude-opus-4.7) [LOW], opencode (qwen3.6-plus)
+   [MEDIUM] — using higher.
    ```
 
    **Per-finding shape (LOW).** Collapse to a single line. LOW items rarely need
    a sentence of repair guidance; the issue description and `Flagged by:` are
    enough:
 
-   ```
-   - [LOW] packages/evm/src/broadcast.ts:299-307 — `stripSerialized` is unreachable post-`sanitizeMessage`. Flagged by: claude (claude-opus-4.7)
+   ```md
+   - [LOW] packages/evm/src/broadcast.ts:299-307 — `stripSerialized` is
+     unreachable post-`sanitizeMessage`. Flagged by: claude (claude-opus-4.7)
    ```
 
    If a LOW finding genuinely needs a `Fix:` line (e.g. the change is
@@ -462,10 +475,13 @@ When _not_ to use:
    `### must-fix` as a HIGH-severity entry. Use the named root-cause location in
    place of `file:line`:
 
-   ```
-   - [HIGH] root cause: `orders` table allows duplicate `(user_id, idempotency_key)` rows — the diff adds client-side validation in `web/src/forms/order.tsx:42` that papers over it; this is the third caller to re-implement the same validation.
-     Fix: add a unique constraint on `orders(user_id, idempotency_key)` (or equivalent migration), then drop the per-caller client validators.
-     Flagged by: codex (gpt-5.5)
+   ```md
+   - [HIGH] root cause: `orders` table allows duplicate
+     `(user_id, idempotency_key)` rows — the diff adds client-side validation in
+     `web/src/forms/order.tsx:42` that papers over it; this is the third caller
+     to re-implement the same validation. Fix: add a unique constraint on
+     `orders(user_id, idempotency_key)` (or equivalent migration), then drop the
+     per-caller client validators. Flagged by: codex (gpt-5.5)
    ```
 
    Put the Approach entry at the top of `### must-fix` — if the approach is
