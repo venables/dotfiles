@@ -3,7 +3,8 @@
 tsc_extensions="ts tsx"
 # pyright_extensions="py"
 
-file_path=$(jq -r '.tool_input.file_path')
+file_path=$(jq -r '.tool_input.file_path // empty')
+[[ -z "$file_path" ]] && exit 0
 extension="${file_path##*.}"
 
 if [[ " $tsc_extensions " == *" $extension "* ]]; then
