@@ -35,7 +35,7 @@
    - Fixing zsh compinit permissions
    - Setting Homebrew zsh as the default shell
    - Installing mise runtimes (node, python, ruby, rust, etc.)
-   - Installing/updating CLI tools (Claude Code, OpenCode, Amp, Droid, OpenClaw)
+   - Installing/updating CLI tools (Claude Code, OpenCode)
    - Installing/updating global npm packages
    - Configuring GPG with pinentry-mac
    - Installing/upgrading GitHub CLI extensions
