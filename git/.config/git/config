@@ -2,9 +2,16 @@
   editor = nvim
   excludesfile = ~/.config/git/ignore
   quotepath = false
+  # Speed up status/diff on large repos (catena) via the filesystem monitor
+  # daemon and a cached untracked-file list. Safe on macOS.
+  fsmonitor = true
+  untrackedCache = true
 
 [color]
   ui = true
+
+[column]
+  ui = auto
 
 [commit]
   gpgsign = true
@@ -14,6 +21,15 @@
 
 [diff]
   algorithm = histogram
+
+[branch]
+  sort = -committerdate
+
+[tag]
+  sort = version:refname
+
+[fetch]
+  prune = true
 
 [gpg]
   format = ssh
@@ -38,6 +54,10 @@
 [push]
   autoSetupRemote = true
   default = current
+
+[rebase]
+  autoStash = true
+  autoSquash = true
 
 [rerere]
   enabled = true
