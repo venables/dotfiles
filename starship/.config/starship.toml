@@ -2,6 +2,10 @@
 
 add_newline = true
 
+# fsmonitor's first-prompt daemon spawn on large repos can exceed the 500ms
+# default and spam git timeout warnings; give it room.
+command_timeout = 2000
+
 format = """$hostname\
 $directory\
 $git_branch\
