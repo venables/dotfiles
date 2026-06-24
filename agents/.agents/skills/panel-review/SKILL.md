@@ -85,7 +85,21 @@ When _not_ to use:
      (`panel-review: scope vs <base>: N commits, M files changed, K insertions(+), L deletions(-)`)
      matches the PR's own commit count before trusting the synthesized findings.
 2. **Pick panelists.** Default: every supported CLI on `PATH` (codex, claude,
-   opencode). The user may name a subset.
+   opencode). The user may name a subset, choose a model per reviewer, or run
+   the same backend more than once on different models. Pass each reviewer as
+   `--panelist backend[:model]` (repeatable); the backend is codex/claude/
+   opencode and the optional `:model` is forwarded to that CLI. Examples:
+   - "panel review with claude on opus-4.8" → `--panelist claude:opus-4.8`
+   - "panel review with claude and two opencode reviewers, qwen and glm" →
+     `--panelist claude --panelist opencode:qwen-3.7 --panelist opencode:glm-5.2`
+     (bare `claude` because the user pinned no Claude model; the opencode
+     reviewers are pinned because the user named their models) A bare
+     `--panelist claude` (no model) uses that backend's `*_MODEL` env default.
+     Each panelist gets a unique id (e.g. `opencode-qwen-3.7`) used in its
+     `## <id> / <model>` section header, `started`/`done` heartbeats, todos, and
+     worktree dir — so two reviewers on the same backend never collide. The user
+     can also set models entirely from the environment via
+     `PANEL_REVIEW_PANELISTS="claude:opus-4.8 opencode:qwen-3.7 opencode:glm-5.2"`.
 3. **Capture optional focus.** If the user gave context ("look closely at the
    auth changes"), pass `--focus`.
 4. **Mode is automatic — there is no `--checkout` decision.** PR / `--base` /

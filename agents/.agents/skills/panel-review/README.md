@@ -26,6 +26,66 @@ panelists from your phrasing:
 - "panel review this branch against main"
 - "panel review the auth changes, focus on session handling"
 - "panel review with just codex and claude"
+- "panel review with claude on opus-4.8 and two opencode reviewers, one on
+  qwen-3.7 and one on glm-5.2" — pick reviewers _and_ their models, including
+  running the same backend more than once
+
+## Choosing reviewers and models
+
+Each reviewer is a `--panelist backend[:model]` spec, where backend is `codex`,
+`claude`, or `opencode`, and the optional `:model` is the **exact** model id
+that backend's CLI expects (it's forwarded verbatim as `-m` / `--model`). The
+same backend can appear multiple times with different models, so you can fan one
+change out to several models — even several models of the same tool.
+
+A concrete four-reviewer panel — claude on Opus 4.8, codex on GPT-5.5, and two
+opencode reviewers on different `opencode-go` models:
+
+```bash
+panel-review.sh \
+  --panelist claude:claude-opus-4-8 \
+  --panelist codex:gpt-5.5 \
+  --panelist opencode:opencode-go/glm-5.2 \
+  --panelist opencode:opencode-go/qwen3.7-max
+```
+
+Equivalently, set it from the environment (used when no `--panelist` flag is
+passed; space- or comma-separated):
+
+```bash
+PANEL_REVIEW_PANELISTS="claude:claude-opus-4-8 codex:gpt-5.5 opencode:opencode-go/glm-5.2 opencode:opencode-go/qwen3.7-max" \
+  panel-review.sh
+```
+
+That panel produces four reviewers with these ids and headers:
+
+```
+- Panelists: claude-claude-opus-4-8 codex-gpt-5.5 opencode-opencode-go-glm-5.2 opencode-opencode-go-qwen3.7-max
+## claude-claude-opus-4-8 / claude-opus-4-8 (exit 0)
+## codex-gpt-5.5 / gpt-5.5 (exit 0)
+## opencode-opencode-go-glm-5.2 / opencode-go/glm-5.2 (exit 0)
+## opencode-opencode-go-qwen3.7-max / opencode-go/qwen3.7-max (exit 0)
+```
+
+### Finding the right model id per backend
+
+The `:model` part must match what each CLI accepts — don't guess:
+
+- **claude** — an alias (`opus`, `sonnet`, `fable`) or a full id like
+  `claude-opus-4-8`. The alias tracks the latest of that family; use the full id
+  to pin a specific version. `claude --help` documents `--model`.
+- **codex** — a model id such as `gpt-5.5`. Your default is in
+  `~/.codex/config.toml` (`model = "..."`); `codex -m <id>` overrides it.
+- **opencode** — always `provider/model`, e.g. `opencode-go/glm-5.2`. List every
+  installed `provider/model` pair with `opencode models`. (The `/` is preserved
+  in the model passed to the CLI; it's only sanitized to `-` in the panelist
+  id.)
+
+A bare backend (`--panelist claude`) uses that backend's `CLAUDE_MODEL` /
+`CODEX_MODEL` / `OPENCODE_MODEL` env default, or the CLI's own default if unset.
+Each reviewer gets a unique id (e.g. `opencode-opencode-go-glm-5.2`) so two
+reviewers on the same backend keep separate worktrees, output files, and report
+sections.
 
 Add "deep" / "verify each finding" / "dig into the findings" to opt into deep
 mode: after the panelists finish, the coordinator spins off verification

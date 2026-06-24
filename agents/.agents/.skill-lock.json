@@ -108,18 +108,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/venables/skills.git",
       "skillPath": "skills/post-panel-review-comments/SKILL.md",
-      "skillFolderHash": "f7ec06098e4dc19a0ad31cd93c4479745a7277e8",
+      "skillFolderHash": "eb01d4ec496a442bf0a1c515b0bf83cbb99d40f9",
       "installedAt": "2026-06-09T19:38:18.718Z",
-      "updatedAt": "2026-06-17T21:32:33.164Z"
+      "updatedAt": "2026-06-23T00:07:15.305Z"
     },
     "pr-comment-handler": {
       "source": "venables/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/venables/skills.git",
       "skillPath": "skills/pr-comment-handler/SKILL.md",
-      "skillFolderHash": "19f51f435256ffd81ec36def8d5775c8dadbb718",
+      "skillFolderHash": "aed5cc4ea7e601c77add8b82458fc8a12bf38cf8",
       "installedAt": "2026-06-09T19:38:18.721Z",
-      "updatedAt": "2026-06-09T19:38:18.721Z"
+      "updatedAt": "2026-06-24T23:03:03.979Z"
     },
     "improve": {
       "source": "shadcn/improve",
@@ -137,7 +137,7 @@
       "skillPath": "skills/approve-pr/SKILL.md",
       "skillFolderHash": "a36dc83457d4065cbb21592502562552e8e95441",
       "installedAt": "2026-06-17T21:32:33.161Z",
-      "updatedAt": "2026-06-17T21:32:33.161Z"
+      "updatedAt": "2026-06-23T00:07:15.303Z"
     },
     "panel-review-loop": {
       "source": "venables/skills",
@@ -192,6 +192,24 @@
       "skillFolderHash": "4c96aded6f4668ba38e9e18902576821701a0998",
       "installedAt": "2026-06-17T21:35:44.263Z",
       "updatedAt": "2026-06-17T21:35:44.263Z"
+    },
+    "auto-post-panel-review-comments": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/auto-post-panel-review-comments/SKILL.md",
+      "skillFolderHash": "ff07830e9b7d8458953cb28bff0250cd0d97127e",
+      "installedAt": "2026-06-23T00:07:15.304Z",
+      "updatedAt": "2026-06-23T00:07:15.304Z"
+    },
+    "auto-review": {
+      "source": "venables/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/venables/skills.git",
+      "skillPath": "skills/auto-review/SKILL.md",
+      "skillFolderHash": "26d55be55f466036896d4f2aae8ea2624dd76878",
+      "installedAt": "2026-06-23T00:07:15.305Z",
+      "updatedAt": "2026-06-23T00:07:15.305Z"
     }
   },
   "dismissed": {

@@ -23,7 +23,6 @@ PROMPT_TEMPLATE_PR="$SCRIPT_DIR/prompts/review-pr.md"
 TARGET="uncommitted"           # uncommitted | staged | base:<ref> | commit:<sha> | pr:<ref>
 TARGET_EXPLICIT=0              # set to 1 by any --uncommitted/--staged/--base/--commit/--pr flag
 FOCUS=""
-PANELISTS=()
 OUT_DIR=""
 TIMEOUT_SECS="${PANEL_REVIEW_TIMEOUT:-600}"
 MAX_DIFF_BYTES="${PANEL_REVIEW_MAX_DIFF_BYTES:-200000}"
@@ -66,6 +65,97 @@ OPENCODE_AGENT="${OPENCODE_AGENT:-plan}"
 # agent. Override OPENCODE_AGENT_DEEP if you have a custom agent for that purpose.
 OPENCODE_AGENT_DEEP="${OPENCODE_AGENT_DEEP:-build}"
 
+# ----- Panelist registry (parallel arrays; bash 3.2 has no associative arrays) -----
+#
+# A "panelist" is one reviewer instance. Multiple instances of the SAME backend
+# are allowed (e.g. two opencode panelists on different models), so each panelist
+# carries three independent attributes:
+#
+#   - ID:      unique handle used for filesystem paths (worktree-$id, $id.out),
+#              dedup, section headers, and todo/heartbeat matching. Sanitized so
+#              it is safe to interpolate into paths and `git worktree add`.
+#   - BACKEND: codex | claude | opencode — decides how the CLI argv is built and
+#              which *_BIN / *_MODEL defaults apply.
+#   - MODEL:   optional per-panelist model id, passed through to the CLI. Empty
+#              means "fall back to the backend's *_MODEL env default (if any)".
+PANEL_IDS=()
+PANEL_BACKENDS=()
+PANEL_MODELS=()
+
+# Sanitize an arbitrary string (e.g. a model id) into an id fragment safe for
+# filesystem paths and `git worktree add`. Everything outside [A-Za-z0-9._-] —
+# including '/' from provider/model ids like 'anthropic/claude' — collapses to
+# '-', so the result can never contain a path separator and cannot traverse out
+# of $OUT_DIR.
+sanitize_id() {
+  local s="$1"
+  printf '%s' "${s//[^A-Za-z0-9._-]/-}"
+}
+
+# Print the index of the panelist with the given id, or return non-zero.
+panel_index() {
+  local id="$1" i
+  for i in "${!PANEL_IDS[@]}"; do
+    [[ "${PANEL_IDS[$i]}" == "$id" ]] && { printf '%s' "$i"; return 0; }
+  done
+  return 1
+}
+
+panel_backend() { local i; i="$(panel_index "$1")" || return 1; printf '%s' "${PANEL_BACKENDS[$i]}"; }
+panel_model()   { local i; i="$(panel_index "$1")" || return 1; printf '%s' "${PANEL_MODELS[$i]}"; }
+
+# Resolve the model actually used for a panelist: the explicit per-panelist model
+# if set, else the backend's *_MODEL env default (which may itself be empty, i.e.
+# let the CLI pick its own default).
+effective_model() {
+  local id="$1" backend model
+  backend="$(panel_backend "$id")"
+  model="$(panel_model "$id")"
+  if [[ -n "$model" ]]; then printf '%s' "$model"; return; fi
+  case "$backend" in
+    codex)    printf '%s' "$CODEX_MODEL" ;;
+    claude)   printf '%s' "$CLAUDE_MODEL" ;;
+    opencode) printf '%s' "$OPENCODE_MODEL" ;;
+  esac
+}
+
+# Register a panelist, generating a unique id. With a model the id is
+# '<backend>-<sanitized-model>' (so two opencode panelists get distinct dirs and
+# headers); without a model it is just '<backend>'. Collisions get a numeric
+# suffix.
+register_panelist() {
+  local backend="$1" model="$2" base id n
+  if [[ -n "$model" ]]; then
+    base="${backend}-$(sanitize_id "$model")"
+  else
+    base="$backend"
+  fi
+  id="$base"
+  n=2
+  while panel_index "$id" >/dev/null 2>&1; do
+    id="${base}-${n}"
+    n=$((n + 1))
+  done
+  PANEL_IDS+=("$id")
+  PANEL_BACKENDS+=("$backend")
+  PANEL_MODELS+=("$model")
+}
+
+# Parse a panelist spec 'backend[:model]' and register it. The backend is the
+# part before the first ':'; everything after is the model (kept verbatim,
+# including any '/' in provider/model ids — only the *id* derived from it is
+# sanitized). A bare 'backend' uses the backend's *_MODEL env default.
+add_panelist_spec() {
+  local spec="$1" backend model
+  backend="${spec%%:*}"
+  if [[ "$spec" == *:* ]]; then model="${spec#*:}"; else model=""; fi
+  case "$backend" in
+    codex|claude|opencode) ;;
+    *) die "--panelist: unknown backend '$backend' in spec '$spec' (allowed: codex, claude, opencode)" ;;
+  esac
+  register_panelist "$backend" "$model"
+}
+
 usage() {
   cat <<EOF
 Usage: panel-review.sh [target] [options]
@@ -83,8 +173,17 @@ Targets (pick one; default tries to auto-detect a PR for the current branch via
 
 Options:
   --focus TEXT            Optional focus / context for the reviewers
-  --panelist NAME         Add panelist (repeatable). Names: codex, claude, opencode.
-                          If not given, auto-detects every supported CLI on PATH.
+  --panelist SPEC         Add a panelist (repeatable). SPEC is 'backend[:model]'
+                          where backend is codex, claude, or opencode. The same
+                          backend may be used more than once with different
+                          models — e.g. two opencode reviewers:
+                            --panelist claude:opus-4.8 \\
+                            --panelist opencode:qwen-3.7 \\
+                            --panelist opencode:glm-5.2
+                          A bare 'backend' (no ':model') uses that backend's
+                          *_MODEL env default. If no --panelist is given, falls
+                          back to \$PANEL_REVIEW_PANELISTS, then to auto-detecting
+                          every supported CLI on PATH.
   --out-dir DIR           Where to write captured outputs (default: mktemp).
   --timeout SECS          Per-panelist timeout (default: \$PANEL_REVIEW_TIMEOUT or 600).
   -h, --help              Show this help.
@@ -104,8 +203,15 @@ Behavior by target:
   accepted as a deprecated no-op.
 
 Environment:
+  PANEL_REVIEW_PANELISTS  Space- or comma-separated list of 'backend[:model]'
+                          specs, used when no --panelist flag is given. Same
+                          grammar as --panelist, so you can pick reviewers and
+                          their models entirely from the environment, e.g.:
+                            PANEL_REVIEW_PANELISTS="claude:opus-4.8 opencode:qwen-3.7 opencode:glm-5.2"
   CODEX_MODEL, CLAUDE_MODEL, OPENCODE_MODEL
-                          Pass through a model name to that panelist.
+                          Default model for a panelist of that backend whose spec
+                          did not pin an explicit model (e.g. a bare --panelist
+                          claude, or an auto-detected panelist).
   CODEX_BIN, CLAUDE_BIN, OPENCODE_BIN
                           Override the executable invoked for that panelist
                           (default: codex / claude / opencode). Accepts a bare
@@ -139,15 +245,13 @@ while [[ $# -gt 0 ]]; do
     --pr)          [[ $# -ge 2 ]] || die "--pr needs a number or URL"; TARGET="pr:$2"; TARGET_EXPLICIT=1; shift 2 ;;
     --focus)       [[ $# -ge 2 ]] || die "--focus needs text"; FOCUS="$2"; shift 2 ;;
     --panelist)
-      [[ $# -ge 2 ]] || die "--panelist needs a name"
-      # Validate against the known set up-front. The panelist name is later
-      # interpolated into filesystem paths (worktree-$p, $p.out, $p.rc) and
-      # passed to git worktree add — an unsanitized name like '../foo' would
-      # escape $OUT_DIR and leave a stale entry in .git/worktrees.
-      case "$2" in
-        codex|claude|opencode) PANELISTS+=("$2") ;;
-        *) die "--panelist: unknown panelist '$2' (allowed: codex, claude, opencode)" ;;
-      esac
+      [[ $# -ge 2 ]] || die "--panelist needs a 'backend[:model]' spec"
+      # add_panelist_spec validates the backend against the known set and derives
+      # a sanitized, unique id. The id (not the raw spec) is what later gets
+      # interpolated into filesystem paths (worktree-$id, $id.out, $id.rc) and
+      # passed to git worktree add, so an injected model like '../foo' collapses
+      # to a harmless 'opencode-..-foo' filename rather than escaping $OUT_DIR.
+      add_panelist_spec "$2"
       shift 2 ;;
     --out-dir)     [[ $# -ge 2 ]] || die "--out-dir needs a path"; OUT_DIR="$2"; shift 2 ;;
     --timeout)     [[ $# -ge 2 ]] || die "--timeout needs seconds"; TIMEOUT_SECS="$2"; shift 2 ;;
@@ -252,15 +356,34 @@ if (( INSTRUCTION_MODE )); then
   command -v gh >/dev/null 2>&1 || die "--pr requires the 'gh' CLI on PATH"
 fi
 
-# ----- Auto-detect panelists if none specified -----
-# Probe the resolved binary (honoring CODEX_BIN/CLAUDE_BIN/OPENCODE_BIN) so a
-# panelist backed by a custom executable is still auto-detected.
-if [[ ${#PANELISTS[@]} -eq 0 ]]; then
+# ----- Resolve panelists: --panelist flags > PANEL_REVIEW_PANELISTS env > auto-detect -----
+# If no --panelist flag was given, fall back to the env list (same
+# 'backend[:model]' grammar, space- or comma-separated). Word-splitting the
+# unquoted expansion does the tokenizing; commas are normalized to spaces first.
+if [[ ${#PANEL_IDS[@]} -eq 0 && -n "${PANEL_REVIEW_PANELISTS:-}" ]]; then
+  # read -ra rather than unquoted word-splitting: a spec containing a glob
+  # metacharacter ('*', '?', '[') would otherwise be pathname-expanded against
+  # the cwd before parsing (the script never sets -f). Count-guard the loop so a
+  # value that is only commas/whitespace yields an empty array without tripping
+  # bash 3.2's empty-array @-expansion footgun under set -u.
+  read -ra _panel_specs <<< "${PANEL_REVIEW_PANELISTS//,/ }"
+  if (( ${#_panel_specs[@]} > 0 )); then
+    for spec in "${_panel_specs[@]}"; do
+      [[ -n "$spec" ]] && add_panelist_spec "$spec"
+    done
+  fi
+fi
+
+# Still nothing? Auto-detect every supported CLI on PATH. Probe the resolved
+# binary (honoring CODEX_BIN/CLAUDE_BIN/OPENCODE_BIN) so a panelist backed by a
+# custom executable is still detected. Auto-detected panelists carry no explicit
+# model, so they inherit the backend's *_MODEL default (if any).
+if [[ ${#PANEL_IDS[@]} -eq 0 ]]; then
   for tool in codex claude opencode; do
-    command -v "$(panelist_bin "$tool")" >/dev/null 2>&1 && PANELISTS+=("$tool")
+    command -v "$(panelist_bin "$tool")" >/dev/null 2>&1 && register_panelist "$tool" ""
   done
 fi
-[[ ${#PANELISTS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for $CODEX_BIN, $CLAUDE_BIN, $OPENCODE_BIN)"
+[[ ${#PANEL_IDS[@]} -gt 0 ]] || die "no panelists found on PATH (looked for $CODEX_BIN, $CLAUDE_BIN, $OPENCODE_BIN)"
 
 # ----- Output dir -----
 if [[ -z "$OUT_DIR" ]]; then
@@ -495,7 +618,7 @@ if (( CHECKOUT_MODE )); then
     fi
   ' EXIT
 
-  for p in "${PANELISTS[@]}"; do
+  for p in "${PANEL_IDS[@]}"; do
     wt="$OUT_DIR/worktree-$p"
     git worktree add --quiet --detach "$wt" "$WORKTREE_REF" >&2 \
       || die "git worktree add $wt $WORKTREE_REF failed"
@@ -646,17 +769,19 @@ run_panelist() {
 #               tests/build commands. Network/destructive actions are gated by
 #               the prompt only — no sandbox-level guarantee.
 build_argv() {
-  local name="$1"
-  local bin
-  bin="$(panelist_bin "$name")"
-  case "$name" in
+  local id="$1"
+  local backend bin model
+  backend="$(panel_backend "$id")"
+  bin="$(panelist_bin "$backend")"
+  model="$(effective_model "$id")"
+  case "$backend" in
     codex)
       if (( CHECKOUT_MODE )); then
         argv=("$bin" exec --skip-git-repo-check --sandbox workspace-write --color=never)
       else
         argv=("$bin" exec --skip-git-repo-check --sandbox read-only --color=never)
       fi
-      [[ -n "$CODEX_MODEL" ]] && argv+=(-m "$CODEX_MODEL")
+      [[ -n "$model" ]] && argv+=(-m "$model")
       argv+=(-- "$PROMPT_CONTENT")
       ;;
     claude)
@@ -668,7 +793,7 @@ build_argv() {
       else
         argv=("$bin" -p --permission-mode plan --output-format text --no-session-persistence)
       fi
-      [[ -n "$CLAUDE_MODEL" ]] && argv+=(--model "$CLAUDE_MODEL")
+      [[ -n "$model" ]] && argv+=(--model "$model")
       argv+=(-- "$PROMPT_CONTENT")
       ;;
     opencode)
@@ -678,7 +803,7 @@ build_argv() {
       (( CHECKOUT_MODE )) && agent="$OPENCODE_AGENT_DEEP"
       argv=("$bin" run --agent "$agent")
       (( CHECKOUT_MODE )) && argv+=(--dangerously-skip-permissions)
-      [[ -n "$OPENCODE_MODEL" ]] && argv+=(--model "$OPENCODE_MODEL")
+      [[ -n "$model" ]] && argv+=(--model "$model")
       argv+=(-- "$PROMPT_CONTENT")
       ;;
     *)
@@ -690,15 +815,15 @@ build_argv() {
 }
 
 # ----- Fan out -----
-echo "panel-review: target=$TARGET_LABEL panelists=${PANELISTS[*]} out=$OUT_DIR" >&2
+echo "panel-review: target=$TARGET_LABEL panelists=${PANEL_IDS[*]} out=$OUT_DIR" >&2
 
 declare -a PIDS=()
-for p in "${PANELISTS[@]}"; do
+for p in "${PANEL_IDS[@]}"; do
   out="$OUT_DIR/$p.out"
   err="$OUT_DIR/$p.err"
   rc="$OUT_DIR/$p.rc"
 
-  p_bin="$(panelist_bin "$p")"
+  p_bin="$(panelist_bin "$(panel_backend "$p")")"
   if ! command -v "$p_bin" >/dev/null 2>&1; then
     echo "panel-review: '$p' binary '$p_bin' not on PATH — skipping" >&2
     : >"$out"
@@ -735,7 +860,7 @@ ANY_FAIL=0
 echo "# Panel review"
 echo
 echo "- Target: $TARGET_LABEL"
-echo "- Panelists: ${PANELISTS[*]}"
+echo "- Panelists: ${PANEL_IDS[*]}"
 echo "- Outputs: \`$OUT_DIR\`"
 # Surface the PR URL and repo for PR targets so the synthesizer can wrap
 # `file:line` findings as tappable links via skills/panel-review/pr-line-url.sh
@@ -780,12 +905,11 @@ print_section() {
   local p="$1"
   local rc_val
   rc_val="$(cat "$OUT_DIR/$p.rc" 2>/dev/null || echo "?")"
-  local fallback_model=""
-  case "$p" in
-    codex)    fallback_model="$CODEX_MODEL" ;;
-    claude)   fallback_model="$CLAUDE_MODEL" ;;
-    opencode) fallback_model="$OPENCODE_MODEL" ;;
-  esac
+  # Fall back to the panelist's resolved model (explicit spec model, else the
+  # backend's *_MODEL default) when the panelist did not self-report a Model:
+  # line as its first output line.
+  local fallback_model
+  fallback_model="$(effective_model "$p")"
   local model_label
   model_label="$(extract_model_label "$p" "$fallback_model")"
   echo "## ${p} / ${model_label} (exit ${rc_val})"
@@ -815,10 +939,10 @@ print_section() {
 # Track which panelists have already been printed. Bash 3.2 (macOS default) has
 # no associative arrays, so we keep a parallel indexed array of names.
 PRINTED=()
-TOTAL=${#PANELISTS[@]}
+TOTAL=${#PANEL_IDS[@]}
 DONE_COUNT=0
 while (( DONE_COUNT < TOTAL )); do
-  for p in "${PANELISTS[@]}"; do
+  for p in "${PANEL_IDS[@]}"; do
     is_printed=0
     if [[ ${#PRINTED[@]} -gt 0 ]]; then
       for x in "${PRINTED[@]}"; do
