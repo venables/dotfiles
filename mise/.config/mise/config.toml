@@ -8,4 +8,4 @@ rust = "stable"
 uv = "latest"
 shfmt = "latest"
 stylua = "latest"
-awscli = { version = "latest", symlink_bins = true }
+awscli = "latest"
