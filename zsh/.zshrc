@@ -168,6 +168,7 @@ wtc() { wt "$@"; cc; }
 
 # panel review via claude (review <arg> -> cc "panel review <arg>")
 review() { cc "panel review $*"; }
+autoreview() { "cc auto panel review $*"; }
 
 # eza (ls replacement)
 alias ls='eza -a --group-directories-first --icons=auto'
