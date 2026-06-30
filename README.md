@@ -98,3 +98,58 @@ A couple additions once lazyvim is running:
 
 Uncheck "Show Spotlight Search" in System Settings > Keyboard > Keyboard
 Shortcuts > Spotlight
+
+## Troubleshooting
+
+### 1Password extension won't connect (Chromium forks: Helium, etc.)
+
+**Symptom:** the extension never links to the desktop app and the browser
+console loops on:
+
+```
+[AppIntegration] Desktop app port disconnected. Error: Specified native messaging host not found.
+[AppIntegration] Desktop app connection attempt failed: NativeHostNotFound
+```
+
+**Cause:** 1Password only auto-installs its native-messaging manifest for
+browsers on its built-in list. A Chromium fork's native-messaging directory is
+keyed by the fork's **own bundle id** (e.g. Helium = `net.imput.helium`), so the
+manifest never lands there. Adding the browser to 1Password's allowlist lets the
+extension load but does **not** write the manifest, so the browser has no host
+to launch.
+
+**Fix:** write 1Password's manifest into the fork's own `NativeMessagingHosts`
+directory. Adjust the bundle id (`net.imput.helium`) for other forks, and the
+`"path"` if 1Password isn't in `/Applications`.
+
+```sh
+read -r -d '' MANIFEST <<'JSON'
+{
+  "name": "com.1password.1password",
+  "description": "1Password BrowserSupport",
+  "path": "/Applications/1Password.app/Contents/Library/LoginItems/1Password Browser Helper.app/Contents/MacOS/1Password-BrowserSupport",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://aeblfdkhhhdcdjpifhhbdiojplfjncoa/",
+    "chrome-extension://hjlinigoblmkhjejkmbegnoaljkphmgo/",
+    "chrome-extension://bkpbhnjcbehoklfkljkkbbmipaphipgl/",
+    "chrome-extension://gejiddohjgogedgjnonbofjigllpkmbf/",
+    "chrome-extension://khgocmkkpikpnmmkgmdnfckapcdkgfaf/",
+    "chrome-extension://dppgmdbiimibapkepcbdbmkaabgiofem/"
+  ]
+}
+JSON
+
+d="$HOME/Library/Application Support/net.imput.helium/NativeMessagingHosts"
+mkdir -p "$d" && printf '%s\n' "$MANIFEST" > "$d/com.1password.1password.json"
+```
+
+Then fully quit and relaunch the browser. If 1Password still rejects the
+connection (vs. failing to find it), open **1Password > Settings > Browser** and
+re-add the browser as a custom/other trusted app -- that record is
+integrity-signed by 1Password and can't be hand-edited or copied between
+machines.
+
+The `allowed_origins` are 1Password's public extension IDs and the `"path"` is
+the standard install location, so this manifest is not machine-specific -- it's
+the same file 1Password generates for any supported browser.
