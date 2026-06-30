@@ -37,6 +37,9 @@ export MANPAGER="less"
 export NPM_CONFIG_PREFIX="$HOME/.npm-global"
 export DISABLE_TELEMETRY=1
 
+# Panel Review
+export PANEL_REVIEW_PANELISTS="claude:claude-opus-4-8 codex:gpt-5.5 opencode:opencode-go/glm-5.2 opencode:opencode-go/qwen3.7-max"
+
 # -----------------------------------------------------------------------------
 # PATH
 # -----------------------------------------------------------------------------
